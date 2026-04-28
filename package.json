@@ -1,0 +1,25 @@
+{
+  "name": "nxus-docs",
+  "type": "module",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build && npm run build:llms",
+    "build:llms": "node scripts/generate-llms-txt.mjs",
+    "preview": "astro preview",
+    "astro": "astro",
+    "sync:docs": "node scripts/sync-local-docs.mjs --examples",
+    "sync:docs:all": "node scripts/sync-local-docs.mjs --all",
+    "sync:docs:examples": "node scripts/sync-local-docs.mjs --examples",
+    "sync:docs:sdk": "node scripts/sync-local-docs.mjs --sdk",
+    "refresh:docs": "node scripts/refresh-local-docs.mjs",
+    "refresh:docs:all": "node scripts/refresh-local-docs.mjs --all"
+  },
+  "dependencies": {
+    "@astrojs/starlight": "^0.38.4",
+    "astro": "^6.1.9",
+    "sharp": "^0.34.5",
+    "starlight-versions": "^0.8.2"
+  }
+}

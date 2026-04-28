@@ -1,0 +1,291 @@
+/*
+ * nxus.SYSTEMS docs theme.
+ * Mirrors the public website palette while keeping Starlight conventions intact.
+ */
+
+:root {
+	--sl-font: "Inter", "SF Pro Text", "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+	--sl-font-mono: "SFMono-Regular", "Cascadia Code", "Liberation Mono", monospace;
+	--nxus-bg: #0a1018;
+	--nxus-bg-elevated: #101829;
+	--nxus-panel: #141c26;
+	--nxus-panel-strong: #1c2635;
+	--nxus-fg: #e6edf3;
+	--nxus-muted: #b8c5d1;
+	--nxus-border: rgba(166, 180, 195, 0.2);
+	--nxus-border-soft: rgba(166, 180, 195, 0.14);
+	--nxus-accent: #6f49c6;
+	--nxus-accent-text: #9f83de;
+	--nxus-star: #8fd3ff;
+
+	--sl-color-accent-low: #251944;
+	--sl-color-accent: var(--nxus-accent);
+	--sl-color-accent-high: #d9ccff;
+	--sl-color-white: #f5fbff;
+	--sl-color-gray-1: var(--nxus-fg);
+	--sl-color-gray-2: var(--nxus-muted);
+	--sl-color-gray-3: #9aa9b8;
+	--sl-color-gray-4: #667789;
+	--sl-color-gray-5: #263242;
+	--sl-color-gray-6: var(--nxus-bg-elevated);
+	--sl-color-black: var(--nxus-bg);
+	--sl-color-text-accent: var(--nxus-accent-text);
+	--sl-color-bg: var(--nxus-bg);
+	--sl-color-bg-nav: var(--nxus-bg);
+	--sl-color-bg-sidebar: var(--nxus-bg);
+	--sl-color-bg-inline-code: rgba(111, 73, 198, 0.16);
+	--sl-color-bg-accent: var(--nxus-accent);
+	--sl-color-hairline: var(--nxus-border-soft);
+	--sl-color-hairline-light: var(--nxus-border);
+	--sl-color-hairline-shade: rgba(0, 0, 0, 0.42);
+}
+
+:root[data-theme='light'] {
+	--nxus-bg: #f8fbff;
+	--nxus-bg-elevated: #eef3f8;
+	--nxus-panel: #ffffff;
+	--nxus-panel-strong: #f1f5fb;
+	--nxus-fg: #0a1018;
+	--nxus-muted: #566576;
+	--nxus-border: rgba(82, 99, 118, 0.22);
+	--nxus-border-soft: rgba(82, 99, 118, 0.14);
+	--nxus-accent: #5f3db0;
+	--nxus-accent-text: #5f3db0;
+	--nxus-star: #166ca8;
+	--sl-color-accent-low: #ece5ff;
+	--sl-color-accent: var(--nxus-accent);
+	--sl-color-accent-high: #241344;
+	--sl-color-white: #0a1018;
+	--sl-color-gray-1: #192435;
+	--sl-color-gray-2: #35465a;
+	--sl-color-gray-3: #607085;
+	--sl-color-gray-4: #8997a8;
+	--sl-color-gray-5: #d8e0ea;
+	--sl-color-gray-6: #eef3f8;
+	--sl-color-black: #ffffff;
+	--sl-color-text-accent: var(--nxus-accent-text);
+	--sl-color-bg: #ffffff;
+	--sl-color-bg-nav: #ffffff;
+	--sl-color-bg-sidebar: #ffffff;
+	--sl-color-bg-inline-code: rgba(111, 73, 198, 0.1);
+}
+
+body {
+	background: var(--nxus-bg);
+	color: var(--nxus-fg);
+	line-height: 1.55;
+}
+
+.header {
+	border-bottom: 1px solid var(--nxus-border);
+	background: rgba(10, 16, 24, 0.92);
+	backdrop-filter: blur(6px);
+}
+
+:root[data-theme='light'] .header {
+	background: rgba(255, 255, 255, 0.9);
+}
+
+.title-wrapper {
+	overflow: visible;
+}
+
+.site-title {
+	gap: 0.75rem;
+	min-width: max-content;
+	overflow: visible;
+}
+
+.site-title img {
+	display: block;
+	width: auto;
+	height: 2.375rem;
+	max-width: none;
+	max-height: 2.375rem;
+	border-radius: 0;
+	box-shadow: none;
+	object-fit: contain;
+	object-position: left center;
+}
+
+:root[data-theme='light'] .site-title img.light\:sl-hidden,
+:root[data-theme='dark'] .site-title img.dark\:sl-hidden {
+	display: none;
+}
+
+starlight-version-select select[autocomplete='off'] {
+	width: 11.75em;
+}
+
+[data-has-hero] .content-panel {
+	background-color: var(--nxus-bg);
+	background-image:
+		linear-gradient(120deg, rgba(6, 12, 24, 0.84) 8%, rgba(6, 12, 24, 0.46) 52%, rgba(6, 12, 24, 0.94) 100%),
+		radial-gradient(circle at 12% 20%, rgba(111, 73, 198, 0.3), transparent 38%),
+		url('/brand/warp-streaks.svg');
+	background-position: center center, left top, center center;
+	background-size: cover, cover, cover;
+	background-repeat: no-repeat;
+}
+
+[data-theme='light'][data-has-hero] .content-panel {
+	background-color: #ffffff;
+	background-image:
+		linear-gradient(120deg, rgba(255, 255, 255, 0.82) 8%, rgba(255, 255, 255, 0.48) 52%, rgba(255, 255, 255, 0.94) 100%),
+		radial-gradient(circle at 12% 20%, rgba(111, 73, 198, 0.16), transparent 38%),
+		url('/brand/warp-streaks.svg');
+}
+
+[data-has-hero] .hero {
+	min-height: min(38rem, 72vh);
+	align-items: end;
+	padding-block: clamp(6rem, 14vw, 10rem) clamp(2.5rem, 8vw, 5rem);
+}
+
+[data-has-hero] .hero h1 {
+	max-width: 36rem;
+	font-size: clamp(3.2rem, 8vw, 5.2rem);
+	font-weight: 650;
+	line-height: 0.94;
+	letter-spacing: 0.02em;
+	overflow-wrap: normal;
+	word-break: normal;
+}
+
+[data-has-hero] .hero .tagline {
+	max-width: 44rem;
+	color: var(--nxus-muted);
+	font-size: 1.25rem;
+}
+
+a {
+	text-underline-offset: 0.18em;
+}
+
+.sl-link-button.primary {
+	border-color: var(--nxus-accent);
+	background: var(--nxus-accent);
+	color: #ffffff;
+	box-shadow: 0 0.85rem 2rem rgba(111, 73, 198, 0.26);
+}
+
+.sl-link-button.primary:hover {
+	filter: brightness(1.08);
+}
+
+.sl-link-button.secondary {
+	border-color: var(--nxus-border);
+	background: rgba(20, 28, 38, 0.72);
+	color: var(--nxus-fg);
+}
+
+.sl-link-button.secondary:hover {
+	border-color: rgba(159, 131, 222, 0.5);
+	background: rgba(111, 73, 198, 0.16);
+}
+
+.sl-markdown-content .card,
+.sl-markdown-content .sl-link-card {
+	border: 1px solid var(--nxus-border-soft);
+	border-radius: 0.5rem;
+	background:
+		linear-gradient(180deg, rgba(111, 73, 198, 0.1), rgba(111, 73, 198, 0.03)),
+		var(--nxus-panel);
+	box-shadow: 0 1rem 2.5rem rgba(0, 0, 0, 0.14);
+}
+
+.sl-markdown-content .sl-link-card:hover {
+	border-color: rgba(159, 131, 222, 0.58);
+	background:
+		linear-gradient(180deg, rgba(111, 73, 198, 0.16), rgba(111, 73, 198, 0.06)),
+		var(--nxus-panel-strong);
+}
+
+.sl-markdown-content .card .title,
+.sl-markdown-content .sl-link-card .title {
+	color: color-mix(in srgb, var(--sl-color-accent-high) 82%, var(--nxus-star));
+}
+
+.agent-index-links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 0.55rem 0.85rem;
+	align-items: center;
+	margin-top: 1.5rem;
+	padding-top: 1rem;
+	border-top: 1px solid var(--nxus-border-soft);
+	font-size: var(--sl-text-sm);
+	color: var(--nxus-muted);
+}
+
+.agent-index-links span {
+	font-weight: 600;
+	color: var(--sl-color-gray-3);
+}
+
+.agent-index-links a {
+	color: var(--nxus-accent-text);
+	text-decoration-color: rgba(159, 131, 222, 0.42);
+	text-underline-offset: 0.22em;
+}
+
+.agent-index-links a:hover {
+	color: var(--sl-color-white);
+}
+
+.sidebar-pane,
+.right-sidebar-panel {
+	border-color: var(--nxus-border-soft);
+	background: var(--nxus-bg);
+}
+
+.sidebar-content a[aria-current='page'],
+.sidebar-content summary[aria-current='page'] {
+	color: var(--nxus-accent-text);
+}
+
+table {
+	font-size: 0.92rem;
+}
+
+thead {
+	background: rgba(111, 73, 198, 0.14);
+}
+
+code:not(pre code) {
+	border: 1px solid rgba(159, 131, 222, 0.25);
+	border-radius: 0.35rem;
+	background: var(--sl-color-bg-inline-code);
+	color: var(--nxus-fg);
+}
+
+pre {
+	border: 1px solid var(--nxus-border-soft);
+	background: #050912;
+}
+
+@media (max-width: 50rem) {
+	.site-title {
+		min-width: 0;
+	}
+
+	.site-title img {
+		height: 2rem;
+		max-width: min(9.5rem, 52vw);
+		max-height: 2rem;
+	}
+
+	[data-has-hero] .hero {
+		min-height: 31rem;
+	}
+
+	[data-has-hero] .hero h1 {
+		max-width: 23rem;
+		font-size: 3rem;
+		line-height: 1;
+	}
+
+	[data-has-hero] .hero .tagline {
+		font-size: 1.05rem;
+	}
+}

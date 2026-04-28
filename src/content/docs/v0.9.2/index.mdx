@@ -1,0 +1,33 @@
+---
+title: nxus.SYSTEMS Documentation
+description: Documentation hub for nxus.SYSTEMS products.
+template: splash
+hero:
+  tagline: Documentation for nxus.SYSTEMS products and services.
+  actions:
+    - text: nxusKit SDK
+      link: /v0.9.2/nxuskit/
+      icon: right-arrow
+      variant: primary
+slug: v0.9.2
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard
+    title="nxusKit SDK"
+    href="/v0.9.2/nxuskit/"
+    description="Install nxusKit and build with LLM providers, rule engines, solvers, and decision tables across Rust, Go, Python, C ABI, and CLI/Bash."
+  />
+  <LinkCard
+    title="Getting Started"
+    href="/v0.9.2/nxuskit/getting-started/installation/"
+    description="Download the SDK, configure credentials, and make your first call."
+  />
+  <LinkCard
+    title="Examples"
+    href="/v0.9.2/nxuskit/examples/"
+    description="Browse runnable scenarios for common integration patterns and complete applications."
+  />
+</CardGrid>

@@ -1,0 +1,46 @@
+---
+title: nxus.SYSTEMS Documentation
+description: Documentation hub for nxus.SYSTEMS products.
+template: splash
+hero:
+  tagline: Documentation for nxus.SYSTEMS products and services.
+  actions:
+    - text: Start with nxusKit
+      link: /nxuskit/
+      icon: right-arrow
+      variant: primary
+    - text: Browse examples
+      link: /nxuskit/examples/
+      icon: puzzle
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard
+    title="nxusKit SDK"
+    href="/nxuskit/"
+    description="Install nxusKit and build with LLM providers, rule engines, solvers, and decision tables across Rust, Go, Python, C ABI, and CLI/Bash."
+  />
+  <LinkCard
+    title="Getting Started"
+    href="/nxuskit/getting-started/installation/"
+    description="Download the SDK, configure credentials, and make your first call."
+  />
+  <LinkCard
+    title="Examples"
+    href="/nxuskit/examples/"
+    description="Browse runnable scenarios for common integration patterns and complete applications."
+  />
+  <LinkCard
+    title="Reference"
+    href="/nxuskit/reference/api/"
+    description="Find API, CLI, provider, and C ABI details for production integrations."
+  />
+</CardGrid>
+
+<nav className="agent-index-links" aria-label="Agent indexes">
+  <span>Agent indexes</span>
+  <a href="/llms.txt">llms.txt</a>
+  <a href="/llms-full.txt">llms-full.txt</a>
+</nav>
