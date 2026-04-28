@@ -1,0 +1,63 @@
+---
+import DefaultHead from '@astrojs/starlight/components/Head.astro';
+
+const { starlightRoute } = Astro.locals;
+
+const docsOrigin = 'https://docs.nxus.systems';
+const orgId = 'https://nxus.systems/#organization';
+const docsSiteId = `${docsOrigin}/#website`;
+const nxusKitId = `${docsOrigin}/nxuskit/#software`;
+const canonicalUrl = new URL(Astro.url.pathname, docsOrigin).href;
+const title = starlightRoute.entry.data.title ?? 'nxus.SYSTEMS Documentation';
+const description =
+	starlightRoute.entry.data.description ?? 'Documentation for nxus.SYSTEMS products and services.';
+const isNxusKitPage = Astro.url.pathname.includes('/nxuskit/');
+
+const structuredData = {
+	'@context': 'https://schema.org',
+	'@graph': [
+		{
+			'@type': 'Organization',
+			'@id': orgId,
+			name: 'nxus.SYSTEMS',
+			url: 'https://nxus.systems',
+			sameAs: ['https://github.com/nxus-SYSTEMS'],
+		},
+		{
+			'@type': 'WebSite',
+			'@id': docsSiteId,
+			name: 'nxus.SYSTEMS Docs',
+			url: docsOrigin,
+			publisher: { '@id': orgId },
+		},
+		...(isNxusKitPage
+			? [
+					{
+						'@type': 'SoftwareApplication',
+						'@id': nxusKitId,
+						name: 'nxusKit',
+						applicationCategory: 'DeveloperApplication',
+						operatingSystem: 'macOS, Linux, Windows',
+						url: `${docsOrigin}/nxuskit/`,
+						codeRepository: 'https://github.com/nxus-SYSTEMS/nxusKit',
+						publisher: { '@id': orgId },
+					},
+				]
+			: []),
+		{
+			'@type': 'TechArticle',
+			'@id': `${canonicalUrl}#article`,
+			headline: title,
+			description,
+			url: canonicalUrl,
+			mainEntityOfPage: canonicalUrl,
+			isPartOf: { '@id': docsSiteId },
+			about: { '@id': isNxusKitPage ? nxusKitId : orgId },
+			publisher: { '@id': orgId },
+		},
+	],
+};
+---
+
+<DefaultHead />
+<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
