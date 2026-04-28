@@ -33,6 +33,10 @@ export default defineConfig({
 				}),
 			],
 			sidebar: [
+				{
+					label: 'GitHub Repositories',
+					link: '/github/',
+				},
 				// Product sections are top-level groups. A custom switcher can
 				// replace this once multiple product docs are live.
 				{
@@ -45,10 +49,10 @@ export default defineConfig({
 			],
 			customCss: ['./src/styles/custom.css'],
 			components: {
+				Header: './src/components/Header.astro',
+				MobileMenuFooter: './src/components/MobileMenuFooter.astro',
 				ThemeProvider: './src/components/ThemeProvider.astro',
 				ThemeSelect: './src/components/ThemeSelect.astro',
-				// Override the default Header to add the product-switcher component.
-				// Header: './src/components/Header.astro',
 			},
 		}),
 	],
