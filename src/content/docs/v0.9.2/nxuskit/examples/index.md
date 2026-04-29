@@ -109,4 +109,4 @@ python examples/<category>/<name>/python/main.py
 
 ## License
 
-Dual-licensed under [MIT](LICENSE-MIT) or [Apache-2.0](LICENSE-APACHE).
+Dual-licensed under [MIT](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE-MIT) or [Apache-2.0](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE-APACHE).

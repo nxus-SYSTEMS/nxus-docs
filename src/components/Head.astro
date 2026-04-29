@@ -12,6 +12,9 @@ const title = starlightRoute.entry.data.title ?? 'nxus.SYSTEMS Documentation';
 const description =
 	starlightRoute.entry.data.description ?? 'Documentation for nxus.SYSTEMS products and services.';
 const isNxusKitPage = Astro.url.pathname.includes('/nxuskit/');
+const versionSegmentPattern = /^v\d+\.\d+\.\d+$/;
+const [firstPathSegment] = Astro.url.pathname.split('/').filter(Boolean);
+const isArchivedVersionPage = versionSegmentPattern.test(firstPathSegment ?? '');
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -60,4 +63,5 @@ const structuredData = {
 ---
 
 <DefaultHead />
+{isArchivedVersionPage && <meta name="robots" content="noindex, follow" />}
 <script type="application/ld+json" set:html={JSON.stringify(structuredData)} />

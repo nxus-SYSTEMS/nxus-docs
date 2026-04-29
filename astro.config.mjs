@@ -1,16 +1,26 @@
 // @ts-check
 import { defineConfig } from 'astro/config';
+import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
 import starlightVersions from 'starlight-versions';
 
 const site = process.env.SITE_URL ?? 'https://docs.nxus.systems';
 const base = process.env.BASE_PATH;
+const versionSegmentPattern = /^v\d+\.\d+\.\d+$/;
+const isArchivedVersionUrl = (page) => {
+	const { pathname } = new URL(page);
+	const [firstSegment] = pathname.split('/').filter(Boolean);
+	return versionSegmentPattern.test(firstSegment ?? '');
+};
 
 // https://astro.build/config
 export default defineConfig({
 	site,
 	...(base ? { base } : {}),
 	integrations: [
+		sitemap({
+			filter: (page) => !isArchivedVersionUrl(page),
+		}),
 		starlight({
 			title: 'nxus.SYSTEMS Docs',
 			description: 'Documentation for nxus.SYSTEMS products and services.',
