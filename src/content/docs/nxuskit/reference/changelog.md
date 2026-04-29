@@ -8,7 +8,9 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## [Unreleased]
+Public SDK release tags begin at `sdk-v0.9.0`. Earlier entries preserve
+pre-public development history with normalized pre-public version numbers after
+historical version resets.
 
 ## [0.9.3] - 2026-04-29
 
@@ -66,14 +68,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Deferred
 
-- Streaming logprobs — additive in v0.9.4; v0.9.3 keeps `StreamChunk`
-  free of logprobs surface (regression guard at
-  `tests/streaming_logprobs_scope_test.rs`).
-- `CapabilityManifest` v2 public/preview surface — deferred beyond v0.9.3.
-- Broad provider capability modernization — coordinated v0.9.4 rollout.
-- New direct providers — sequenced for v0.9.4.
-- CLI Level 2 remainder — focused fast-track left this for v0.9.4.
-- Examples-repo broad alignment — v0.9.4; only the narrow logprobs
+- Streaming logprobs - additive in v0.9.4; v0.9.3 keeps `StreamChunk`
+  free of logprobs surface.
+- `CapabilityManifest` v2 public/preview surface - deferred beyond v0.9.3.
+- Broad provider capability modernization - coordinated v0.9.4 rollout.
+- New direct providers - sequenced for v0.9.4.
+- CLI Level 2 remainder - focused fast-track left this for v0.9.4.
+- Examples-repo broad alignment - v0.9.4; only the narrow logprobs
   regression example is in v0.9.3 scope.
 
 ### Test counts (logprobs surface, cumulative)
@@ -82,7 +83,94 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   warn-drop + 3 streaming-scope + 18 Python = **40 logprobs tests** green
   across all SDK surfaces.
 
-## [0.7.9] - 2026-02-24
+## [0.9.2] - 2026-04-13
+
+### Added
+
+- **CLI Level 2 request surface**: richer JSON request construction across chat/call flows, including multimodal image input handling where supported.
+- **Provider diagnostics**: provider ping/status improvements for checking SDK environment readiness from the CLI.
+- **Python SDK hardening**: runtime library discovery deprecation warning and SecurityValidator coverage for common unsafe input patterns.
+- **Release confidence checks**: conformance, parity, performance, and packaging checks expanded for the supported SDK surfaces.
+
+### Changed
+
+- CLI and runtime-loading documentation refreshed for v0.9.2 behavior.
+- Test fixtures and CI checks hardened so SDK builds can validate without relying on local native-library side effects.
+- Workspace and lockfile versions bumped to v0.9.2.
+
+## [0.9.1] - 2026-04-05
+
+### CLI Level 1 Semantic Remediation
+
+- **Real Engine Integration**: `zen eval`, `solver solve`, `clips eval`, and `bn infer` now execute real engine logic - no more placeholder/stub responses
+- **Pipeline Execution**: `pipeline run` dispatches all stage types (LLM, CLIPS, ZEN, solver, BN) through real engines with output handoff and partial results on failure
+- **Call Envelope**: `call` propagates tool definitions and includes `tool_calls` and `inference_metadata` in responses
+- **Artifact Deep Merge**: `artifact merge` performs recursive deep merge with dot-notation conflict paths
+- **Models Capabilities**: `models --supports` filter uses real capability inference from model metadata
+- **Provider Auth**: `provider status` uses structured auth subsystem; `provider logout` is provider-scoped
+- **Judge/Branch**: `judge select` returns structured errors; `branch compare` produces field-level diffs
+
+### CLI Documentation and Solver Format Compatibility
+
+- **CLI Input Reference**: New `docs/user/cli-input-reference.md` covering all 13 Level 1 commands with JSON schemas, working examples, and common errors
+- **Enhanced Help Text**: Every engine command's `--help` now shows input format structure
+- **Solver Format Compatibility**: `solver solve` accepts library API format (ConstraintInput with `var_type`, structured constraints, domains, objectives) directly from shared `problem.json` scenario files - no format conversion needed
+- **SMT-LIB Support**: `solver solve` accepts SMT-LIB 2 format (S-expressions) as convenience input for Z3 experts
+- **Auto-Detection**: Solver input format (simplified CLI, library API, SMT-LIB) is auto-detected from content
+
+### Positioning
+
+- **CLI Description**: Updated from "CLI for interacting with multiple LLM providers" to "JSON-first control plane for shell automation, CI, and multi-engine reasoning workflows"
+- **README**: Added CLI / Shell Automation section with examples
+- **Naming**: Fixed `nxuskit-engine-cli` -> `nxuskit-cli` naming drift across all docs and scripts
+
+### Compliance
+
+- **NOTICE**: Regenerated with zen-engine and z3-sys entries; Python section reformatted to remove excessive whitespace padding
+- **Constitution v2.4.0**: Added semantic test assertions, stub prohibition, and task verification criteria (Articles II and III)
+- **Acceptance Fixtures**: Three PoR 4.1 acceptance workflow scripts (intake-routing, generator-validator-retry, typed-artifact-handoff)
+
+## [0.9.0] - 2026-03-13
+
+Initial public release of the nxusKit SDK.
+
+### Highlights
+
+- **Polyglot SDK**: Unified LLM interfaces across Rust, Go, and Python
+- **14 LLM Providers**: Claude, OpenAI, Ollama, LM Studio, Mistral, OpenRouter, Together, Groq, Fireworks, Perplexity, MCP, CLIPS, Mock, Loopback
+- **CLIPS Expert System**: Rule-based inference via embedded CLIPS 6.4.2 engine with FFI bindings
+- **Bayesian Network Inference**: Full-featured BN provider with Variable Elimination, Junction Tree, Loopy BP, NUTS/HMC, and structure/parameter learning
+- **Z3 Constraint Solver**: Stateful solver sessions with multi-objective optimization, soft constraints, push/pop scoping, and UNSAT core extraction
+- **ZEN Decision Tables**: JSON Decision Model evaluation via zen-engine
+- **Plugin Architecture**: Signed plugin loading with Ed25519 verification and capability-based sandboxing
+- **SDK CLI**: Command-line tool for all providers (`nxuskit-cli`)
+- **SDK Installer**: Cross-platform SDK manager (`install.sh`) with version management
+- **Cross-Language Conformance**: Shared test vectors ensuring API parity across Rust, Go, and Python
+
+### Platform Support
+
+| Platform | Architecture | Status |
+|----------|-------------|--------|
+| Linux | x86_64 | Supported |
+| macOS | ARM64 (Apple Silicon) | Supported |
+| macOS | x86_64 | Supported |
+| Windows | x86_64 | Supported |
+
+### Language SDKs
+
+| Language | Package | Description |
+|----------|---------|-------------|
+| Rust | `nxuskit` | FFI wrapper with safe Rust API |
+| Go | `nxuskit-go` | Idiomatic Go with context support |
+| Python | `nxuskit-py` | Pure Python with `requests` HTTP client |
+
+### Getting Started
+
+See `sdk-packaging/docs/getting-started.md` for installation and usage instructions.
+
+For runnable examples, see the [nxusKit-examples](https://github.com/nxus-SYSTEMS/nxusKit-examples) repository.
+
+## [0.8.23] - 2026-02-24
 
 ### Added
 
@@ -133,7 +221,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - ZEN 100-row evaluation: 0.39ms avg, 0.55ms worst-case (under 1ms target)
 - Z3 pool bench: >=50% improvement documented (PR-009)
 
-## [0.7.8] - 2026-02-23
+## [0.8.22] - 2026-02-23
 
 ### Added
 
@@ -177,7 +265,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - **Python**: cffi ≥2.0.0, pytest ≥9.0.0, pytest-cov ≥7.0.0, ruff ≥0.15.0
   - **Toolchain**: Rust MSRV 1.92 → 1.93 (Go 1.26 bump deferred pending CI toolchain update)
 
-## [0.7.7] - 2026-02-21
+## [0.8.21] - 2026-02-21
 
 ### Added
 
@@ -244,27 +332,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Rust library: `rustyllm` (unchanged)
   - Updated all documentation, examples, and configuration files
 
-## [0.6.1] - 2026-01-28
-
-### Added
-
-- **CLIPS Provider Options**: New configuration options for expert system inference
-  - `strategy` option for conflict resolution strategy selection
-  - `allow_duplicate_facts` option for fact assertion behavior control
-
-- **CLI Support for All 14 Providers**: Command-line interface now supports all providers
-  - Claude, OpenAI, Ollama, LM Studio, Mistral, OpenRouter, Together, Groq, Fireworks, Perplexity, MCP, CLIPS, Mock, Loopback
-
-- **Stop Patterns**: Conditional inference halting based on output patterns
-  - Enables early termination when specific patterns are detected in responses
-
-- **CLIPS Expert System Enhancements**:
-  - Binary rule loading support for pre-compiled rule bases
-  - Search paths for rule file discovery
-  - Schema conversion utilities for fact/rule translation
-  - Help commands for CLIPS debugging and introspection
-
-## [0.7.0] - 2026-01-29
+## [0.8.20] - 2026-01-29
 
 ### Added
 
@@ -323,7 +391,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - `ChatResponse` now includes `inference_metadata: InferenceMetadata` field (backward compatible with `#[serde(default)]`)
 
-## [0.5.0] - 2026-01-23
+## [0.8.19] - 2026-01-28
+
+### Added
+
+- **CLIPS Provider Options**: New configuration options for expert system inference
+  - `strategy` option for conflict resolution strategy selection
+  - `allow_duplicate_facts` option for fact assertion behavior control
+
+- **CLI Support for All 14 Providers**: Command-line interface now supports all providers
+  - Claude, OpenAI, Ollama, LM Studio, Mistral, OpenRouter, Together, Groq, Fireworks, Perplexity, MCP, CLIPS, Mock, Loopback
+
+- **Stop Patterns**: Conditional inference halting based on output patterns
+  - Enables early termination when specific patterns are detected in responses
+
+- **CLIPS Expert System Enhancements**:
+  - Binary rule loading support for pre-compiled rule bases
+  - Search paths for rule file discovery
+  - Schema conversion utilities for fact/rule translation
+  - Help commands for CLIPS debugging and introspection
+
+## [0.8.18] - 2026-01-23
 
 ### Breaking Changes
 
@@ -331,7 +419,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Added
 
-- **`ThinkingMode::Omit` variant**: Explicitly omit the `think` parameter from Ollama requests, letting the model use its raw default behavior. Use this if you need the pre-0.5.0 `Auto` behavior.
+- **`ThinkingMode::Omit` variant**: Explicitly omit the `think` parameter from Ollama requests, letting the model use its raw default behavior. Use this if you need the pre-0.8.18 `Auto` behavior.
 
 - **Smart `Auto` mode for Ollama thinking models**: `ThinkingMode::Auto` now detects thinking-capable models and enables thinking automatically, preventing empty response issues with models like qwen3-vl.
 
@@ -352,7 +440,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - **Empty responses with qwen3-vl models**: Models like qwen3-vl would return empty content when the `think` parameter was omitted. The new smart `Auto` behavior prevents this by enabling thinking for known thinking models.
 
-## [0.4.8] - 2026-01-20
+## [0.8.17] - 2026-01-20
 
 ### Added
 
@@ -381,7 +469,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Root cause: `max_tokens` setting too low, causing thinking tokens to exhaust budget
   - Solution: Added `ThinkingMode` control and detection warnings
 
-## [0.4.7] - 2025-01-20
+## [0.8.16] - 2026-01-20
 
 ### Added
 
@@ -406,7 +494,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Custom `Debug` implementation for `TokenEstimator` to avoid derive issues with `tiktoken_rs::CoreBPE`
 
-## [0.4.6] - 2025-01-19
+## [0.8.15] - 2026-01-19
 
 ### Added
 
@@ -445,7 +533,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Fixed unit tests to use new TokenUsage structure (estimated_only, best_available methods)
 - Addressed clippy warning about unnecessary clone of Copy type in lmstudio.rs
 
-## [0.4.5] - 2025-12-08
+## [0.8.14] - 2025-12-08
 
 ### Added
 
@@ -457,7 +545,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - All 9 providers updated: Claude, OpenAI, Ollama, Groq, Together, Fireworks, Mistral, Perplexity, OpenRouter
   - Implements Retry-After header parsing per HTTP/1.1 specification
 
-## [0.4.4] - 2025-12-08
+## [0.8.13] - 2025-12-08
 
 ### Fixed
 
@@ -475,7 +563,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `MistralProvider` and `OpenRouterProvider` were using `Client::new()` which ignored ALL timeouts
   - Other providers were missing `read_timeout` which is critical for streaming
 
-## [0.4.3] - 2025-12-08
+## [0.8.12] - 2025-12-08
 
 ### Fixed
 
@@ -504,7 +592,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - `read_timeout` applies per-chunk during response body reading
   - Critical for LLM streaming where there are pauses between tokens
 
-## [0.4.2] - 2025-12-07
+## [0.8.11] - 2025-12-07
 
 ### Added
 
@@ -512,7 +600,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   - Useful for testing without API calls
   - Configurable response delays for timeout testing
 
-## [0.4.0] - 2025-11-25
+## [0.8.10] - 2025-11-25
 
 ### Breaking Changes
 
@@ -578,77 +666,77 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Test race conditions in env_detector and MCP tests (mutex serialization)
 - Test assertions for provider metadata flexibility
 
-## [0.3.6] - 2025-11-25
+## [0.8.9] - 2025-11-25
 
 ### Changed
 
 - Updated plans for new versioning with open source beta target (pre-v1.x.x)
 - Cleanup and tightened various compiler warnings
 
-## [0.3.5] - 2025-11-25
+## [0.8.8] - 2025-11-25
 
 ### Changed
 
 - Version bump for release preparation
 
-## [0.3.4] - 2025-11-25
+## [0.8.7] - 2025-11-25
 
 ### Changed
 
 - Release preparation updates
 
-## [0.3.3] - 2025-11-25
+## [0.8.6] - 2025-11-25
 
 ### Changed
 
 - Minor fixes and updates
 
-## [0.3.2] - 2025-11-25
+## [0.8.5] - 2025-11-25
 
 ### Changed
 
 - Release updates
 
-## [0.3.1] - 2025-11-24
+## [0.8.4] - 2025-11-24
 
 ### Changed
 
 - Post-reset stabilization
 
-## [0.3.0] - 2025-11-24
+## [0.8.3] - 2025-11-24
 
 ### Added
 
 - Initial Tier-1 provider implementations (Mistral, OpenRouter, Together, Groq, Fireworks, Perplexity)
 - MCP auto-discovery groundwork
 
-## [0.2.1] - 2025-11-24
+## [0.8.2] - 2025-11-24
 
 ### Added
 
 - LiteLLM-style convenience API with automatic provider detection
 - Graceful parameter degradation foundation
 
-## [0.2.0] - 2025-11-24
+## [0.8.1] - 2025-11-24
 
 ### Added
 
 - Provider expansion preparation
 - API refinements
 
-## [0.1.2] - 2025-11-24
+## [0.8.0] - 2025-11-24
 
 ### Changed
 
-- **Version Reset**: Reset version numbering from 2.3.0 to 0.1.2 to properly reflect pre-release status
+- **Version Reset**: Reset version numbering from the earlier 2.x line into the pre-public development line
   - Pre-1.0 versioning (0.x.y) signals API is not yet stable per semantic versioning
   - Allows breaking changes in minor versions during development
-  - All functionality from 2.3.0 carries forward unchanged
-  - Historical 2.x changelog preserved in `CHANGELOG.archive.md`
-  - Previous releases archived in `releases-old/` directory
+  - Functionality from the earlier 2.x line carried forward unchanged
+  - Historical 2.x changelog preserved in the internal archive
+  - Previous 2.x release artifacts archived outside the public SDK release line
 
 ### Notes
 
-This is a version numbering reset only - no code functionality has changed. All features, fixes, and improvements from v2.3.0 are present in v0.1.2. The version reset better reflects the library's development stage and follows Rust ecosystem conventions for pre-release crates.
+This was a version numbering reset only - no code functionality changed. Features, fixes, and improvements from the earlier 2.x line carried forward into the pre-public development line. The reset better reflected the library's development stage and followed Rust ecosystem conventions for pre-release crates.
 
-For historical changelog entries (versions 2.0.0 through 2.3.0), see `CHANGELOG.archive.md`.
+The older 2.x history is intentionally kept out of the public SDK changelog.
