@@ -1,6 +1,6 @@
 ---
-title: Licensing
-description: How to activate, manage, and troubleshoot nxusKit Pro licenses.
+title: "Licensing"
+description: "How to activate, manage, and troubleshoot nxusKit Pro licenses."
 ---
 
 ## Overview
@@ -15,24 +15,123 @@ deactivation.
 # 1. Authenticate with your nxus.systems account
 nxuskit-cli license login
 
-# 2. Activate with your purchase ID (received via email)
-nxuskit-cli license activate --key <purchase_id>
+# 2. Activate with your Purchase ID / Activation Key from My Products
+nxuskit-cli license activate --key <purchase_id> --accept-eula
 
-# 3. Verify activation
+# 3. Accept the End User License Agreement (required once per machine)
+nxuskit-cli --accept-eula <command>
+# Or pre-accept for CI/CD (see EULA Acceptance below)
+
+# 4. Verify activation
 nxuskit-cli license status
 
-# 4. Use Pro features — they just work
+# 5. Use Pro features — they just work
 ```
+
+## EULA Acceptance
+
+nxusKit requires acceptance of the End User License Agreement (EULA) before
+use. Acceptance is recorded once per machine and persists across sessions.
+
+### Interactive (TTY)
+
+When running in an interactive terminal, the CLI prompts you to accept the EULA
+on first use:
+
+```
+nxusKit End User License Agreement
+...
+Do you accept the EULA? [y/N]:
+```
+
+Type `y` and press Enter to accept. Acceptance is stored at
+`~/.config/nxuskit/eula_accepted` (mode `0600`).
+
+### Non-interactive (CI/CD)
+
+In non-TTY environments (CI runners, Docker, scripts), the interactive prompt is
+suppressed and the CLI exits with an error if the EULA has not been pre-accepted.
+
+**Option 1 — `--accept-eula` flag** (recommended for CI):
+
+```bash
+nxuskit-cli --accept-eula license status
+```
+
+The flag is accepted on any subcommand. In GitHub Actions:
+
+```yaml
+- name: Verify license
+  run: nxuskit-cli --accept-eula license status
+  env:
+    NXUSKIT_LICENSE_TOKEN: ${{ secrets.NXUSKIT_LICENSE_TOKEN }}
+```
+
+**Option 2 — Pre-write the acceptance file**:
+
+Create the file before invoking the CLI (useful in container image builds):
+
+```bash
+mkdir -p ~/.config/nxuskit
+echo "accepted" > ~/.config/nxuskit/eula_accepted
+chmod 0600 ~/.config/nxuskit/eula_accepted
+```
+
+### Acceptance File
+
+| Path | `~/.config/nxuskit/eula_accepted` |
+|------|-----------------------------------|
+| Permissions | `0600` (owner read/write only) |
+| Content | `accepted` (literal string) |
+| Created by | Interactive prompt or `--accept-eula` flag |
+
+---
+
+## Licensing Environments
+
+Release builds default to the production licensing API:
+
+```
+https://nxus.systems/licensing-api/v1
+```
+
+The production ES256 public key is embedded in release builds. Standard users do not configure the key or endpoint.
+
+Development and test lanes may opt into a non-production endpoint with
+`NXUSKIT_LICENSE_SERVER` and may label that lane with
+`NXUSKIT_LICENSE_ENVIRONMENT`. These overrides are visible in
+`nxuskit-cli license status --json` under `licensing.endpoint`,
+`licensing.environment`, and `licensing.signing_key`; they are not silent
+fallbacks.
+
+## Offline-First Entitlements
+
+After activation, Pro-gated entitlement checks validate the cached token
+locally: signature, expiry, machine binding, product id, edition, and
+entitlement claims are checked without contacting the licensing API. The
+licensing API is contacted for activation, explicit refresh/sync, or recovery
+from a local validation failure.
+
+---
 
 ## Token Types
 
-The SDK manages three types of tokens:
+The SDK manages five token shapes:
 
 | Token | Storage | Purpose | Expiry | Machine-bound? |
 |-------|---------|---------|--------|----------------|
 | **Auth** | `~/.config/nxuskit/auth.json` | Authenticates you with the licensing service | 30 days | No |
-| **Developer** | `~/.nxuskit/license.token` | Authorizes Pro features for local development | Subscription period | Yes (up to 3 machines) |
-| **Deployment** | `NXUSKIT_LICENSE_TOKEN` env var | Authorizes Pro features in CI/CD and production | Never expires | No (org-scoped) |
+| **Developer** | `~/.nxuskit/license.token` | Authorizes purchased Pro SDK features for local developer workstations after storefront checkout | Subscription period | Yes (up to 3 machines) |
+| **Deployment** | `NXUSKIT_LICENSE_TOKEN` env var | Authorizes customer shipping/runtime use of products that embed or depend on nxusKit | Never expires | No (org-scoped) |
+| **Real Purchase** | `~/.nxuskit/license.token` | Backward-compatible SDK fixture/claim shape; production storefront activations currently issue Developer tokens | Subscription period | Yes |
+| **Leased** | `~/.nxuskit/license.token` or `NXUSKIT_LICENSE_TOKEN` | CI/automation license that can be revoked server-side | Short lease, default 72 hours | Yes |
+
+For CI automations that need a working Pro license but also need routine
+revocation control, prefer a leased activation key over a long-lived deployment
+token. Re-run `nxuskit-cli license activate --key
+<leased_purchase_id> --accept-eula` on the runner before the 72-hour lease
+expires. If the lease is blocked server-side, reactivation fails and any
+already-issued token lapses at its normal `exp`.
 
 ## Step-by-Step Activation
 
@@ -57,20 +156,49 @@ nxuskit-cli license status
 
 ### 2. Activate
 
-With authentication complete, activate your license:
+With authentication complete, activate your license. First-time activations
+must accept the EULA:
 
 ```bash
-nxuskit-cli license activate --key <purchase_id>
+nxuskit-cli license activate --key <purchase_id> --accept-eula --json
 ```
 
-On success you will see:
+The `--accept-eula` flag is recorded in
+`~/.config/nxuskit/eula_accepted` (mode `0600`); subsequent activations on
+the same machine do not need to repeat it. The `--json` flag is recommended
+for scripting — see the JSON output schema in §3.
+
+On success you will see (text mode):
 
 ```
 Activated. 1/3 machines used.
 Token stored: ~/.nxuskit/license.token
 ```
 
-The developer token is stored locally and validated on each SDK initialization.
+The license token is stored locally and validated on each SDK
+initialization. **Activation uses an extended 30s client timeout
+(`EXTENDED_TIMEOUT_SECS = 30`)** to absorb production cold-starts; the
+matching proxy timeout extension is in
+`nxus_device_auth/services/proxy_client.py::EXTENDED_TIMEOUT_PATHS`.
+
+#### Real-purchase activation (production)
+
+After purchasing a license at `https://nxus.systems/shop`, your purchase
+IDs appear at `https://nxus.systems/my/products`. Each card shows the
+exact CLI to run:
+
+```bash
+nxuskit-cli license activate --key nxus_purchase_<id> --accept-eula --json
+```
+
+Production storefront purchases currently issue `developer` license tokens:
+machine-bound, seat-indexed, and valid through the commercial subscription
+period. The SDK also accepts the legacy/fixture `real_purchase` claim shape for
+compatibility, but it is not the production storefront issuer contract.
+Customer shipping/runtime use belongs to the separate `deployment` token flow.
+`leased` tokens are designed for CI/automation where revocation control matters — re-activate before the default 72-hour expiry;
+blocking the lease server-side prevents future activations and existing tokens
+lapse at `exp`.
 
 ### 3. Verify
 
@@ -80,7 +208,8 @@ Check your license status at any time:
 nxuskit-cli license status
 ```
 
-Output includes token type, edition, expiry date, and machine count.
+Output includes token type, edition, expiry date, machine count, licensing
+environment, endpoint, and signing-key metadata.
 
 For JSON output (useful in scripts):
 

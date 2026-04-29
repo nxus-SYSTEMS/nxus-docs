@@ -1,6 +1,6 @@
 ---
-title: Upgrade Path
-description: Error messages and resolutions when Pro features are unavailable or licenses need updating.
+title: "Upgrade Path"
+description: "Error messages and resolutions when Pro features are unavailable or licenses need updating."
 ---
 
 ## Overview
@@ -179,7 +179,7 @@ except FeatureUnavailableError as e:
 ### Go
 
 ```go
-import nxuskit "github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go"
+import "github.com/nxus-SYSTEMS/nxuskit-go"
 
 result, err := nxuskit.ZenEvaluate(table, input)
 if err != nil {

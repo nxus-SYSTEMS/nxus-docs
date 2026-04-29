@@ -1,6 +1,6 @@
 ---
-title: CLI Input Format Reference
-description: Input schemas and examples for every Level 1 nxuskit-cli command.
+title: "CLI Input Format Reference"
+description: "Input schemas and examples for every Level 1 nxuskit-cli command."
 ---
 
 Single source of truth for every Level 1 `nxuskit-cli` command's input schema,
@@ -18,7 +18,14 @@ and timing fields.
 - [zen eval](#zen-eval)
 - [solver solve](#solver-solve)
   - [Solver Format Disambiguation](#solver-format-disambiguation)
+- [solver what-if](#solver-what-if)
 - [clips eval](#clips-eval)
+- [clips session](#clips-session)
+  - [clips session create](#clips-session-create)
+  - [clips session list](#clips-session-list)
+  - [clips session destroy](#clips-session-destroy)
+- [provider list](#provider-list)
+- [provider info](#provider-info)
 - [bn infer](#bn-infer)
 - [pipeline run](#pipeline-run)
 - [artifact merge](#artifact-merge)
@@ -28,6 +35,7 @@ and timing fields.
 - [judge select](#judge-select)
 - [branch fork](#branch-fork)
 - [branch compare](#branch-compare)
+- [Error responses](#error-responses)
 
 ---
 
@@ -737,3 +745,278 @@ echo '{
 **Common errors:**
 
 - `Invalid fork result input: missing field "results"` -- Fix: input must be a `BranchForkResult` object (the `result` field from a fork envelope, not the full envelope).
+
+---
+
+### `solver what-if`
+
+What-if scenario analysis (Pro-gated). Accepts the same three input formats as
+`solver solve`. With `--compare`, solves both a base problem and an assumed
+variant, then outputs a diff of the results.
+
+**CLI arguments:**
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `--input` | string | **yes** | Base problem file or `-` for stdin (any solver format) |
+| `--compare` | string | no | Assumed variant file (same format as `--input`). Enables diff output. |
+| `--format` | string | no | Output format: `json` (default), `yaml`, `text` |
+
+**Single what-if (no comparison):**
+
+Returns the solution to the assumed scenario, identical in shape to `solver solve` output.
+
+```bash
+echo '{
+  "variables": [
+    {"name": "budget", "type": "integer", "bounds": [{"min": 0}, {"max": 100000}]},
+    {"name": "headcount", "type": "integer", "bounds": [{"min": 1}, {"max": 20}]}
+  ],
+  "constraints": ["budget == headcount * 5000"],
+  "assumptions": [{"name": "assume_headcount", "constraint_type": "eq", "params": {"left": "headcount", "right": 12}}]
+}' | nxuskit-cli solver what-if --input - --format json
+```
+
+**Comparison (`--compare`):**
+
+Solves both the base (from `--input`) and the assumed variant (from `--compare`),
+then emits a `diff` block showing changed variables and the objective delta.
+
+```bash
+nxuskit-cli solver what-if --input base.json --compare assumed.json --format json
+```
+
+**Output shape (comparison):**
+
+```json
+{
+  "base": { "status": "sat", "values": {"budget": 60000, "headcount": 12} },
+  "assumed": { "status": "sat", "values": {"budget": 75000, "headcount": 15} },
+  "diff": {
+    "changed": [
+      {"variable": "budget", "base": 60000, "assumed": 75000, "delta": 15000},
+      {"variable": "headcount", "base": 12, "assumed": 15, "delta": 3}
+    ],
+    "objective_delta": 15000
+  }
+}
+```
+
+**Common errors:**
+
+- `Entitlement check failed: solver_what_if` -- Fix: requires Pro edition.
+- `Cannot parse base input` -- Fix: ensure `--input` is a valid solver format.
+- `Cannot parse assumed input` -- Fix: ensure `--compare` file uses the same solver format as `--input`.
+
+---
+
+### `clips session`
+
+Persistent CLIPS sessions survive across multiple eval calls. Session count is
+enforced per tier — exit code 4 when the limit is reached.
+
+#### `clips session create`
+
+Create a new CLIPS session, optionally pre-loading rules.
+
+**Input schema (`ClipsSessionCreateInput`):**
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `rules` | string | no | CLIPS rule definitions to load into the session |
+| `label` | string | no | Human-readable label for the session |
+
+**Example:**
+
+```bash
+echo '{
+  "rules": "(defrule greet (person (name ?n)) => (printout t (str-cat \"Hello \" ?n) crlf))",
+  "label": "greet-session"
+}' | nxuskit-cli clips session create --input - --format json
+```
+
+**Output:**
+
+```json
+{
+  "session_id": "sess_abc12345",
+  "label": "greet-session",
+  "created_at": "2026-04-13T10:00:00Z",
+  "rule_count": 1
+}
+```
+
+**Common errors:**
+
+- `Entitlement check failed: clips_session_limit` (exit 4) -- Fix: destroy an existing session first, or upgrade edition.
+- `Failed to load CLIPS rules: ...` (exit 1) -- Fix: check CLIPS syntax.
+
+---
+
+#### `clips session list`
+
+List all active CLIPS sessions.
+
+**No input required.** Pass `--format json` for machine-readable output.
+
+```bash
+nxuskit-cli clips session list --format json
+```
+
+**Output:**
+
+```json
+{
+  "sessions": [
+    {"session_id": "sess_abc12345", "label": "greet-session", "rule_count": 1, "created_at": "..."},
+    {"session_id": "sess_def67890", "label": null, "rule_count": 5, "created_at": "..."}
+  ],
+  "count": 2
+}
+```
+
+---
+
+#### `clips session destroy`
+
+Destroy a session and release its resources.
+
+**CLI arguments:**
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `--session-id` | string | **yes** | Session ID returned by `clips session create` |
+
+```bash
+nxuskit-cli clips session destroy --session-id sess_abc12345 --format json
+```
+
+**Output:**
+
+```json
+{"session_id": "sess_abc12345", "destroyed": true}
+```
+
+**Common errors:**
+
+- `Unknown session ID: sess_abc12345` (exit 5) -- Fix: use `clips session list` to find valid IDs.
+
+---
+
+### `provider list`
+
+List all registered providers with type, status, and capability metadata.
+
+**No input required.**
+
+```bash
+nxuskit-cli provider list --format json
+```
+
+**Output shape:**
+
+```json
+{
+  "providers": [
+    {
+      "name": "openai",
+      "type": "llm",
+      "status": "available",
+      "capabilities": ["streaming", "vision", "tool_calling"],
+      "auth_required": true
+    },
+    {
+      "name": "loopback",
+      "type": "llm",
+      "status": "available",
+      "capabilities": ["streaming"],
+      "auth_required": false
+    },
+    {
+      "name": "clips",
+      "type": "rule_engine",
+      "status": "available",
+      "capabilities": [],
+      "auth_required": false
+    }
+  ],
+  "count": 3
+}
+```
+
+---
+
+### `provider info`
+
+Show detailed information for a single provider. Accepts fuzzy name matching —
+if the name is close but not exact, suggestions are printed to stderr and the
+command exits with code 5.
+
+**CLI arguments:**
+
+| Argument | Type | Required | Description |
+|----------|------|----------|-------------|
+| `<name>` | string | **yes** | Provider name (positional argument) |
+
+```bash
+nxuskit-cli provider info openai --format json
+```
+
+**Output shape:**
+
+```json
+{
+  "name": "openai",
+  "type": "llm",
+  "status": "available",
+  "capabilities": ["streaming", "vision", "tool_calling"],
+  "auth_required": true,
+  "auth_env_var": "OPENAI_API_KEY",
+  "default_model": "gpt-4o",
+  "supported_formats": ["json", "yaml", "jsonl", "text"],
+  "docs_url": "https://platform.openai.com/docs"
+}
+```
+
+**Common errors:**
+
+- `Unknown provider "opnai". Did you mean: openai?` (exit 5, stderr) -- Fix: use the exact provider name from `provider list`, or let the suggestion guide you.
+
+---
+
+### Error responses
+
+All non-zero exits write a JSON `ErrorEnvelope` to **stderr**. Stdout may be
+empty or contain partial output.
+
+```json
+{
+  "code": "entitlement_denied",
+  "message": "This command requires the pro edition",
+  "details": {
+    "feature": "solver",
+    "current_tier": "oss",
+    "required_tier": "pro"
+  },
+  "trace_id": "a1b2c3d4",
+  "timestamp": "2026-04-13T10:00:00Z"
+}
+```
+
+| Field | Type | Description |
+|-------|------|-------------|
+| `code` | string | Machine-readable error code |
+| `message` | string | Human-readable description |
+| `details` | object | Optional structured context (tier info, field names, session IDs, etc.) |
+| `trace_id` | string | 8-character hex trace ID |
+| `timestamp` | string | ISO 8601 UTC timestamp |
+
+**Exit code → `code` mapping:**
+
+| Exit | `code` values |
+|------|--------------|
+| 1 | `internal_error`, `provider_error`, `engine_error` |
+| 2 | `timeout`, `idle_timeout` |
+| 3 | `auth_failure`, `token_expired`, `token_missing` |
+| 4 | `entitlement_denied`, `session_limit_reached` |
+| 5 | `validation_error`, `unknown_provider`, `unknown_session` |

@@ -1,6 +1,6 @@
 ---
-title: Cloud LLM Providers
-description: Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fireworks, Together, OpenRouter, and Perplexity providers.
+title: "Cloud LLM Providers"
+description: "Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fireworks, Together, OpenRouter, and Perplexity providers."
 ---
 
 ## OpenAI

@@ -1,6 +1,6 @@
 ---
-title: Authentication
-description: Configure API keys and credentials for cloud and local LLM providers.
+title: "Authentication"
+description: "Configure API keys and credentials for cloud and local LLM providers."
 ---
 
 ## Overview
@@ -22,9 +22,9 @@ configure them.
 | OpenRouter | Yes | Yes | — | `OPENROUTER_API_KEY` | [openrouter.ai/settings/keys](https://openrouter.ai/settings/keys) |
 | Perplexity | Yes | Yes | — | `PERPLEXITY_API_KEY` | [perplexity.ai/settings/api](https://www.perplexity.ai/settings/api) |
 | Ollama | No | — | — | `OLLAMA_HOST` | — |
-| LM Studio | No | — | — | `LMSTUDIO_HOST` | — |
+| LM Studio | No | — | — | `LM_STUDIO_HOST` | — |
 
-**Legend**: Yes = supported, — = not applicable
+**Legend**: Yes = supported, — = not applicable/not yet available
 
 ## Authentication Methods
 
@@ -52,11 +52,11 @@ store with 0600 permissions if no system store is available.
 provider = Provider.create("openai", api_key="sk-...")
 ```
 
-### OAuth
+### OAuth (Infrastructure Ready)
 
-OAuth support is available for providers that require browser-based
-authorization. The current cloud providers use API keys, so most projects will
-not need this flow. When a provider requires OAuth, use:
+OAuth authentication infrastructure is implemented in v0.9.1 but no current
+providers require it. When a provider enables OAuth support, the flow will
+be:
 
 ```bash
 # Start OAuth login

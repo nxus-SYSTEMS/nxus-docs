@@ -1,6 +1,6 @@
 ---
-title: Tier System
-description: Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit.
+title: "Tier System"
+description: "Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit."
 ---
 
 ## Overview
@@ -64,10 +64,12 @@ All editions provide wrappers for all three languages:
 | LLM basics, streaming, tool calling | Community | Uses cloud/local LLM providers |
 | CLIPS basics, CLIPS-LLM hybrid | Community | CLIPS engine is Community-tier |
 | Bayesian network inference | Community | BN inference is Community-tier |
-| Solver examples | **Pro** | Use the Z3 constraint solver |
-| Solver what-if examples | **Pro** | Use scoped Z3 optimization |
-| LLM-solver hybrid examples | **Pro** | Combine LLM reasoning with Z3 solving |
-| ZEN decision examples | **Pro** | Use ZEN decision tables |
+| Gamer (game AI solver) | **Pro** | Uses Z3 constraint solver |
+| Racer (optimization) | **Pro** | Uses Z3 constraint solver |
+| Ruler (rule evaluation) | **Pro** | Uses ZEN decision tables |
+| Solver (generic CSP) | **Pro** | Uses Z3 constraint solver |
+| Riffer (music generation) | **Pro** | Uses solver + CLIPS pipeline |
+| Sweeper (minesweeper AI) | **Pro** | Uses Z3 constraint solver |
 
 ## Licensing
 
@@ -87,4 +89,4 @@ All editions provide wrappers for all three languages:
 3. Activate on your machine: `nxuskit-cli license activate --key <purchase_id>`
 4. For CI/CD: set `NXUSKIT_LICENSE_TOKEN` with your deployment token
 
-See [Licensing](/nxuskit/concepts/licensing/) for the full activation workflow.
+See the [License Activation Guide](/nxuskit/concepts/licensing/) for the full workflow.

@@ -1,6 +1,6 @@
 ---
-title: Expert System & Utility Providers
-description: Configuration reference for the CLIPS rule engine, MCP, Mock, and Loopback providers.
+title: "Expert System & Utility Providers"
+description: "Configuration reference for the CLIPS rule engine, MCP, Mock, and Loopback providers."
 ---
 
 ## CLIPS Rule Engine

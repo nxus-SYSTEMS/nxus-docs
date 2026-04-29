@@ -1,6 +1,6 @@
 ---
-title: Local LLM Providers
-description: Configuration reference for in-process (llama.cpp, mistral.rs) and HTTP-based (Ollama, LM Studio) local LLM providers.
+title: "Local LLM Providers"
+description: "Configuration reference for in-process (llama.cpp, mistral.rs) and HTTP-based (Ollama, LM Studio) local LLM providers."
 ---
 
 nxusKit supports two categories of local LLM providers:

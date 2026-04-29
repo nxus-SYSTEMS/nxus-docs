@@ -1,6 +1,6 @@
 ---
-title: CLIPS Session Migration
-description: Migrate from the legacy ClipsEnvironment API to the new ClipsSession API introduced in SDK v0.9.1.
+title: "CLIPS Session Migration"
+description: "Migrate from the legacy ClipsEnvironment API to the new ClipsSession API introduced in SDK v0.9.1."
 ---
 
 This guide covers migrating from the legacy `ClipsEnvironment` / `nxuskit_clips_env_*` API

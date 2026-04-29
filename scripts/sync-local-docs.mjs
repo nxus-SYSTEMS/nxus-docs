@@ -34,6 +34,95 @@ const SDK_PACKAGING_DOCS_MAP = [
   ['logprobs-migration.md', 'migration/logprobs-migration.md'],
   ['upgrade-path.md', 'migration/upgrade-path.md'],
 ];
+const SDK_DOC_METADATA = new Map([
+  ['getting-started.md', {
+    title: 'Installation',
+    description: 'Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows.',
+  }],
+  ['auth-modes-by-provider.md', {
+    title: 'Authentication',
+    description: 'Configure API keys and credentials for cloud and local LLM providers.',
+  }],
+  ['api-reference.md', {
+    title: 'C ABI Reference',
+    description: 'Complete reference for the nxusKit C ABI — all functions, types, and ownership rules.',
+  }],
+  ['cli-input-reference.md', {
+    title: 'CLI Input Format Reference',
+    description: 'Input schemas and examples for every Level 1 nxuskit-cli command.',
+  }],
+  ['providers/cloud-llms.md', {
+    title: 'Cloud LLM Providers',
+    description: 'Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fireworks, Together, OpenRouter, and Perplexity providers.',
+  }],
+  ['providers/local-llms.md', {
+    title: 'Local LLM Providers',
+    description: 'Configuration reference for in-process (llama.cpp, mistral.rs) and HTTP-based (Ollama, LM Studio) local LLM providers.',
+  }],
+  ['providers/expert-systems.md', {
+    title: 'Expert System & Utility Providers',
+    description: 'Configuration reference for the CLIPS rule engine, MCP, Mock, and Loopback providers.',
+  }],
+  ['providers/z3-solver.md', {
+    title: 'Z3 Constraint Satisfaction Provider',
+    description: 'Configuration and input/output reference for the Z3 SMT solver provider.',
+  }],
+  ['rule-authoring.md', {
+    title: 'CLIPS Rule Authoring Guide',
+    description: 'How to write, test, and deploy custom CLIPS rules with the nxusKit SDK.',
+  }],
+  ['clips-workarounds.md', {
+    title: 'CLIPS Excluded Capabilities & Workarounds',
+    description: 'Four CLIPS capabilities excluded from the Session API and their working alternatives.',
+  }],
+  ['license-activation-guide.md', {
+    title: 'Licensing',
+    description: 'How to activate, manage, and troubleshoot nxusKit Pro licenses.',
+  }],
+  ['tier-comparison.md', {
+    title: 'Tier System',
+    description: 'Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit.',
+  }],
+  ['migration-guide.md', {
+    title: 'CLIPS Session Migration',
+    description: 'Migrate from the legacy ClipsEnvironment API to the new ClipsSession API introduced in SDK v0.9.1.',
+  }],
+  ['logprobs-migration.md', {
+    title: 'Logprobs Migration',
+    description: 'Migrate to first-class unary chat logprobs in nxusKit SDK v0.9.3.',
+  }],
+  ['upgrade-path.md', {
+    title: 'Upgrade Path',
+    description: 'Error messages and resolutions when Pro features are unavailable or licenses need updating.',
+  }],
+  ['CHANGELOG.md', {
+    title: 'Changelog',
+    description: 'Release notes for nxusKit SDK versions.',
+  }],
+]);
+const SDK_DOC_LINKS = new Map([
+  ['getting-started.md', '/nxuskit/getting-started/installation/'],
+  ['auth-modes-by-provider.md', '/nxuskit/getting-started/authentication/'],
+  ['api-reference.md', '/nxuskit/reference/api-reference/'],
+  ['cli-input-reference.md', '/nxuskit/reference/cli-reference/'],
+  ['providers/cloud-llms.md', '/nxuskit/reference/providers/cloud-llms/'],
+  ['providers/local-llms.md', '/nxuskit/reference/providers/local-llms/'],
+  ['providers/expert-systems.md', '/nxuskit/reference/providers/expert-systems/'],
+  ['providers/z3-solver.md', '/nxuskit/reference/providers/z3-solver/'],
+  ['rule-authoring.md', '/nxuskit/guides/clips-rule-authoring/'],
+  ['clips-workarounds.md', '/nxuskit/guides/clips-workarounds/'],
+  ['license-activation-guide.md', '/nxuskit/concepts/licensing/'],
+  ['tier-comparison.md', '/nxuskit/concepts/tier-system/'],
+  ['migration-guide.md', '/nxuskit/migration/clips-session-migration/'],
+  ['logprobs-migration.md', '/nxuskit/migration/logprobs-migration/'],
+  ['upgrade-path.md', '/nxuskit/migration/upgrade-path/'],
+  ['CHANGELOG.md', '/nxuskit/reference/changelog/'],
+]);
+const SDK_PUBLIC_SCRUBBERS = new Map([
+  ['license-activation-guide.md', scrubLicenseGuide],
+  ['logprobs-migration.md', scrubLogprobsMigrationGuide],
+  ['CHANGELOG.md', scrubChangelog],
+]);
 
 const args = new Set(process.argv.slice(2));
 const explicitTarget = args.has('--examples') || args.has('--sdk') || args.has('--all');
@@ -66,6 +155,10 @@ const FORBIDDEN_TERMS = [
   ['nxusKit', 'internal'].join('-'),
   ['nxusKit', 'examples', 'internal'].join('-'),
   ['nxusKit', 'plugins', 'internal'].join('-'),
+  '../DevOps/',
+  'DevOps/sharedStatus/',
+  'internal/todos/',
+  'peeler/internal/',
 ];
 
 async function main() {
@@ -129,7 +222,8 @@ async function syncSdk() {
   if (existsSync(changelog)) {
     const target = path.join(exportRoot, 'reference/changelog.md');
     mkdirSync(path.dirname(target), { recursive: true });
-    copyFileSync(changelog, target);
+    const raw = await readFile(changelog, 'utf8');
+    await writeFile(target, toSdkStarlightPage(raw, 'CHANGELOG.md'), 'utf8');
   }
 
   await leakGateFiles(exportRoot);
@@ -155,8 +249,122 @@ async function exportSdkPackagingDocs(sourceRoot, exportRoot) {
     }
 
     mkdirSync(path.dirname(targetPath), { recursive: true });
-    copyFileSync(sourcePath, targetPath);
+    const raw = await readFile(sourcePath, 'utf8');
+    await writeFile(targetPath, toSdkStarlightPage(raw, sourceRel), 'utf8');
   }
+}
+
+function toSdkStarlightPage(markdown, sourceRel) {
+  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  if (body.startsWith('---\n')) {
+    body = body.replace(/^---\n[\s\S]*?\n---\s*/, '').trimStart();
+  }
+
+  const metadata = SDK_DOC_METADATA.get(sourceRel) ?? {
+    title: extractMarkdownTitle(body),
+    description: '',
+  };
+
+  body = body.replace(/^#\s+.+\n+/, '');
+  body = scrubSdkDocForPublicSite(body, sourceRel);
+  body = rewriteSdkDocLinks(body, sourceRel).trimEnd();
+
+  return [
+    '---',
+    `title: ${JSON.stringify(metadata.title)}`,
+    ...(metadata.description ? [`description: ${JSON.stringify(metadata.description)}`] : []),
+    '---',
+    '',
+    body,
+    '',
+  ].join('\n');
+}
+
+function extractMarkdownTitle(markdown) {
+  const h1 = markdown.match(/^#\s+(.+)$/m);
+  return h1 ? h1[1].trim() : 'Untitled';
+}
+
+function rewriteSdkDocLinks(markdown, sourceRel) {
+  return markdown
+    .replace(/\[[^\]]+\]\((\.\.\/examples\/[^)\s]*)(#[^)\s]+)?\)/g, '[nxusKit examples](/nxuskit/examples/)')
+    .replace(/\[[^\]]+\]\((\.\.\/rust\/README\.md)(#[^)\s]+)?\)/g, '[Rust SDK API documentation](/nxuskit/reference/api/)')
+    .replace(/\[([^\]]+)\]\(([^)\s#]+\.md)(#[^)\s]+)?\)/g, (_, text, link, hash = '') => {
+      const normalized = path.posix.normalize(path.posix.join(path.posix.dirname(sourceRel), link));
+      const target = SDK_DOC_LINKS.get(normalized);
+      return target ? `[${text}](${target}${hash})` : `\`${text.replace(/`/g, '')}\``;
+    });
+}
+
+function scrubSdkDocForPublicSite(markdown, sourceRel) {
+  const scrubber = SDK_PUBLIC_SCRUBBERS.get(sourceRel);
+  return scrubber ? scrubber(markdown) : markdown;
+}
+
+function scrubLicenseGuide(markdown) {
+  return markdown
+    .replace(
+      /The production ES256 public key is embedded at compile time from the DevOps\nrelease artifact at `\.\.\/DevOps\/sharedData\/keys\/es256-production-pubkey\.pem`\.\nStandard users do not configure the key or endpoint\./,
+      'The production ES256 public key is embedded in release builds. Standard users do not configure the key or endpoint.',
+    )
+    .replace(
+      /\| \*\*Leased\*\* \| `~\/\.nxuskit\/license\.token` or `NXUSKIT_LICENSE_TOKEN` \| Internal CI\/automation license that can be revoked server-side \| Short lease, default 72 hours \| Yes \|/,
+      '| **Leased** | `~/.nxuskit/license.token` or `NXUSKIT_LICENSE_TOKEN` | CI/automation license that can be revoked server-side | Short lease, default 72 hours | Yes |',
+    )
+    .replace(
+      /For CI automations that need a working Pro license but also need routine\nrevocation control, prefer an internally issued leased activation key over a\nlong-lived deployment token\./,
+      'For CI automations that need a working Pro license but also need routine\nrevocation control, prefer a leased activation key over a long-lived deployment\ntoken.',
+    )
+    .replace(
+      /Internally issued `leased` tokens are designed for CI\/automation where\nrevocation control matters/,
+      '`leased` tokens are designed for CI/automation where revocation control matters',
+    );
+}
+
+function scrubLogprobsMigrationGuide(markdown) {
+  return markdown
+    .replace(
+      /\*\*Audience:\*\* SDK consumers — Peeler in particular — that previously needed\nto request token log probabilities through `provider_options` because the\nSDK had no first-class field\./,
+      '**Audience:** SDK consumers that previously needed to request token log\nprobabilities through `provider_options` because the SDK had no first-class\nfield.',
+    )
+    .replace(
+      /- \*\*Streaming logprobs\.\*\* `StreamChunk` deliberately has no logprobs\n  surface in v0\.9\.3\. See `specs\/097-sdk-093-release\/deferred-v0\.9\.4\.md`\n  and the regression guard\n  `packages\/nxuskit-engine\/crates\/nxuskit-engine\/tests\/streaming_logprobs_scope_test\.rs`\.\n  When streaming logprobs ship, the contract will be added additively\n  rather than retrofitted into the unary path\./,
+      '- **Streaming logprobs.** `StreamChunk` deliberately has no logprobs\n  surface in v0.9.3. Streaming logprobs are deferred to a future additive\n  release rather than retrofitted into the unary path.',
+    )
+    .replace(
+      /- \*\*Public `CapabilityManifest` v2\.\*\* Capability detection is internal in\n  v0\.9\.3; the manifest type and any associated client-side discovery API\n  are deferred to v0\.9\.4\./,
+      '- **Public `CapabilityManifest` v2.** Capability detection remains an\n  implementation detail in v0.9.3; the manifest type and any associated\n  client-side discovery API are deferred to a future release.',
+    )
+    .replace(/\n## Peeler Adoption[\s\S]*$/m, '\n');
+}
+
+function scrubChangelog(markdown) {
+  return scrubLicenseGuide(markdown)
+    .replace(
+      /  - Release builds embed\n    `\.\.\/DevOps\/sharedData\/keys\/es256-production-pubkey\.pem` with\n    `kid: es256-v1`\./,
+      '  - Release builds embed the production ES256 public key with\n    `kid: es256-v1`.',
+    )
+    .replace(
+      /> Published SDK release `sdk-v0\.9\.3`\. Production licensing real-purchase\n> activation\/recovery, PR readiness, and supported-platform SDK build checks\n> passed before release publication; see\n> `specs\/097-sdk-093-release\/release-scorecard\.md` for evidence\./,
+      '> Published SDK release `sdk-v0.9.3`. Production licensing real-purchase\n> activation/recovery, PR readiness, and supported-platform SDK build checks\n> passed before release publication.',
+    )
+    .replace(
+      /    Rust \+ Python \+ C ABI before\/after with capability-gating rationale\n    and Peeler adoption \(post-release, not a v0\.9\.3 ship gate\)\./,
+      '    Rust + Python + C ABI before/after with capability-gating rationale.',
+    )
+    .replace(
+      /  - \*\*Migration guide:\*\* `sdk-packaging\/docs\/logprobs-migration\.md` covers\n    Rust \+ Python \+ C ABI before\/after with capability-gating rationale\./,
+      '  - **Migration guide:** The [logprobs migration guide](/nxuskit/migration/logprobs-migration/) covers\n    Rust + Python + C ABI before/after with capability-gating rationale.',
+    )
+    .replace(
+      /### Deferred \(see `specs\/097-sdk-093-release\/deferred-v0\.9\.4\.md`\)/,
+      '### Deferred',
+    )
+    .replace(
+      /- `CapabilityManifest` v2 public\/preview surface — kept internal in\n  v0\.9\.3\./,
+      '- `CapabilityManifest` v2 public/preview surface — deferred beyond v0.9.3.',
+    )
+    .replace(/- Peeler adoption PR — post-release; engine warn-and-drop covers the gap\.\n/g, '');
 }
 
 function toExamplesStarlightPage(markdown) {

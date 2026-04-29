@@ -1,6 +1,6 @@
 ---
-title: Z3 Constraint Satisfaction Provider
-description: Configuration and input/output reference for the Z3 SMT solver provider.
+title: "Z3 Constraint Satisfaction Provider"
+description: "Configuration and input/output reference for the Z3 SMT solver provider."
 ---
 
 The Z3 provider integrates [Microsoft Z3](https://github.com/Z3Prover/z3), an industry-grade SMT (Satisfiability Modulo Theories) solver, into the nxusKit provider interface. It enables constraint satisfaction, optimization, and formal verification problems to be expressed and solved using the same `chat()` / `chat_stream()` API as LLM providers.
@@ -216,14 +216,14 @@ assert_eq!(output["status"], "sat");
 ### Via C ABI (Go)
 
 ```go
-provider, err := nxuskit.NewZ3FFIProvider(
-    nxuskit.WithZ3Timeout(5000),
-    nxuskit.WithZ3UnsatCore(true),
+provider, err := nxuskit-go.NewZ3FFIProvider(
+    nxuskit-go.WithZ3Timeout(5000),
+    nxuskit-go.WithZ3UnsatCore(true),
 )
 
-response, err := provider.Chat(ctx, &nxuskit.ChatRequest{
+response, err := provider.Chat(ctx, &nxuskit-go.ChatRequest{
     Model: "z3-solver",
-    Messages: []nxuskit.Message{
+    Messages: []nxuskit-go.Message{
         {Role: "user", Content: problemJSON},
     },
 })

@@ -1,6 +1,6 @@
 ---
-title: CLIPS Excluded Capabilities & Workarounds
-description: Four CLIPS capabilities excluded from the Session API and their working alternatives.
+title: "CLIPS Excluded Capabilities & Workarounds"
+description: "Four CLIPS capabilities excluded from the Session API and their working alternatives."
 ---
 
 Four CLIPS capabilities are intentionally excluded from the Session API.

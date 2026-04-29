@@ -1,6 +1,6 @@
 ---
-title: Installation
-description: Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows.
+title: "Installation"
+description: "Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows."
 ---
 
 This guide walks you through downloading, installing, and using the nxuskit SDK
@@ -8,21 +8,24 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 
 ## Prerequisites
 
-- GitHub account with access to nxusKit SDK releases
+- GitHub account with access to `nxus-SYSTEMS/nxusKit` (private repository)
 - [GitHub CLI](https://cli.github.com/) (`gh`) installed and authenticated
 
 ## 1. Download and Install the SDK
+
+The examples below download the OSS edition. Pro users can replace `oss` with
+`pro` in the asset patterns and extracted directory names.
 
 ### macOS (Apple Silicon)
 
 ```bash
 # Download, extract, and remove macOS quarantine in one go
 gh release download --repo nxus-SYSTEMS/nxusKit \
-  --pattern "nxuskit-sdk-*-macos-arm64.tar.gz" \
-  --pattern "nxuskit-sdk-*-macos-arm64.tar.gz.sha256"
+  --pattern "nxuskit-sdk-*-oss-macos-arm64.tar.gz" \
+  --pattern "nxuskit-sdk-*-oss-macos-arm64.tar.gz.sha256"
 
-shasum -a 256 -c nxuskit-sdk-*-macos-arm64.tar.gz.sha256
-tar xzf nxuskit-sdk-*-macos-arm64.tar.gz
+shasum -a 256 -c nxuskit-sdk-*-oss-macos-arm64.tar.gz.sha256
+tar xzf nxuskit-sdk-*-oss-macos-arm64.tar.gz
 xattr -dr com.apple.quarantine nxuskit-sdk-*/
 ```
 
@@ -34,22 +37,22 @@ check it for malicious software" when loading the dylib.
 
 ```bash
 gh release download --repo nxus-SYSTEMS/nxusKit \
-  --pattern "nxuskit-sdk-*-linux-x86_64.tar.gz" \
-  --pattern "nxuskit-sdk-*-linux-x86_64.tar.gz.sha256"
+  --pattern "nxuskit-sdk-*-oss-linux-x86_64.tar.gz" \
+  --pattern "nxuskit-sdk-*-oss-linux-x86_64.tar.gz.sha256"
 
-sha256sum -c nxuskit-sdk-*-linux-x86_64.tar.gz.sha256
-tar xzf nxuskit-sdk-*-linux-x86_64.tar.gz
+sha256sum -c nxuskit-sdk-*-oss-linux-x86_64.tar.gz.sha256
+tar xzf nxuskit-sdk-*-oss-linux-x86_64.tar.gz
 ```
 
 ### Windows (x86_64)
 
 ```powershell
 gh release download --repo nxus-SYSTEMS/nxusKit `
-  --pattern "nxuskit-sdk-*-windows-x86_64.zip" `
-  --pattern "nxuskit-sdk-*-windows-x86_64.zip.sha256"
+  --pattern "nxuskit-sdk-*-oss-windows-x86_64.zip" `
+  --pattern "nxuskit-sdk-*-oss-windows-x86_64.zip.sha256"
 
 # Extract
-Expand-Archive nxuskit-sdk-*-windows-x86_64.zip -DestinationPath .
+Expand-Archive nxuskit-sdk-*-oss-windows-x86_64.zip -DestinationPath .
 ```
 
 ### Set SDK Path
@@ -68,7 +71,7 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-{version}-{platform}"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-0.9.3-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
@@ -76,7 +79,7 @@ For CI systems, see [Download via PAT](#download-via-pat) below.
 ## 2. SDK Bundle Contents
 
 ```
-nxuskit-sdk-{version}-{platform}/
+nxuskit-sdk-{version}-{edition}-{platform}/
 ├── include/
 │   └── nxuskit.h          # C header — all API declarations
 ├── lib/
@@ -103,7 +106,7 @@ make basic_chat
 ./bin/basic_chat
 ```
 
-The SDK bundle includes this source at `examples/c/basic_chat.c`.
+See [nxusKit examples](/nxuskit/examples/) for the source.
 
 ## 4. First Example — Go
 
@@ -114,7 +117,7 @@ cd nxuskit-sdk-*/examples/go
 go run basic_chat.go
 ```
 
-The SDK bundle includes this source at `examples/go/basic_chat.go`.
+See [nxusKit examples](/nxuskit/examples/) for the source.
 
 ## 5. First Example — Rust
 
@@ -124,7 +127,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-{version}-{platform}/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-0.9.3-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -132,7 +135,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-{version}-{platform}"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-0.9.3-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -162,8 +165,8 @@ fn main() -> Result<(), nxuskit::NxuskitError> {
 2. The `lib/` subdirectory exists: `ls $NXUSKIT_SDK_DIR/lib/`
 3. On macOS: quarantine was removed (see Step 1 above)
 
-The SDK bundle includes a runnable Rust project under `examples/rust/` and
-wrapper documentation under `rust/`.
+See [nxusKit examples](/nxuskit/examples/) for a runnable project, and
+[Rust SDK API documentation](/nxuskit/reference/api/) for the full nxuskit API documentation.
 
 ## 6. First Example — Python
 
@@ -174,7 +177,7 @@ export OPENAI_API_KEY="sk-..."
 python examples/python/basic_chat.py
 ```
 
-The SDK bundle includes this source at `examples/python/basic_chat.py`.
+See [nxusKit examples](/nxuskit/examples/) for the source.
 
 ## Core Concepts
 
@@ -244,7 +247,7 @@ const char *input = "{\"facts\": [{\"template\": \"sensor\", \"values\": {\"name
 The user message must conform to the `ClipsInput` schema — see the
 [Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/#clipsinput-json-reference) for the full
 field reference. CLIPS also provides a session API for direct engine access; see
-the [C ABI Reference](/nxuskit/reference/api-reference/#clips-session-api).
+the [API Reference](/nxuskit/reference/api-reference/#clips-session-api).
 
 ## Linking Reference
 
@@ -312,8 +315,7 @@ curl -L -H "Authorization: Bearer $GH_TOKEN" \
 
 ## Next Steps
 
-- [C ABI Reference](/nxuskit/reference/api-reference/) — full C ABI documentation
-- [Cloud Provider Reference](/nxuskit/reference/providers/cloud-llms/) — hosted LLM configuration
-- [Local Provider Reference](/nxuskit/reference/providers/local-llms/) — local inference configuration
+- [API Reference](/nxuskit/reference/api-reference/) — full C ABI documentation
+- [Provider Reference](/nxuskit/reference/providers/cloud-llms/) — provider-specific configuration
 - [Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/) — writing, testing, and deploying custom CLIPS rules
-- [Examples](/nxuskit/examples/) — working code for SDK languages and CLI/Bash workflows
+- [nxusKit examples](/nxuskit/examples/) — working code for SDK languages and C ABI workflows

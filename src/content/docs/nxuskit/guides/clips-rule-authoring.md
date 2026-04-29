@@ -1,6 +1,6 @@
 ---
-title: CLIPS Rule Authoring Guide
-description: How to write, test, and deploy custom CLIPS rules with the nxusKit SDK.
+title: "CLIPS Rule Authoring Guide"
+description: "How to write, test, and deploy custom CLIPS rules with the nxusKit SDK."
 ---
 
 This guide explains how to write, test, and deploy custom CLIPS rules with the nxusKit SDK.
@@ -9,7 +9,7 @@ This guide explains how to write, test, and deploy custom CLIPS rules with the n
 
 nxusKit uses CLIPS 6.4, a forward-chaining inference engine. Rules follow the pattern:
 
-```text
+```clips
 (defrule rule-name
     "Documentation string"
     ;; LHS: conditions (pattern matching)
@@ -31,7 +31,7 @@ nxusKit uses CLIPS 6.4, a forward-chaining inference engine. Rules follow the pa
 
 Templates define the fact schemas your rules operate on. Define them in shared template files loaded before any module rules:
 
-```text
+```clips
 ;;; shared/000-core.clp — Core templates
 
 (deftemplate input-data
@@ -62,7 +62,7 @@ Templates define the fact schemas your rules operate on. Define them in shared t
 
 CLIPS modules provide namespace isolation for rules. Each module groups related rules:
 
-```text
+```clips
 ;;; In data-qc/bounds-check.clp
 (defmodule data-qc (export ?ALL))
 
@@ -111,7 +111,7 @@ nxusKit provides two ways to use CLIPS:
   rule authoring, debugging, and fine-grained fact manipulation.
 
 This guide focuses on the **provider chat** path. For the session API, see the
-[C ABI Reference](/nxuskit/reference/api-reference/#clips-session-api).
+[API Reference](/nxuskit/reference/api-reference/#clips-session-api).
 
 ## ClipsInput JSON Reference
 
@@ -202,16 +202,16 @@ println!("Alerts: {}", response.content);
 ### Go Example
 
 ```go
-import nxuskit "github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go"
+import "github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go"
 
-config := nxuskit.ProviderConfig{
+config := nxuskit-go.ProviderConfig{
     ProviderType: "clips",
     Model:        strPtr("/path/to/rules"),
 }
-provider, _ := nxuskit.NewProvider(config)
+provider, _ := nxuskit-go.NewProvider(config)
 
-request := nxuskit.NewChatRequest("clips").
-    AddMessage(nxuskit.UserMessage(`{"facts": [{"template": "input-data", "values": {"record-id": 1, "value": 150.0}}]}`))
+request := nxuskit-go.NewChatRequest("clips").
+    AddMessage(nxuskit-go.UserMessage(`{"facts": [{"template": "input-data", "values": {"record-id": 1, "value": 150.0}}]}`))
 request.ProviderOptions = map[string]interface{}{
     "focus":            []string{"data-qc"},
     "derived_only_new": true,
@@ -253,7 +253,7 @@ Place your `.clp` file in the appropriate module directory:
 
 Do NOT redefine templates. Use templates from the shared `shared/*.clp` files:
 
-```text
+```clips
 ;;; my-custom-check.clp
 ;;; Custom confidence check for strict environments
 
@@ -275,7 +275,7 @@ Do NOT redefine templates. Use templates from the shared `shared/*.clp` files:
 
 Reference the `threshold-config` fact instead of hard-coding values:
 
-```text
+```clips
 (defrule configurable-bounds-check
     "Flag records outside configured bounds"
     (threshold-config (value-min ?vmin) (value-max ?vmax))
@@ -338,11 +338,11 @@ async fn test_with_clips_engine() {
 
 ```go
 func TestRulesWithMock(t *testing.T) {
-    provider := nxuskit.NewMockProvider(
-        nxuskit.WithResponse(`{"alerts": [{"type": "low_confidence"}]}`),
+    provider := nxuskit-go.NewMockProvider(
+        nxuskit-go.WithResponse(`{"alerts": [{"type": "low_confidence"}]}`),
     )
-    req := nxuskit.NewChatRequest("clips").
-        AddMessage(nxuskit.UserMessage("test input"))
+    req := nxuskit-go.NewChatRequest("clips").
+        AddMessage(nxuskit-go.UserMessage("test input"))
     resp, err := provider.Chat(context.Background(), req)
     require.NoError(t, err)
     assert.Contains(t, resp.Content, "low_confidence")
