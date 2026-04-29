@@ -29,7 +29,7 @@ Creates a provider from a JSON configuration string.
 
 **Parameters:**
 - `config_json` — JSON string with at minimum `{"provider_type": "..."}`.
-  See [Provider Reference](providers/) for provider-specific fields.
+  See [Provider Reference](../providers/cloud-llms/) for provider-specific fields.
 
 **Returns:** Opaque provider handle, or NULL on failure. On failure, call
 `nxuskit_last_error()` for the error message.

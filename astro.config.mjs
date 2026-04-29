@@ -17,6 +17,7 @@ export default defineConfig({
 			logo: {
 				light: './src/assets/logo-light.svg',
 				dark: './src/assets/logo-dark.svg',
+				alt: 'nxus.SYSTEMS Docs',
 				replacesTitle: true,
 			},
 			social: [
