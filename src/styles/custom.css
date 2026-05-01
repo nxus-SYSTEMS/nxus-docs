@@ -241,7 +241,7 @@ a {
 
 .sidebar-content a[aria-current='page'],
 .sidebar-content summary[aria-current='page'] {
-	color: var(--nxus-accent-text);
+	color: var(--sl-color-text-invert);
 }
 
 table {

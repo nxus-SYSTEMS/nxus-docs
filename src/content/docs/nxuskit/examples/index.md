@@ -5,7 +5,7 @@ description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/
 
 # nxusKit Examples
 
-[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](LICENSE)
+[![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE)
 ![Rust](https://img.shields.io/badge/Rust-000000?logo=rust&logoColor=white)
 ![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
@@ -61,14 +61,14 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Theme Park Planning** | Facility layout, capital budgeting, resource allocation | |
 | &nbsp;&nbsp;↳ real-world: **Space Colony Planning** | Infrastructure sizing, capacity planning, disaster recovery modeling | |
 | &nbsp;&nbsp;↳ real-world: **Fantasy Sports Draft** | Portfolio optimization, team composition, auction bidding strategies | |
-| [bayesian-inference](examples/patterns/bayesian-inference/) | Bayesian network inference via nxusKit SDK | Rust, Go, Python, CLI/Bash |
+| [bayesian-inference](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/bayesian-inference/) | Bayesian network inference via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `haunted-house` | Investigate a haunted house — is it a ghost or a raccoon? | |
 | &nbsp;&nbsp;↳ `coffee-shop` | Diagnose bad espresso from grind size, temperature, and bean age | |
 | &nbsp;&nbsp;↳ `plant-doctor` | Diagnose a sick plant from overwatering, nutrient, and disease evidence | |
 | &nbsp;&nbsp;↳ real-world: **Haunted House** | Fault diagnosis, anomaly detection, sensor fusion from multiple noisy sensors pointing to hidden causes | |
 | &nbsp;&nbsp;↳ real-world: **Coffee Shop** | Manufacturing quality control, process parameter tuning, root cause analysis in production | |
 | &nbsp;&nbsp;↳ real-world: **Plant Doctor** | Medical diagnosis, agricultural advisory systems, multi-symptom differential diagnosis | |
-| [solver-what-if](examples/patterns/solver-what-if/) | What-if scenario analysis with solver scoping | Rust, Go, Python, CLI/Bash |
+| [solver-what-if](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/solver-what-if/) | What-if scenario analysis with solver scoping | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `wedding` | Wedding budget planning with $25k constraint and vendor what-if scenarios | |
 | &nbsp;&nbsp;↳ `mars` | Mars colony resource allocation with dust storm what-if disruptions | |
 | &nbsp;&nbsp;↳ `recipe` | Recipe scaling with vegan substitution — may be UNSAT | |
@@ -95,7 +95,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Manufacturing** | Forecast demand, schedule production, enforce quality and safety standards | |
 | &nbsp;&nbsp;↳ real-world: **Logistics** | Predict delivery volumes, optimize fleet routing, enforce regulatory compliance | |
 | &nbsp;&nbsp;↳ real-world: **Healthcare** | Predict patient load, optimize staff scheduling, enforce clinical safety protocols | |
-| [llm-solver-hybrid](examples/integrations/llm-solver-hybrid/) | Hybrid LLM + Z3 solver problem solving | Rust, Go, Python, CLI/Bash |
+| [llm-solver-hybrid](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/llm-solver-hybrid/) | Hybrid LLM + Z3 solver problem solving | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `seating` | Wedding dinner seating — 12 guests across 3 tables with constraints | |
 | &nbsp;&nbsp;↳ `dungeon` | Dungeon layout — 5 rooms with boss and treasure placement rules | |
 | &nbsp;&nbsp;↳ `road-trip` | Road trip planning — 14 days across 5 national parks with preferences | |
@@ -108,7 +108,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Finance** | Map causal relationships between economic indicators | |
 | &nbsp;&nbsp;↳ real-world: **Genomics** | Learn gene regulatory networks from expression data | |
 | &nbsp;&nbsp;↳ real-world: **Quality control** | Find which process parameters affect product quality | |
-| [zen-decisions](examples/integrations/zen-decisions/) | ZEN decision table evaluation via nxusKit SDK | Rust, Go, Python, CLI/Bash |
+| [zen-decisions](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/zen-decisions/) | ZEN decision table evaluation via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `maze-rat` | First Hit Policy — route a maze runner through personality-driven decisions | |
 | &nbsp;&nbsp;↳ `potion` | Collect Hit Policy — match ingredient lists against brewing recipes | |
 | &nbsp;&nbsp;↳ `food-truck` | Expression Nodes — compute dynamic pricing with conditional logic | |
@@ -210,6 +210,6 @@ See [ACKNOWLEDGEMENTS.md](ACKNOWLEDGEMENTS.md) for a curated list of key project
 
 ## License
 
-nxusKit Examples is dual-licensed under MIT or Apache 2.0, at your option. See [LICENSE](LICENSE), [LICENSE-MIT](LICENSE-MIT), and [LICENSE-APACHE](LICENSE-APACHE).
+nxusKit Examples is dual-licensed under MIT or Apache 2.0, at your option. See [LICENSE](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE), [LICENSE-MIT](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE-MIT), and [LICENSE-APACHE](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE-APACHE).
 
 Copyright 2025-2026 nxus.SYSTEMS LLC.
