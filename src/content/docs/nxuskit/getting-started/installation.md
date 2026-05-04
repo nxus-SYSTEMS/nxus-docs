@@ -233,6 +233,9 @@ free_stream(stream)
 | Mock (testing) | `mock` | — |
 | Loopback (testing) | `loopback` | — |
 
+`groq` is Groq, Inc.'s provider and uses `GROQ_API_KEY`. xAI Grok is a
+separate provider candidate and is not included in the current provider table.
+
 ### CLIPS Quick Start
 
 CLIPS runs in-process (no API key needed). Create a provider with

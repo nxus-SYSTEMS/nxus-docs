@@ -48,6 +48,11 @@ export default defineConfig({
 					label: 'GitHub Repositories',
 					link: '/github/',
 				},
+				{
+					label: 'Codex Plugins',
+					collapsed: false,
+					autogenerate: { directory: 'codex-plugins' },
+				},
 				// Product sections are top-level groups. A custom switcher can
 				// replace this once multiple product docs are live.
 				{

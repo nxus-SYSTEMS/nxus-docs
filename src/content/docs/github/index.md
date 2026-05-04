@@ -12,11 +12,13 @@ The public nxus.SYSTEMS GitHub organization is
 | --- | --- |
 | [nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit) | Source for the multi-language SDK covering LLM providers, rule engines, constraint solving, Bayesian networks, decision tables, the C ABI, and CLI/Bash workflows. |
 | [nxusKit Examples](https://github.com/nxus-SYSTEMS/nxusKit-examples) | Runnable Rust, Go, Python, and CLI/Bash examples for common nxusKit integration patterns. |
+| [nxus Codex Plugins](https://github.com/nxus-SYSTEMS/nxus-codex-plugins) | Codex Plugin packages from nxus.SYSTEMS, including nxusKit Celerat. |
 | [nxus Docs](https://github.com/nxus-SYSTEMS/nxus-docs) | Source for this public documentation site, hosted at [docs.nxus.systems](https://docs.nxus.systems/). |
 
 ## Related Links
 
 - [nxusKit documentation](/nxuskit/)
 - [nxusKit examples documentation](/nxuskit/examples/)
+- [Codex Plugins documentation](/codex-plugins/)
 - [Commercial website](https://nxus.systems)
 - [Plans](https://nxus.systems/plans/builders)

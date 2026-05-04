@@ -20,6 +20,7 @@ const SITE_URL = 'https://docs.nxus.systems';
 const PRODUCT_SUMMARY = [
   'nxus.SYSTEMS documentation covers products and services from nxus.SYSTEMS.',
   'nxusKit is a multi-engine intelligence SDK for hosted and local LLMs, CLIPS rule engines, Z3 constraint solving, Bayesian network inference, ZEN decision tables, and utility/test providers.',
+  'nxus Codex Plugins packages Codex-ready workflows for nxusKit SDK integrations, including nxusKit Celerat.',
   'Current developer surfaces are Rust, Go, Python, the C ABI, and CLI/Bash workflows.',
 ];
 

@@ -26,6 +26,10 @@ configure them.
 
 **Legend**: Yes = supported, — = not applicable/not yet available
 
+**Groq vs. Grok:** `GROQ_API_KEY` is for Groq, Inc.'s API. xAI Grok uses
+xAI credentials and is not a first-class nxusKit provider in the current
+release.
+
 ## Authentication Methods
 
 ### API Key

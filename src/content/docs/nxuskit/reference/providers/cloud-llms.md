@@ -39,6 +39,10 @@ description: "Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fire
 
 ## Groq
 
+Groq here means Groq, Inc.'s inference API at `api.groq.com`. It is distinct
+from xAI's Grok model family, which is not a first-class nxusKit provider in
+the current release.
+
 ```json
 {
   "provider_type": "groq",

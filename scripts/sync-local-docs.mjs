@@ -16,7 +16,9 @@ import { fileURLToPath } from 'node:url';
 const DOCS_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXAMPLES_REPO = process.env.NXUSKIT_EXAMPLES_REPO;
 const SDK_REPO = process.env.NXUSKIT_REPO;
+const CODEX_PLUGINS_REPO = process.env.NXUS_CODEX_PLUGINS_REPO;
 const PUBLIC_EXAMPLES_URL = 'https://github.com/nxus-SYSTEMS/nxusKit-examples';
+const PUBLIC_CODEX_PLUGINS_URL = 'https://github.com/nxus-SYSTEMS/nxus-codex-plugins';
 const SDK_PACKAGING_DOCS_MAP = [
   ['getting-started.md', 'getting-started/installation.md'],
   ['auth-modes-by-provider.md', 'getting-started/authentication.md'],
@@ -125,9 +127,10 @@ const SDK_PUBLIC_SCRUBBERS = new Map([
 ]);
 
 const args = new Set(process.argv.slice(2));
-const explicitTarget = args.has('--examples') || args.has('--sdk') || args.has('--all');
+const explicitTarget = args.has('--examples') || args.has('--sdk') || args.has('--codex-plugins') || args.has('--all');
 const shouldSyncExamples = args.has('--all') || args.has('--examples') || !explicitTarget;
 const shouldSyncSdk = args.has('--all') || args.has('--sdk');
+const shouldSyncCodexPlugins = args.has('--all') || args.has('--codex-plugins');
 const skipGenerate = args.has('--skip-generate');
 
 if (args.has('--help') || args.has('-h')) {
@@ -139,6 +142,7 @@ const unknownArgs = [...args].filter((arg) => ![
   '--all',
   '--examples',
   '--sdk',
+  '--codex-plugins',
   '--skip-generate',
   '--help',
   '-h',
@@ -172,6 +176,11 @@ async function main() {
   if (shouldSyncSdk) {
     await syncSdk();
     synced.push('nxusKit SDK');
+  }
+
+  if (shouldSyncCodexPlugins) {
+    await syncCodexPlugins();
+    synced.push('nxus Codex Plugins');
   }
 
   console.log(`Synced ${synced.join(' and ')} docs into nxus-docs.`);
@@ -236,6 +245,170 @@ async function syncSdk() {
   }
   await rm(tmpRoot, { recursive: true, force: true });
   console.log(`Synced SDK docs -> ${path.relative(DOCS_ROOT, targetRoot)}`);
+}
+
+async function syncCodexPlugins() {
+  assertEnv('NXUS_CODEX_PLUGINS_REPO', CODEX_PLUGINS_REPO);
+  assertDirectory(CODEX_PLUGINS_REPO, 'nxus Codex Plugins repo');
+
+  const exportRoot = path.join(DOCS_ROOT, 'src/content/docs/codex-plugins');
+  await rm(exportRoot, { recursive: true, force: true });
+  mkdirSync(path.join(exportRoot, 'nxuskit/task-recipes'), { recursive: true });
+
+  await exportCodexPluginDoc(
+    path.join(CODEX_PLUGINS_REPO, 'README.md'),
+    path.join(exportRoot, 'index.md'),
+    {
+      title: 'Codex Plugins',
+      description: 'Codex Plugin packages from nxus.SYSTEMS, including nxusKit Celerat.',
+      sourceRel: 'README.md',
+    },
+  );
+
+  await exportCodexPluginDoc(
+    path.join(CODEX_PLUGINS_REPO, 'INSTALL.md'),
+    path.join(exportRoot, 'install.md'),
+    {
+      title: 'Install nxusKit Celerat',
+      description: 'Install the nxusKit Celerat Codex Plugin from the public nxus.SYSTEMS marketplace.',
+      sourceRel: 'INSTALL.md',
+    },
+  );
+
+  await exportCodexPluginDoc(
+    path.join(CODEX_PLUGINS_REPO, 'plugins/nxuskit/README.md'),
+    path.join(exportRoot, 'nxuskit/index.md'),
+    {
+      title: 'nxusKit Celerat',
+      description: 'Use nxusKit Celerat to accelerate nxusKit SDK integrations in Codex.',
+      sourceRel: 'plugins/nxuskit/README.md',
+    },
+  );
+
+  const recipesRoot = path.join(CODEX_PLUGINS_REPO, 'examples/codex-task-recipes');
+  assertDirectory(recipesRoot, 'nxus Codex Plugins task recipes');
+
+  for (const entry of await readdir(recipesRoot, { withFileTypes: true })) {
+    if (!entry.isFile() || !entry.name.endsWith('.md')) continue;
+
+    const sourcePath = path.join(recipesRoot, entry.name);
+    const targetName = entry.name === 'README.md' ? 'index.md' : entry.name;
+    const targetPath = path.join(exportRoot, 'nxuskit/task-recipes', targetName);
+
+    await exportCodexPluginDoc(sourcePath, targetPath, {
+      sourceRel: path.posix.join('examples/codex-task-recipes', entry.name),
+    });
+  }
+
+  await leakGateFiles(exportRoot);
+  console.log(`Synced Codex Plugins docs -> ${path.relative(DOCS_ROOT, exportRoot)}`);
+}
+
+async function exportCodexPluginDoc(sourcePath, targetPath, options = {}) {
+  if (!existsSync(sourcePath)) {
+    throw new Error(`Codex plugin doc source not found: ${sourcePath}`);
+  }
+
+  const raw = await readFile(sourcePath, 'utf8');
+  leakGate(raw, sourcePath);
+  mkdirSync(path.dirname(targetPath), { recursive: true });
+  await writeFile(targetPath, toCodexPluginStarlightPage(raw, options), 'utf8');
+}
+
+function toCodexPluginStarlightPage(markdown, options = {}) {
+  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  const existingFrontmatter = parseFrontmatter(body);
+  const sourceRel = options.sourceRel ?? '';
+
+  if (existingFrontmatter) {
+    body = existingFrontmatter.body;
+  }
+
+  const title = options.title ?? existingFrontmatter?.title ?? extractMarkdownTitle(body);
+  const description = options.description ?? existingFrontmatter?.description ?? '';
+
+  body = body.replace(/^#\s+.+\n+/, '');
+  body = rewriteCodexPluginLinks(body, sourceRel).trimEnd();
+
+  return [
+    '---',
+    `title: ${JSON.stringify(title)}`,
+    ...(description ? [`description: ${JSON.stringify(description)}`] : []),
+    '---',
+    '',
+    body,
+    '',
+  ].join('\n');
+}
+
+function parseFrontmatter(markdown) {
+  const match = markdown.match(/^---\n([\s\S]*?)\n---\s*/);
+  if (!match) return null;
+
+  const frontmatter = match[1];
+  const body = markdown.slice(match[0].length).trimStart();
+  return {
+    title: readSimpleFrontmatterValue(frontmatter, 'title'),
+    description: readSimpleFrontmatterValue(frontmatter, 'description'),
+    body,
+  };
+}
+
+function readSimpleFrontmatterValue(frontmatter, key) {
+  const match = frontmatter.match(new RegExp(`^${key}:\\s*(.+)$`, 'm'));
+  return match ? match[1].trim().replace(/^['"]|['"]$/g, '') : '';
+}
+
+function rewriteCodexPluginLinks(markdown, sourceRel) {
+  return markdown
+    .replace(/\[!\[[^\]]*\]\(https:\/\/img\.shields\.io\/badge\/[^)\s]+\)\]\([^)]+\)/g, '')
+    .replace(/!\[[^\]]*\]\(https:\/\/img\.shields\.io\/badge\/[^)\s]+\)/g, '')
+    .replace(/^\s*\n{2,}/gm, '\n\n')
+    .replace(/\]\(([^)\s#]+)(#[^)\s]+)?\)/g, (_, rawLink, hash = '') => {
+      const rewritten = codexPluginLinkTarget(rawLink, sourceRel, hash);
+      return `](${rewritten})`;
+    });
+}
+
+function codexPluginLinkTarget(rawLink, sourceRel, hash = '') {
+  if (/^(?:https?:|mailto:)/.test(rawLink)) {
+    return rawLink
+      .replace('https://docs.nxus.systems/nxuskit/', '/nxuskit/')
+      .replace('https://docs.nxus.systems/nxuskit', '/nxuskit')
+      + hash;
+  }
+
+  const normalized = path.posix.normalize(path.posix.join(path.posix.dirname(sourceRel), rawLink));
+  const withoutTrailingSlash = normalized.replace(/\/$/, '');
+
+  const internalRoutes = new Map([
+    ['README.md', '/codex-plugins/'],
+    ['INSTALL.md', '/codex-plugins/install/'],
+    ['plugins/nxuskit', '/codex-plugins/nxuskit/'],
+    ['plugins/nxuskit/README.md', '/codex-plugins/nxuskit/'],
+    ['examples', '/codex-plugins/nxuskit/task-recipes/'],
+    ['examples/README.md', '/codex-plugins/nxuskit/task-recipes/'],
+    ['examples/codex-task-recipes', '/codex-plugins/nxuskit/task-recipes/'],
+    ['examples/codex-task-recipes/README.md', '/codex-plugins/nxuskit/task-recipes/'],
+  ]);
+
+  const internalRoute = internalRoutes.get(withoutTrailingSlash);
+  if (internalRoute) return `${internalRoute}${hash}`;
+
+  const recipeMatch = withoutTrailingSlash.match(/^examples\/codex-task-recipes\/(.+)\.md$/);
+  if (recipeMatch) {
+    return `/codex-plugins/nxuskit/task-recipes/${recipeMatch[1]}/${hash}`;
+  }
+
+  if (/^(?:CONTRIBUTING|LICENSE(?:-[A-Z]+)?)\.md$/.test(withoutTrailingSlash) || withoutTrailingSlash === 'LICENSE') {
+    return `${PUBLIC_CODEX_PLUGINS_URL}/blob/main/${withoutTrailingSlash}${hash}`;
+  }
+
+  if (withoutTrailingSlash.startsWith('examples/fixtures/') || withoutTrailingSlash.startsWith('plugins/')) {
+    return `${PUBLIC_CODEX_PLUGINS_URL}/tree/main/${withoutTrailingSlash}${hash}`;
+  }
+
+  return `${PUBLIC_CODEX_PLUGINS_URL}/blob/main/${withoutTrailingSlash}${hash}`;
 }
 
 async function exportSdkPackagingDocs(sourceRoot, exportRoot) {
@@ -468,12 +641,13 @@ function assertEnv(name, value) {
 }
 
 function printHelp() {
-  console.log(`Usage: node scripts/sync-local-docs.mjs [--examples|--sdk|--all] [--skip-generate]
+  console.log(`Usage: node scripts/sync-local-docs.mjs [--examples|--sdk|--codex-plugins|--all] [--skip-generate]
 
 Targets:
   --examples       Generate and sync nxusKit examples docs only
   --sdk            Sync nxusKit SDK docs only
-  --all            Sync both sources
+  --codex-plugins  Sync nxus Codex Plugins docs only
+  --all            Sync all sources
 
 With no target flag, only the ready examples sync path runs.
 
@@ -483,6 +657,7 @@ Options:
 Environment:
   NXUSKIT_EXAMPLES_REPO  Path to the local nxusKit examples source repo
   NXUSKIT_REPO           Path to the local nxusKit SDK source repo
+  NXUS_CODEX_PLUGINS_REPO Path to the local nxus Codex Plugins source repo
 `);
 }
 
