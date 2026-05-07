@@ -198,7 +198,8 @@ async function syncExamples() {
   const raw = await readFile(sourceReadme, 'utf8');
   leakGate(raw, sourceReadme);
 
-  const exported = toExamplesStarlightPage(raw);
+  const examplesMetadata = await readExamplesManifestMetadata(EXAMPLES_REPO);
+  const exported = toExamplesStarlightPage(raw, examplesMetadata);
   const target = path.join(DOCS_ROOT, 'src/content/docs/nxuskit/examples/index.md');
   await writeFile(target, exported, 'utf8');
   console.log(`Synced examples README -> ${path.relative(DOCS_ROOT, target)}`);
@@ -540,25 +541,152 @@ function scrubChangelog(markdown) {
     .replace(/- Peeler adoption PR — post-release; engine warn-and-drop covers the gap\.\n/g, '');
 }
 
-function toExamplesStarlightPage(markdown) {
+async function readExamplesManifestMetadata(examplesRepo) {
+  const manifestPath = path.join(examplesRepo, 'conformance/examples_manifest.json');
+  if (!existsSync(manifestPath)) return new Map();
+
+  const raw = await readFile(manifestPath, 'utf8');
+  leakGate(raw, manifestPath);
+
+  const manifest = JSON.parse(raw);
+  return new Map(
+    (manifest.examples ?? [])
+      .filter((example) => example?.name && example?.tier)
+      .map((example) => [example.name, {
+        tier: example.tier,
+        editionNote: example.edition_note ?? '',
+        tierProfile: example.tier_profile ?? null,
+      }]),
+  );
+}
+
+function toExamplesStarlightPage(markdown, examplesMetadata = new Map()) {
   let body = markdown.replace(/^\uFEFF/, '').trimStart();
   const hasFrontmatter = body.startsWith('---\n');
 
   if (hasFrontmatter) {
-    return rewriteSourceLinks(body);
+    return transformExamplesDocsBody(body, examplesMetadata);
   }
 
   body = body.replace(/^# nxusKit Examples\s*\n+/, '');
 
   return [
     '---',
-    'title: Examples',
-    'description: 32 production examples for nxusKit in Rust, Go, Python, and CLI/Bash.',
+    'title: nxusKit Examples',
+    'description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.',
     '---',
     '',
-    rewriteSourceLinks(body).trimEnd(),
+    transformExamplesDocsBody(body, examplesMetadata).trimEnd(),
     '',
   ].join('\n');
+}
+
+function transformExamplesDocsBody(markdown, examplesMetadata) {
+  const withEditionColumn = addExamplesEditionColumn(markdown, examplesMetadata);
+  return rewriteSourceLinks(
+    examplesMetadata.size === 0 ? withEditionColumn : addExamplesEditionCopy(withEditionColumn),
+  );
+}
+
+function addExamplesEditionColumn(markdown, examplesMetadata) {
+  if (examplesMetadata.size === 0) return markdown;
+
+  const lines = markdown.split('\n');
+  const updated = [];
+  let inExamplesTable = false;
+  let pendingExamplesTableSeparator = false;
+
+  for (const line of lines) {
+    if (line.trim() === '| Example | Description | Languages |') {
+      updated.push('| Example | Edition | Description | Languages |');
+      inExamplesTable = true;
+      pendingExamplesTableSeparator = true;
+      continue;
+    }
+
+    if (pendingExamplesTableSeparator && /^\|\s*-+\s*\|\s*-+\s*\|\s*-+\s*\|$/.test(line.trim())) {
+      updated.push('|---------|---------|-------------|-----------|');
+      pendingExamplesTableSeparator = false;
+      continue;
+    }
+
+    if (inExamplesTable && line.startsWith('|')) {
+      updated.push(addEditionCellToExamplesRow(line, examplesMetadata));
+      continue;
+    }
+
+    inExamplesTable = false;
+    pendingExamplesTableSeparator = false;
+    updated.push(line);
+  }
+
+  return updated.join('\n');
+}
+
+function addEditionCellToExamplesRow(line, examplesMetadata) {
+  const cells = markdownTableCells(line);
+  if (cells.length !== 3) return line;
+
+  const exampleName = extractExampleName(cells[0]);
+  const metadata = exampleName ? examplesMetadata.get(exampleName) : null;
+  const edition = metadata ? formatExampleEdition(metadata) : '';
+
+  return `| ${cells[0]} | ${edition} | ${cells[1]} | ${cells[2]} |`;
+}
+
+function markdownTableCells(line) {
+  const trimmed = line.trim();
+  if (!trimmed.startsWith('|') || !trimmed.endsWith('|')) return [];
+  return trimmed.slice(1, -1).split('|').map((cell) => cell.trim());
+}
+
+function extractExampleName(exampleCell) {
+  const match = exampleCell.match(/\[([^\]]+)\]\(examples\/(?:patterns|integrations|apps)\/([^/)]+)\/\)/);
+  return match ? match[2] : null;
+}
+
+function formatExampleEdition(metadata) {
+  const tier = formatTierLabel(metadata.tier);
+  const note = metadata.editionNote || summarizeTierProfile(metadata.tierProfile);
+  if (!note) return tier;
+  return `${tier}<br/>${escapeMarkdownTableCell(note)}`;
+}
+
+function formatTierLabel(tier) {
+  if (tier === 'community') return 'Community';
+  if (tier === 'pro') return 'Pro';
+  return escapeMarkdownTableCell(String(tier));
+}
+
+function escapeMarkdownTableCell(value) {
+  return String(value).replace(/\r?\n/g, ' ').replace(/\|/g, '\\|');
+}
+
+function summarizeTierProfile(tierProfile) {
+  if (!tierProfile?.tiers?.includes('pro')) return '';
+
+  const proCapabilities = [
+    ...new Set((tierProfile.stages ?? [])
+      .filter((stage) => stage.tier === 'pro' && stage.required === false)
+      .flatMap((stage) => stage.capabilities ?? [])),
+  ];
+
+  if (proCapabilities.length === 0) return 'Pro enhancements available.';
+  return `Pro enhancements available: ${proCapabilities.join(', ')}.`;
+}
+
+function addExamplesEditionCopy(markdown) {
+  const editionCopy = [
+    'Edition labels describe the minimum runnable edition for the default path. A Community example can still list optional Pro enhancements; those stages are disabled by default and require a Pro entitlement only when you run them.',
+    '',
+  ].join('\n');
+
+  if (markdown.includes(editionCopy.trim())) return markdown;
+
+  return markdown.replace(
+    /(See `conformance\/example-tiers\.json` for the full tier map\.\n)/,
+    `${editionCopy}$1`,
+  );
 }
 
 function rewriteSourceLinks(markdown) {

@@ -7,6 +7,9 @@ import starlightVersions from 'starlight-versions';
 const site = process.env.SITE_URL ?? 'https://docs.nxus.systems';
 const base = process.env.BASE_PATH;
 const versionSegmentPattern = /^v\d+\.\d+\.\d+$/;
+/**
+ * @param {string | URL} page
+ */
 const isArchivedVersionUrl = (page) => {
 	const { pathname } = new URL(page);
 	const [firstSegment] = pathname.split('/').filter(Boolean);
@@ -17,6 +20,10 @@ const isArchivedVersionUrl = (page) => {
 export default defineConfig({
 	site,
 	...(base ? { base } : {}),
+	redirects: {
+		'/nxuskit/examples/examples/integrations/common-sense-guardrails/':
+			'https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/common-sense-guardrails/',
+	},
 	integrations: [
 		sitemap({
 			filter: (page) => !isArchivedVersionUrl(page),

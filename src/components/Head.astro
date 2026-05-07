@@ -64,4 +64,4 @@ const structuredData = {
 
 <DefaultHead />
 {isArchivedVersionPage && <meta name="robots" content="noindex, follow" />}
-<script type="application/ld+json" set:html={JSON.stringify(structuredData)} />
+<script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
