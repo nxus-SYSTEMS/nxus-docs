@@ -21,4 +21,4 @@ The public nxus.SYSTEMS GitHub organization is
 - [nxusKit examples documentation](/nxuskit/examples/)
 - [Codex Plugins documentation](/codex-plugins/)
 - [Commercial website](https://nxus.systems)
-- [Plans](https://nxus.systems/plans/builders)
+- [Plans](https://nxus.systems/pricing)
