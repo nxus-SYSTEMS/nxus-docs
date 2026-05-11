@@ -20,4 +20,4 @@ The public nxus.SYSTEMS GitHub organization is
 - [nxusKit documentation](/nxuskit/)
 - [nxusKit examples documentation](/nxuskit/examples/)
 - [Commercial website](https://nxus.systems)
-- [Plans](https://nxus.systems/plans/builders)
+- [Plans](https://nxus.systems/pricing)
