@@ -20,6 +20,25 @@ description: "Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fire
 
 **Capabilities:** System messages, streaming, vision, tools/function calling, JSON mode, JSON schema, seed, logprobs, presence/frequency penalty, response format
 
+## xAI Grok
+
+```json
+{
+  "provider_type": "xai",
+  "api_key": "xai-...",
+  "base_url": "https://api.x.ai/v1",
+  "timeout_ms": 30000
+}
+```
+
+**Environment variable:** `XAI_API_KEY`
+
+**Supported models:** `grok-4`, `grok-4-latest`, `grok-4-fast`
+
+**Capabilities:** System messages, streaming, vision, tools/function calling, JSON mode, JSON schema
+
+`xai` is the canonical provider id for xAI Grok. `groq` remains Groq, Inc.; there is no `grok` provider alias.
+
 ## Anthropic Claude
 
 ```json
@@ -38,10 +57,6 @@ description: "Configuration reference for OpenAI, Anthropic, Groq, Mistral, Fire
 **Capabilities:** System messages, streaming, vision, tools/function calling, JSON mode, top-k sampling. Max stop sequences: 8192.
 
 ## Groq
-
-Groq here means Groq, Inc.'s inference API at `api.groq.com`. It is distinct
-from xAI's Grok model family, which is not a first-class nxusKit provider in
-the current release.
 
 ```json
 {

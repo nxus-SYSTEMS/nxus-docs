@@ -15,6 +15,7 @@ configure them.
 |----------|:------------:|:-------:|:-----:|--------------|-----------|
 | OpenAI / GPT | Yes | Yes | — | `OPENAI_API_KEY` | [platform.openai.com/api-keys](https://platform.openai.com/api-keys) |
 | Anthropic / Claude | Yes | Yes | — | `ANTHROPIC_API_KEY` | [console.anthropic.com/settings/keys](https://console.anthropic.com/settings/keys) |
+| xAI Grok | Yes | Yes | — | `XAI_API_KEY` | [console.x.ai](https://console.x.ai/) |
 | Groq | Yes | Yes | — | `GROQ_API_KEY` | [console.groq.com/keys](https://console.groq.com/keys) |
 | Mistral AI | Yes | Yes | — | `MISTRAL_API_KEY` | [console.mistral.ai/api-keys](https://console.mistral.ai/api-keys) |
 | Fireworks AI | Yes | Yes | — | `FIREWORKS_API_KEY` | [fireworks.ai/account/api-keys](https://fireworks.ai/account/api-keys) |
@@ -25,10 +26,6 @@ configure them.
 | LM Studio | No | — | — | `LM_STUDIO_HOST` | — |
 
 **Legend**: Yes = supported, — = not applicable/not yet available
-
-**Groq vs. Grok:** `GROQ_API_KEY` is for Groq, Inc.'s API. xAI Grok uses
-xAI credentials and is not a first-class nxusKit provider in the current
-release.
 
 ## Authentication Methods
 
@@ -119,6 +116,7 @@ Provider          Status              Source    Auth Methods
 ─────────────────────────────────────────────────────────────
 openai            Authenticated       env      api_key
 claude            Authenticated       store    api_key
+xai               Not authenticated   —        api_key
 groq              Not authenticated   —        api_key
 ollama            Not required        —        —
 lm-studio         Not required        —        —

@@ -5,8 +5,15 @@ description: "Configuration reference for the CLIPS rule engine, MCP, Mock, and 
 
 ## CLIPS Rule Engine
 
-The CLIPS provider runs rules against a CLIPS 6.4.1 expert system engine.
+The CLIPS provider runs rules against a CLIPS 6.4.2 expert system engine.
 Unlike LLM providers, CLIPS uses deterministic rule-based reasoning.
+
+A word about CLIPS: During its development at NASA from 1985 to 1996, the
+primary CLIPS contributors were: Robert Savely, who conceived and championed
+the project; Chris Culbert, who managed the project; Gary Riley and Brian
+Dantes, who were the lead developers; and Frank Lopez, who developed the first
+version. Since leaving NASA in 1996, Gary Riley has maintained CLIPS as public
+domain software.
 
 ```json
 {

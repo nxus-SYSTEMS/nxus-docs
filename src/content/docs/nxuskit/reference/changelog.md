@@ -12,6 +12,117 @@ Public SDK release tags begin at `sdk-v0.9.0`. Earlier entries preserve
 pre-public development history with normalized pre-public version numbers after
 historical version resets.
 
+## [Unreleased]
+
+## [0.9.4] - 2026-05-11
+
+> v0.9.4 release candidate. Provider-capability modernization and release
+> hardening, consolidating sprints S1 (streaming logprobs, branch 098),
+> S2/S3 (provider capability modernization + Capability Manifest v2 decision,
+> branch 099), and S4-S6 (CLI Level 2 completion, examples & bundle alignment,
+> docs & release candidate, branch 100). Lockstep version bump `0.9.3 -> 0.9.4`
+> across all components. **No C ABI signature changes** in this release.
+
+### Added - S1: Streaming Logprobs + Capability Metadata (branch 098)
+
+- `StreamLogprobsDelta` type (Rust engine + wrapper, Go, Python) carrying
+  per-chunk `TokenLogprob` entries on streaming responses.
+- `StreamChunk.logprobs: Option<StreamLogprobsDelta>` (Rust),
+  `StreamChunk.Logprobs *StreamLogprobsDelta` (Go), and
+  `StreamChunk.logprobs: Optional[StreamLogprobsDelta]` (Python) - additive,
+  defaults to `None`/`nil` for non-supporting providers.
+- `ProviderCapabilities.supports_streaming_logprobs: bool` flag with
+  `debug_assert!` enforcing `supports_streaming_logprobs => supports_logprobs`.
+- GPT-5.4 reasoning-compat warn-and-drop guard: when `reasoning.effort != "none"`,
+  `temperature`, `top_p`, and `logprobs` are dropped with a warning rather than
+  passed through.
+- CLI `provider info` exposes the `streaming_logprobs` row (human + JSON).
+- Cross-language parity harness at
+  `internal/tests/parity/stream_logprobs/run_parity.sh`.
+- OpenAI: `supports_streaming_logprobs = true` (only supporting provider per
+  fixture evidence); all other providers `false` per the evidence-first rule.
+
+### Added - S2/S3: Provider Capability Modernization + Manifest v2 (branch 099)
+
+- Provider capability surface modernized; `CapabilityProvider` / "capability
+  provider" vocabulary introduced (no breaking `LLMProvider` rename).
+- xAI Grok runtime provider support under canonical provider id `xai`
+  (`XAI_API_KEY`, default base URL `https://api.x.ai/v1`); `groq` remains
+  Groq, Inc. and no confusing `grok` alias is registered.
+- `CapabilityManifest` v2 concept with a public preview subset for
+  provider/model capability discovery (full internal manifest unchanged); the
+  publication decision is recorded in the 099 artifacts.
+- OpenAI remains Chat-Completions-first (no full Responses API migration; see
+  the deferral register).
+
+### Added - S4: CLI Level 2 completion & stabilization (branch 100)
+
+- **`nxuskit-cli zen validate`** (Pro) - structural validation of a ZEN JSON
+  Decision Model (JDM): rejects `functionNode` (JavaScript), checks decision
+  table node shape, attempts expression compilation, and reports
+  node/decision-table/rule counts. Backed by a new pure
+  `nxuskit_engine::providers::zen::validate(model_json) -> Result<ZenValidationReport>`
+  engine entry point. Exit 0 = valid; exit 5 = `parse_error` (unparseable input)
+  or `zen_validate_error` (structurally invalid, with a `problems[]` report);
+  exit 4 = `entitlement_denied`.
+- **`nxuskit-cli zen test`** (Pro) - run a ZEN decision table against a fixture
+  set `{table, cases: [{name, input, expected}]}` and compare each actual
+  output to `expected`; on mismatch emits a structured diff report (exit 5,
+  `zen_test_mismatch`), a per-case eval error is `zen_test_eval_error`, a
+  fixture parse error is `parse_error`.
+- **`nxuskit-cli bn learn`** - parameter learning (MLE / Bayesian) of a
+  Bayesian network's CPDs from a CSV dataset given the network skeleton; output
+  is the learned network, BIF-exportable. **`nxuskit-cli bn evidence`** -
+  validate/normalize an observations map against a network. (Community edition;
+  structure search `hill_climb`/`k2` remains engine-only - see the deferral
+  register.)
+- `solver what-if --compare` and the unsatisfiable-assumptions path are now
+  covered by non-`#[ignore]`d, entitlement-aware tests (skip-with-reason in CE,
+  assertions run in the Pro CI lane `.github/workflows/ci-pro.yml`).
+- `CliError::CommandValidation { code, message, details }` - exit 5 with a
+  command-specific `code` string + structured `details` (used by the new ZEN
+  commands; exit-code *set* unchanged, FR-001 / Article IV).
+- Shell support policy documented (`completions`: bash, zsh, fish supported;
+  PowerShell not generated in v0.9.4; helper snippets + schema bundle locations).
+
+### Added - S5: Examples repo & bundle alignment (branch 100)
+
+- Examples portfolio bundle-instruction refs bumped to v0.9.4;
+  `PYTHON_EXAMPLES_STATUS.md` records the v0.9.4 Python-parity scope (minimal
+  slice: the SDK-side `packages/nxuskit-py` FFI version-guard alignment is in
+  scope; the 17 already-passing Python examples stay; new examples remain
+  examples-team backlog). Rust vision example confirmed using the v0.9.2
+  multimodal wrapper API with no text-only caveat.
+
+### Changed
+
+- `nxuskit-py` `_ffi.py` `EXPECTED_VERSION` aligned to the package version
+  (`0.9.1` -> `0.9.4`) - the cffi loader requires the linked library's
+  `nxuskit_version()` to match; this unblocks the Python FFI examples that were
+  previously `broken-upstream` against the v0.9.3 mismatch.
+- Lockstep version bump `0.9.3 -> 0.9.4`: Rust workspace + `nxuskit` crate, C
+  ABI version constant (`nxuskit-core`), Go `nxuskit-go` (`Version` +
+  `ExpectedNxuskitVersion`), Python `nxuskit-py` (`__version__` + pyproject).
+
+### Compatibility
+
+- **No C ABI signature changes** in v0.9.4 - only the ABI version constant
+  moves (`0.9.3 -> 0.9.4`); function signatures and struct layouts are frozen
+  (Article XIV).
+- All v0.9.4 additions are additive. The CLI exit-code *set* (0/1/2/3/4/5/130)
+  is unchanged; the new ZEN commands introduce new `code` strings within exit 5.
+- S1/S2/S3 baseline behavior (streaming logprobs, provider capability metadata)
+  is preserved.
+- A deferral register (`internal/v0.9.4-deferral-register.md`) lists items
+  deferred from v0.9.4 (full ARM64/RPi release gate, Plugin Wave 2/3, CLIPS
+  SIGABRT hardening, full conversation-graph/team-runtime GA, full MCP policy
+  layer + public `mcp-workflow`, full Responses API migration, GPT-5.5+ claims,
+  computer-use harness in core, remaining direct-provider implementations,
+  shared OCR/audio/batch/moderation/embeddings/rerank surfaces, provider-hosted
+  server tools, enterprise governance surfaces, Go 1.26.3 toolchain bump vs
+  advisory waiver, Level 2 replay/session-history, BN structure-search CLI,
+  remaining Python example parity) with owners and target releases.
+
 ## [0.9.3] - 2026-04-29
 
 > Published SDK release `sdk-v0.9.3`. Production licensing real-purchase

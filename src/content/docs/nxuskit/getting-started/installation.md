@@ -13,8 +13,10 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 
 ## 1. Download and Install the SDK
 
-The examples below download the OSS edition. Pro users can replace `oss` with
-`pro` in the asset patterns and extracted directory names.
+The examples below download Community Edition. Current release asset names use
+`oss` for the Community Edition archive segment. Pro users can replace `oss`
+with `pro` in the asset patterns and extracted directory names after activating
+or receiving a Pro entitlement.
 
 ### macOS (Apple Silicon)
 
@@ -71,10 +73,26 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-0.9.3-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-0.9.4-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
+
+### CLI shell completions (optional)
+
+The bundle includes `nxuskit-cli`. Generate shell completions with:
+
+```bash
+nxuskit-cli completions bash > /usr/local/etc/bash_completion.d/nxuskit-cli
+nxuskit-cli completions zsh  > ~/.zfunc/_nxuskit-cli      # add ~/.zfunc to $fpath
+nxuskit-cli completions fish > ~/.config/fish/completions/nxuskit-cli.fish
+```
+
+Supported shells for `completions` in v0.9.4: **bash**, **zsh**, **fish**.
+PowerShell completion is **not generated** in v0.9.4 (the `completions` command
+accepts only those three shell names). JSON schemas referenced by the CLI ship
+under the bundle's `include/` (the C header) and `conformance/` (packet/pipeline
+schemas) directories; see [SDK Bundle Contents](#2-sdk-bundle-contents) above.
 
 ## 2. SDK Bundle Contents
 
@@ -127,7 +145,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-0.9.3-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-0.9.4-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -135,7 +153,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-0.9.3-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-0.9.4-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -222,6 +240,7 @@ free_stream(stream)
 | Anthropic Claude | `claude` | `ANTHROPIC_API_KEY` |
 | Ollama | `ollama` | `OLLAMA_HOST` (optional) |
 | LM Studio | `lmstudio` | — |
+| xAI Grok | `xai` | `XAI_API_KEY` |
 | Groq | `groq` | `GROQ_API_KEY` |
 | Fireworks | `fireworks` | `FIREWORKS_API_KEY` |
 | Together | `together` | `TOGETHER_API_KEY` |
@@ -233,8 +252,8 @@ free_stream(stream)
 | Mock (testing) | `mock` | — |
 | Loopback (testing) | `loopback` | — |
 
-`groq` is Groq, Inc.'s provider and uses `GROQ_API_KEY`. xAI Grok is a
-separate provider candidate and is not included in the current provider table.
+`xai` is xAI Grok and uses `XAI_API_KEY`. `groq` is Groq, Inc.'s provider and
+uses `GROQ_API_KEY`. There is no `grok` provider alias.
 
 ### CLIPS Quick Start
 

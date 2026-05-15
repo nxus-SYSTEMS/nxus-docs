@@ -16,6 +16,8 @@ and timing fields.
 
 - [call](#call)
 - [zen eval](#zen-eval)
+- [zen validate](#zen-validate)
+- [zen test](#zen-test)
 - [solver solve](#solver-solve)
   - [Solver Format Disambiguation](#solver-format-disambiguation)
 - [solver what-if](#solver-what-if)
@@ -27,6 +29,8 @@ and timing fields.
 - [provider list](#provider-list)
 - [provider info](#provider-info)
 - [bn infer](#bn-infer)
+- [bn learn](#bn-learn)
+- [bn evidence](#bn-evidence)
 - [pipeline run](#pipeline-run)
 - [artifact merge](#artifact-merge)
 - [artifact summarize](#artifact-summarize)
@@ -133,6 +137,149 @@ echo '{
 
 - `Entitlement check failed: zen` -- Fix: ZEN is Pro-gated. Ensure a valid Pro license is active.
 - `Invalid ZEN eval input: missing field "table"` -- Fix: both `table` and `input` are required fields.
+
+---
+
+### `zen validate`
+
+Structural validation of a ZEN JSON Decision Model (JDM) - no evaluation
+(Pro-gated, Level 2 utility). Checks that the model parses into the JDM
+structure, rejects `functionNode`s (JavaScript not supported), checks decision
+table node shape, attempts to compile expressions, and counts nodes / decision
+tables / rules.
+
+The `--input` content is the **JDM model itself** - NOT the `{table, input}`
+envelope that `zen eval` accepts.
+
+| Field (input) | Type | Required | Description |
+|---|---|---|---|
+| (whole document) | JSON object | **yes** | A JDM model with `nodes` (and usually `edges`) arrays |
+
+**Success output (`--format json`):**
+
+```json
+{
+  "result": {
+    "valid": true,
+    "node_count": 3,
+    "decision_table_count": 1,
+    "rule_count": 4,
+    "problems": [],
+    "elapsed_ms": 1.2
+  },
+  "trace_id": "...", "timestamp": "...", "request_metadata": { "...": "..." }
+}
+```
+
+**Failure (structurally invalid JDM)** - exit 5, stderr `ErrorEnvelope`:
+
+```json
+{
+  "code": "zen_validate_error",
+  "message": "JDM is structurally invalid: 1 problem(s) found",
+  "details": { "problems": [
+    { "kind": "FunctionNodeRejected", "path": "nodes[1] (id=fn1)", "message": "JDM contains a Function node (JavaScript); not supported ..." }
+  ] },
+  "trace_id": "...", "timestamp": "..."
+}
+```
+
+`problems[].kind` is one of: `ParseError`, `FunctionNodeRejected`,
+`MalformedNode`, `ExpressionError`, `MissingField`.
+
+**Example:**
+
+```bash
+echo '{
+  "contentType": "application/vnd.gorules.decision",
+  "nodes": [
+    {"id":"input","type":"inputNode","name":"In","position":{"x":0,"y":0}},
+    {"id":"dt","type":"decisionTableNode","name":"T","content":{
+      "hitPolicy":"first",
+      "rules":[{"_id":"r1","age":">= 21","tier":"\"A\""},{"_id":"r2","age":"","tier":"\"B\""}],
+      "inputs":[{"id":"age","name":"Age","field":"age"}],
+      "outputs":[{"id":"tier","name":"Tier","field":"tier"}]
+    },"position":{"x":200,"y":0}},
+    {"id":"output","type":"outputNode","name":"Out","position":{"x":400,"y":0}}
+  ],
+  "edges":[
+    {"id":"e1","sourceId":"input","targetId":"dt","type":"edge"},
+    {"id":"e2","sourceId":"dt","targetId":"output","type":"edge"}
+  ]
+}' | nxuskit-cli zen validate --input - --format json
+```
+
+**Exit codes:** 0 = structurally valid; 4 = `entitlement_denied` (no Pro); 5 =
+unparseable input (`parse_error`) or structurally invalid JDM (`zen_validate_error`);
+1 = unexpected internal error. No new exit codes beyond the stable scheme.
+
+---
+
+### `zen test`
+
+Run a ZEN decision table against a set of fixture cases and compare each actual
+output to its `expected` (Pro-gated, Level 2 utility). On mismatch, emits a
+diff-style report - never an opaque internal error.
+
+**Input envelope:**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `table` | JSON object | **yes** | JDM model (same shape `zen eval`'s `table` accepts) |
+| `cases` | array | **yes** | List of `{name, input, expected}` cases |
+| `cases[].name` | string | **yes** | Case identifier |
+| `cases[].input` | JSON object | **yes** | Context data for this case |
+| `cases[].expected` | JSON value | **yes** | Expected evaluation output (deep equality) |
+
+**Success output (`--format json`):**
+
+```json
+{
+  "result": {
+    "total": 2, "passed": 2, "failed": 0,
+    "cases": [
+      {"name":"low_risk","passed":true,"expected":{"tier":"A"},"actual":{"tier":"A"}},
+      {"name":"high_risk","passed":true,"expected":{"tier":"C"},"actual":{"tier":"C"}}
+    ],
+    "elapsed_ms": 3.4
+  },
+  "trace_id": "...", "timestamp": "...", "request_metadata": { "...": "..." }
+}
+```
+
+**Failure (one or more mismatches)** - exit 5, stderr `ErrorEnvelope`:
+
+```json
+{
+  "code": "zen_test_mismatch",
+  "message": "1 of 2 case(s) did not match expected output",
+  "details": { "failed": [
+    {"name":"high_risk","expected":{"tier":"C"},"actual":{"tier":"B"},"diff":{"tier":{"expected":"C","actual":"B"}}}
+  ] },
+  "trace_id": "...", "timestamp": "..."
+}
+```
+
+A *fixture parse error* is `code = "parse_error"` (exit 5); an *evaluation
+error on a case* (e.g. the table itself is malformed) is `code = "zen_test_eval_error"`
+(exit 5) with the offending case named in `details.case` - both distinct from a
+mismatch (`zen_test_mismatch`).
+
+**Example:**
+
+```bash
+echo '{
+  "table": { "...": "JDM model" },
+  "cases": [
+    {"name":"prime","input":{"age":30,"score":800},"expected":{"tier":"A"}},
+    {"name":"young","input":{"age":19,"score":400},"expected":{"tier":"C"}}
+  ]
+}' | nxuskit-cli zen test --input - --format json
+```
+
+**Exit codes:** 0 = all cases match; 4 = `entitlement_denied`; 5 = parse error
+(`parse_error`), per-case eval error (`zen_test_eval_error`), or one+ mismatches
+(`zen_test_mismatch`); 1 = unexpected internal error.
 
 ---
 
@@ -418,6 +565,86 @@ echo '{
 - `Invalid variable name '...': ...` -- Fix: node names must be non-empty alphanumeric identifiers.
 - `Failed to set CPD for '...': ...` -- Fix: probability array length must equal the product of the node's state count and all parent nodes' state counts.
 - `Invalid BN inference input: missing field "network"` -- Fix: `network` and `query_nodes` are both required.
+
+---
+
+### `bn learn`
+
+Parameter learning: estimate the conditional probability tables (CPDs) of a
+network from a CSV dataset, given the network *skeleton* (variables + edges, no
+CPDs). The learned network is BIF-exportable. Community edition.
+
+**Input schema (`BnLearnInput`):**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `network` | object | **yes** | Network skeleton: `{"nodes": [{"name","states"}], "edges": [{"from","to"}]}` -- NO `cpds` |
+| `data_file` | string | **yes** | Path to the CSV dataset; column headers must map to variable names |
+| `learner` | string | no (default `"mle"`) | `"mle"` (Maximum Likelihood + Laplace smoothing) or `"bayesian"` (Dirichlet prior) |
+| `pseudocount` | number | no (default `1.0`) | Laplace pseudocount; for `bayesian`, the default Dirichlet alpha |
+
+**Output (`--format json`):** `{"result": {"learned_cpts": {var: [probs]}, "bif": "<BIF text>", "num_rows": N, "num_variables": M, "learner": "mle", "elapsed_ms": ...}}`.
+
+**Example:**
+
+```bash
+echo '{
+  "network": {
+    "nodes": [
+      {"name":"Rain","states":["yes","no"]},
+      {"name":"Sprinkler","states":["on","off"]},
+      {"name":"WetGrass","states":["yes","no"]}
+    ],
+    "edges": [{"from":"Rain","to":"WetGrass"},{"from":"Sprinkler","to":"WetGrass"}]
+  },
+  "data_file": "/abs/path/to/training.csv",
+  "learner": "mle",
+  "pseudocount": 0.0
+}' | nxuskit-cli bn learn --input - --format json
+```
+
+**Common errors:**
+
+- `Training CSV not found: ...` -- Fix: `data_file` must be a path to an existing CSV file.
+- `Failed to load dataset '...': ...` -- Fix: CSV column headers must match the network's variable names; cell values must match declared states (empty / `?` cells are treated as missing).
+- `Unknown learner '...'. Valid: mle, bayesian` -- Fix: use one of the two supported learners.
+
+**Excluded from v0.9.4:** structure *search* (`hill_climb` / `k2`) is engine-only, not a CLI surface; streaming; team-runtime lineage.
+
+---
+
+### `bn evidence`
+
+Validate and normalize an observations map against a fully-specified network
+(same `network` shape as `bn infer`). Returns the validated observations or a
+structured validation error naming the offending variable/state. Community edition.
+
+**Input schema (`BnEvidenceInput`):**
+
+| Field | Type | Required | Description |
+|---|---|---|---|
+| `network` | object | **yes** | `{"nodes": [...], "edges": [...], "cpds": {...}}` (same as `bn infer`) |
+| `observations` | object | no | `{var: state, ...}` -- each is validated against the network |
+
+**Output (`--format json`):** `{"result": {"valid": true, "evidence": {var: state}, "observation_count": N, "elapsed_ms": ...}}`.
+
+**Example:**
+
+```bash
+echo '{
+  "network": {
+    "nodes": [{"name":"Rain","states":["yes","no"]},{"name":"WetGrass","states":["yes","no"]}],
+    "edges": [{"from":"Rain","to":"WetGrass"}],
+    "cpds": {"Rain":{"probabilities":[0.2,0.8]},"WetGrass":{"probabilities":[0.9,0.1,0.1,0.9]}}
+  },
+  "observations": {"Rain":"yes"}
+}' | nxuskit-cli bn evidence --input - --format json
+```
+
+**Common errors:**
+
+- `Invalid observation Rain=maybe: ...` (exit 5, `validation`) -- Fix: the observed state must be one of the variable's declared states.
+- `Invalid observation variable '...': ...` -- Fix: the variable must exist in the network.
 
 ---
 
@@ -1011,12 +1238,18 @@ empty or contain partial output.
 | `trace_id` | string | 8-character hex trace ID |
 | `timestamp` | string | ISO 8601 UTC timestamp |
 
-**Exit code → `code` mapping:**
+**Exit code -> `code` mapping (Level 1 and Level 2):**
 
 | Exit | `code` values |
 |------|--------------|
-| 1 | `internal_error`, `provider_error`, `engine_error` |
+| 0 | (success - no `code`) |
+| 1 | `internal_error`, `provider_error`, `engine_error`, `internal` |
 | 2 | `timeout`, `idle_timeout` |
-| 3 | `auth_failure`, `token_expired`, `token_missing` |
+| 3 | `auth_failure`, `auth_failed`, `token_expired`, `token_missing` |
 | 4 | `entitlement_denied`, `session_limit_reached` |
-| 5 | `validation_error`, `unknown_provider`, `unknown_session` |
+| 5 | `validation`, `validation_error`, `parse_error`, `unknown_provider`, `unknown_session`, `zen_validate_error`, `zen_test_mismatch`, `zen_test_eval_error` |
+| 130 | `cancelled` (SIGINT) |
+
+The exit-code set itself is frozen (FR-001 / Article IV): Level 2 commands like
+`zen validate` / `zen test` introduce new `code` strings within exit 5, not new
+exit codes.

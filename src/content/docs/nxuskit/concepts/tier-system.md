@@ -5,16 +5,19 @@ description: "Feature and limit comparison across Community, Pro, and Enterprise
 
 ## Overview
 
-nxusKit ships in three editions. **Community** is free and open-source.
-**Pro** unlocks advanced reasoning engines, plugin infrastructure, and
-deployment-ready licensing for commercial applications. **Enterprise**
-adds delegated trust and custom plugin configuration for large organizations.
+nxusKit SDK uses a dual-edition model for the public SDK surface.
+
+The public `nxusKit` repository contains nxusKit SDK Community Edition, which is free and open source. CE is not a trial, teaser, or time-limited evaluation; it is intended to remain useful on its own. We do not move released CE features behind the Pro paywall, and code released as CE remains available under its open-source license.
+
+Community Edition is useful on its own without Pro. The public `nxusKit-examples` repository labels examples by edition, so developers can see which workflows run with CE alone and which require Pro.
+
+nxusKit SDK Pro adds proprietary commercial capabilities for teams that need solver-backed workflows, ZEN decision tables, plugin loading, and trust-policy features. Pro is distributed under a paid, trial, or evaluation entitlement. **Enterprise** adds delegated trust and custom plugin configuration for large organizations.
 
 ## Feature Matrix
 
 | Feature Domain | Community | Pro | Enterprise |
 |----------------|:---------:|:---:|:----------:|
-| LLM Cloud Providers (OpenAI, Claude, Groq, Mistral, Fireworks, Together, OpenRouter, Perplexity) | Yes | Yes | Yes |
+| LLM Cloud Providers (OpenAI, Claude, xAI Grok, Groq, Mistral, Fireworks, Together, OpenRouter, Perplexity) | Yes | Yes | Yes |
 | LLM Local Providers (Ollama, LM Studio) | Yes | Yes | Yes |
 | CLIPS Rule Engine (ClipsSession API) | Yes | Yes | Yes |
 | Bayesian Network Inference | Yes | Yes | Yes |

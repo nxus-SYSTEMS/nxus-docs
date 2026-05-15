@@ -93,11 +93,32 @@ C ABI / direct JSON:
   warning instead of swallowing the request, so callers can detect and
   fall back.
 
-## Out Of Scope For v0.9.3
+## v0.9.4 update
 
-- **Streaming logprobs.** `StreamChunk` deliberately has no logprobs
-  surface in v0.9.3. Streaming logprobs are deferred to a future additive
-  release rather than retrofitted into the unary path.
-- **Public `CapabilityManifest` v2.** Capability detection remains an
-  implementation detail in v0.9.3; the manifest type and any associated
-  client-side discovery API are deferred to a future release.
+- **Streaming logprobs shipped in v0.9.4** (sprint S1 / branch 098).
+  `StreamChunk` now carries `logprobs: Option<StreamLogprobsDelta>` (Rust),
+  `Logprobs *StreamLogprobsDelta` (Go), `logprobs: Optional[StreamLogprobsDelta]`
+  (Python) - additive, defaults to `None`/`nil` for non-supporting providers.
+  `ProviderCapabilities.supports_streaming_logprobs` gates it (with
+  `supports_streaming_logprobs => supports_logprobs` enforced). OpenAI is the
+  only provider with `supports_streaming_logprobs = true` per fixture evidence;
+  all others are `false` per the evidence-first rule. See the v0.9.4 CHANGELOG
+  entry for the cross-language parity harness.
+- **`CapabilityManifest` v2** - a public preview subset for provider/model
+  capability discovery was introduced in v0.9.4 (sprint S2/S3 / branch 099);
+  the full internal manifest is unchanged. The publication decision is recorded
+  in the 099 artifacts.
+
+## Out Of Scope For v0.9.3 (historical - now shipped in v0.9.4)
+
+> This section describes the v0.9.3 release scope; the items below shipped in
+> v0.9.4 - see the "v0.9.4 update" section above. Kept for historical context.
+
+- **Streaming logprobs.** `StreamChunk` deliberately had no logprobs
+  surface in v0.9.3. See the internal v0.9.4 deferral register and the regression guard
+  `packages/nxuskit-engine/crates/nxuskit-engine/tests/streaming_logprobs_scope_test.rs`.
+  When streaming logprobs ship, the contract will be added additively
+  rather than retrofitted into the unary path. *(Shipped in v0.9.4.)*
+- **Public `CapabilityManifest` v2.** Capability detection was internal in
+  v0.9.3; the manifest type and any associated client-side discovery API
+  were deferred to v0.9.4. *(Public preview subset shipped in v0.9.4.)*
