@@ -3,9 +3,11 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import starlight from '@astrojs/starlight';
 import starlightVersions from 'starlight-versions';
+import { currentDocsVersionLabel } from './scripts/docs-version.mjs';
 
 const site = process.env.SITE_URL ?? 'https://docs.nxus.systems';
 const base = process.env.BASE_PATH;
+const currentVersionLabel = currentDocsVersionLabel();
 const versionSegmentPattern = /^v\d+\.\d+\.\d+$/;
 /**
  * @param {string | URL} page
@@ -47,7 +49,7 @@ export default defineConfig({
 						// First entry = most recently archived version.
 						{ slug: 'v0.9.2', label: 'v0.9.2' },
 					],
-					current: { label: 'v0.9.4 (latest)' },
+					current: { label: currentVersionLabel },
 				}),
 			],
 			sidebar: [

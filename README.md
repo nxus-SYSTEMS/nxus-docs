@@ -58,6 +58,9 @@ Set `NXUSKIT_REPO=/path/to/sdk/source` before running it.
 Astro first, then `scripts/generate-llms-txt.mjs`, producing both `dist/llms.txt`
 and `dist/llms-full.txt`. Use `refresh:docs` or `refresh:docs:all` when the
 content source and the deployed AI index files should be refreshed together.
+The docs version selector's current label is derived from the first released
+version heading in `src/content/docs/nxuskit/reference/changelog.md`; the build
+checks the rendered selector so it stays aligned with synced SDK docs.
 
 GitHub Actions in this public repo should only validate/build the Starlight
 site and deploy GitHub Pages. The final target is `docs.nxus.systems`, so
