@@ -22,6 +22,7 @@ deployment.
 - Sync default generated docs from local source repos: `npm run sync:docs`
 - Sync examples docs only: `npm run sync:docs:examples`
 - Sync SDK docs only: `npm run sync:docs:sdk`
+- Archive the current generated docs tree before a release handoff: `npm run archive:docs`
 - Refresh default docs and rebuild indexes: `npm run refresh:docs`
 
 Run `npm run build` before opening a PR when changing site structure, content,
@@ -32,6 +33,15 @@ styles, components, or generation scripts.
 - Hosted AI indexes are generated into `dist/llms.txt` and
   `dist/llms-full.txt` by `npm run build`. Do not hand-edit generated files in
   `dist/`.
+- The current docs version selector label is derived from the first released
+  semver heading in `src/content/docs/nxuskit/reference/changelog.md`.
+- Before replacing `src/content/docs/nxuskit/` with a newer SDK release,
+  archive the previous current docs as `src/content/docs/vX.Y.Z/`. The
+  `sync:docs:sdk` path does this automatically when it detects a newer SDK
+  changelog.
+- Released versions inside the retained changelog window must either have an
+  archive directory or an explicit skip record in
+  `scripts/docs-version-policy.mjs`.
 - The repo-root `llms.txt` is a concise discovery file for agents inspecting the
   GitHub repository. It should point to `https://docs.nxus.systems/llms.txt`
   and `https://docs.nxus.systems/llms-full.txt` rather than duplicating full

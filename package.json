@@ -7,6 +7,7 @@
     "start": "astro dev",
     "build": "npm run check:docs-version && astro build && npm run build:llms && node scripts/check-docs-version.mjs --dist",
     "check:docs-version": "node scripts/check-docs-version.mjs",
+    "archive:docs": "node scripts/archive-current-docs.mjs",
     "build:llms": "node scripts/generate-llms-txt.mjs",
     "preview": "astro preview",
     "astro": "astro",

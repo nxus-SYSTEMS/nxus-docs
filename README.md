@@ -38,6 +38,7 @@ npm run sync:docs:examples  # generate + sync nxusKit examples docs locally
 npm run sync:docs:sdk       # sync nxusKit SDK docs locally when ready
 npm run sync:docs           # current default: examples only
 npm run sync:docs:all       # run both local sync paths
+npm run archive:docs         # snapshot current docs under src/content/docs/vX.Y.Z/
 npm run build               # build Starlight + generate llms.txt files
 npm run refresh:docs        # sync default docs, then build and regenerate indexes
 npm run refresh:docs:all    # sync examples + SDK, then build and regenerate indexes
@@ -61,6 +62,11 @@ content source and the deployed AI index files should be refreshed together.
 The docs version selector's current label is derived from the first released
 version heading in `src/content/docs/nxuskit/reference/changelog.md`; the build
 checks the rendered selector so it stays aligned with synced SDK docs.
+When `sync:docs:sdk` sees a newer SDK changelog than the current docs, it
+archives the previous current docs before replacing `src/content/docs/nxuskit/`.
+Released versions in the changelog must either have a `src/content/docs/vX.Y.Z/`
+archive or an explicit skip record in `scripts/docs-version-policy.mjs`; skipped
+records are source policy only and are not rendered into the public docs site.
 
 GitHub Actions in this public repo should only validate/build the Starlight
 site and deploy GitHub Pages. The final target is `docs.nxus.systems`, so

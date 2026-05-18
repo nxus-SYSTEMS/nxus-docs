@@ -12,6 +12,8 @@ import { copyFileSync, existsSync, mkdirSync } from 'node:fs';
 import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { archiveCurrentDocs } from './docs-archive.mjs';
+import { compareDocsVersions, latestReleasedVersionFromChangelog } from './docs-version.mjs';
 
 const DOCS_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXAMPLES_REPO = process.env.NXUSKIT_EXAMPLES_REPO;
@@ -168,6 +170,10 @@ const FORBIDDEN_TERMS = [
 async function main() {
   const synced = [];
 
+  if (shouldSyncSdk) {
+    await archiveCurrentDocsBeforeSdkSync();
+  }
+
   if (shouldSyncExamples) {
     await syncExamples();
     synced.push('nxusKit examples');
@@ -239,6 +245,11 @@ async function syncSdk() {
   await leakGateFiles(exportRoot);
 
   const targetRoot = path.join(DOCS_ROOT, 'src/content/docs/nxuskit');
+  await archiveCurrentDocsForNewSdkVersion(
+    path.join(exportRoot, 'reference/changelog.md'),
+    'exported SDK docs',
+  );
+
   if (exportMode === 'authoritative') {
     await replaceDirectoryContents(exportRoot, targetRoot, new Set(['examples']));
   } else {
@@ -246,6 +257,43 @@ async function syncSdk() {
   }
   await rm(tmpRoot, { recursive: true, force: true });
   console.log(`Synced SDK docs -> ${path.relative(DOCS_ROOT, targetRoot)}`);
+}
+
+async function archiveCurrentDocsBeforeSdkSync() {
+  assertEnv('NXUSKIT_REPO', SDK_REPO);
+  assertDirectory(SDK_REPO, 'nxusKit SDK repo');
+
+  await archiveCurrentDocsForNewSdkVersion(
+    path.join(SDK_REPO, 'CHANGELOG.md'),
+    'SDK source changelog',
+  );
+}
+
+async function archiveCurrentDocsForNewSdkVersion(newChangelogPath, label) {
+  const currentChangelogPath = path.join(DOCS_ROOT, 'src/content/docs/nxuskit/reference/changelog.md');
+
+  if (!existsSync(currentChangelogPath) || !existsSync(newChangelogPath)) {
+    return;
+  }
+
+  const currentVersion = latestReleasedVersionFromChangelog(await readFile(currentChangelogPath, 'utf8'));
+  const newVersion = latestReleasedVersionFromChangelog(await readFile(newChangelogPath, 'utf8'));
+  const comparison = compareDocsVersions(newVersion, currentVersion);
+
+  if (comparison < 0) {
+    throw new Error(`${label} is older than current docs (${newVersion} < ${currentVersion}).`);
+  }
+
+  if (comparison === 0) {
+    return;
+  }
+
+  const archive = await archiveCurrentDocs(currentVersion);
+  if (archive.archived) {
+    console.log(`Archived current docs ${currentVersion} -> ${path.relative(DOCS_ROOT, archive.path)}`);
+  } else {
+    console.log(`Archive already exists for current docs ${currentVersion}: ${path.relative(DOCS_ROOT, archive.path)}`);
+  }
 }
 
 async function syncCodexPlugins() {
@@ -781,6 +829,10 @@ With no target flag, only the ready examples sync path runs.
 
 Options:
   --skip-generate  Do not run the examples README generator before syncing
+
+SDK release archives:
+  When --sdk sees a newer SDK changelog than the current docs, it archives the
+  previous current docs under src/content/docs/vX.Y.Z/ before replacing them.
 
 Environment:
   NXUSKIT_EXAMPLES_REPO  Path to the local nxusKit examples source repo
