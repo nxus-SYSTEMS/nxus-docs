@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "astro dev",
     "start": "astro dev",
-    "build": "npm run check:docs-version && astro build && npm run build:llms && node scripts/check-docs-version.mjs --dist",
+    "build": "npm run check:docs-version && npm run check:public-leaks && astro build && npm run build:llms && node scripts/check-docs-version.mjs --dist",
     "check:docs-version": "node scripts/check-docs-version.mjs",
+    "check:public-leaks": "node scripts/check-public-leaks.mjs",
     "archive:docs": "node scripts/archive-current-docs.mjs",
     "build:llms": "node scripts/generate-llms-txt.mjs",
     "preview": "astro preview",

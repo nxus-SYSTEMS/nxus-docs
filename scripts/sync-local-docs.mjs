@@ -14,6 +14,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { archiveCurrentDocs } from './docs-archive.mjs';
 import { compareDocsVersions, latestReleasedVersionFromChangelog } from './docs-version.mjs';
+import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
 
 const DOCS_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXAMPLES_REPO = process.env.NXUSKIT_EXAMPLES_REPO;
@@ -155,17 +156,6 @@ if (unknownArgs.length > 0) {
   printHelp();
   process.exit(1);
 }
-
-const FORBIDDEN_TERMS = [
-  ['INTERNAL', 'ONLY'].join('-'),
-  ['nxusKit', 'internal'].join('-'),
-  ['nxusKit', 'examples', 'internal'].join('-'),
-  ['nxusKit', 'plugins', 'internal'].join('-'),
-  '../DevOps/',
-  'DevOps/sharedStatus/',
-  'internal/todos/',
-  'peeler/internal/',
-];
 
 async function main() {
   const synced = [];
@@ -549,19 +539,26 @@ function scrubLogprobsMigrationGuide(markdown) {
       /\*\*Audience:\*\* SDK consumers — Peeler in particular — that previously needed\nto request token log probabilities through `provider_options` because the\nSDK had no first-class field\./,
       '**Audience:** SDK consumers that previously needed to request token log\nprobabilities through `provider_options` because the SDK had no first-class\nfield.',
     )
-    .replace(
-      /- \*\*Streaming logprobs\.\*\* `StreamChunk` deliberately has no logprobs\n  surface in v0\.9\.3\. See `specs\/097-sdk-093-release\/deferred-v0\.9\.4\.md`\n  and the regression guard\n  `packages\/nxuskit-engine\/crates\/nxuskit-engine\/tests\/streaming_logprobs_scope_test\.rs`\.\n  When streaming logprobs ship, the contract will be added additively\n  rather than retrofitted into the unary path\./,
-      '- **Streaming logprobs.** `StreamChunk` deliberately has no logprobs\n  surface in v0.9.3. Streaming logprobs are deferred to a future additive\n  release rather than retrofitted into the unary path.',
-    )
-    .replace(
-      /- \*\*Public `CapabilityManifest` v2\.\*\* Capability detection is internal in\n  v0\.9\.3; the manifest type and any associated client-side discovery API\n  are deferred to v0\.9\.4\./,
-      '- **Public `CapabilityManifest` v2.** Capability detection remains an\n  implementation detail in v0.9.3; the manifest type and any associated\n  client-side discovery API are deferred to a future release.',
-    )
+    .replace(/\n## Out Of Scope For v0\.9\.3 \(historical - now shipped in v0\.9\.4\)[\s\S]*?(?=\n## |$)/, '\n')
     .replace(/\n## Peeler Adoption[\s\S]*$/m, '\n');
 }
 
 function scrubChangelog(markdown) {
   return scrubLicenseGuide(markdown)
+    .replace(
+      /\(no full Responses API migration; see\n  the deferral register\)/,
+      '(no full Responses API migration)',
+    )
+    .replace(
+      /\(Community edition;\n  structure search `hill_climb`\/`k2` remains engine-only - see the deferral\n  register\.\)/,
+      '(Community edition.)',
+    )
+    .replace(
+      /\n- A deferral register \(`internal\/v0\.9\.4-deferral-register\.md`\) lists items\n  deferred from v0\.9\.4[\s\S]*? with owners and target releases\.\n/,
+      '\n',
+    )
+    .replace(/\n### Deferred\n\n[\s\S]*?(?=\n### Test counts|\n## \[)/m, '\n')
+    .replace(/\n+(?=## \[0\.9\.3\])/, '\n\n')
     .replace(
       /  - Release builds embed\n    `\.\.\/DevOps\/sharedData\/keys\/es256-production-pubkey\.pem` with\n    `kid: es256-v1`\./,
       '  - Release builds embed the production ES256 public key with\n    `kid: es256-v1`.',
@@ -577,14 +574,6 @@ function scrubChangelog(markdown) {
     .replace(
       /  - \*\*Migration guide:\*\* `sdk-packaging\/docs\/logprobs-migration\.md` covers\n    Rust \+ Python \+ C ABI before\/after with capability-gating rationale\./,
       '  - **Migration guide:** The [logprobs migration guide](/nxuskit/migration/logprobs-migration/) covers\n    Rust + Python + C ABI before/after with capability-gating rationale.',
-    )
-    .replace(
-      /### Deferred \(see `specs\/097-sdk-093-release\/deferred-v0\.9\.4\.md`\)/,
-      '### Deferred',
-    )
-    .replace(
-      /- `CapabilityManifest` v2 public\/preview surface — kept internal in\n  v0\.9\.3\./,
-      '- `CapabilityManifest` v2 public/preview surface — deferred beyond v0.9.3.',
     )
     .replace(/- Peeler adoption PR — post-release; engine warn-and-drop covers the gap\.\n/g, '');
 }
@@ -792,7 +781,7 @@ async function* walkMarkdown(root) {
 }
 
 function leakGate(content, filePath) {
-  for (const term of FORBIDDEN_TERMS) {
+  for (const term of FORBIDDEN_PUBLIC_DOCS_TERMS) {
     if (content.includes(term)) {
       throw new Error(`Forbidden term "${term}" found in ${filePath}`);
     }
