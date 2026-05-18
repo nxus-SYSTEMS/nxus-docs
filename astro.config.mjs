@@ -47,7 +47,7 @@ export default defineConfig({
 						// First entry = most recently archived version.
 						{ slug: 'v0.9.2', label: 'v0.9.2' },
 					],
-					current: { label: 'v0.9.3 (latest)' },
+					current: { label: 'v0.9.4 (latest)' },
 				}),
 			],
 			sidebar: [
