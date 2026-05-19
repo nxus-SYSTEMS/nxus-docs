@@ -25,7 +25,7 @@ export default defineConfig({
 	...(base ? { base } : {}),
 	redirects: {
 		'/nxuskit/examples/examples/integrations/common-sense-guardrails/':
-			'https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/common-sense-guardrails/',
+			'/nxuskit/examples/integrations/common-sense-guardrails/',
 	},
 	integrations: [
 		sitemap({

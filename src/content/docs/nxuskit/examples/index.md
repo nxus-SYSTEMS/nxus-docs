@@ -43,39 +43,39 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 
 | Example | Edition | Description | Languages |
 |---------|---------|-------------|-----------|
-| [basic-chat](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/basic-chat/) | Community | Basic chat completion with a simple prompt | Rust, Go, Python |
-| [streaming](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/streaming/) | Community | Streaming chat completion with real-time output | Rust, Go, Python |
-| [multi-provider](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/multi-provider/) | Community | Using multiple providers in one application | Rust, Go, Python, CLI/Bash |
-| [convenience-api](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/convenience-api/) | Community | LiteLLM-style convenience API usage | Rust, Go |
-| [blocking-api](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/blocking-api/) | Community | Synchronous blocking API for simpler use cases | Rust, Go |
-| [capability-detection](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/capability-detection/) | Community | Detecting provider capabilities at runtime | Rust, Go, CLI/Bash |
-| [cost-routing](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/cost-routing/) | Community | Cost-aware provider routing and selection | Rust, Go, Python, CLI/Bash |
-| [polymorphic](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/polymorphic/) | Community | Polymorphic provider patterns with trait objects | Rust, Go |
-| [retry-fallback](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/retry-fallback/) | Community | Retry and fallback strategies across providers | Rust, Go, Python, CLI/Bash |
-| [structured-output](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/structured-output/) | Community | JSON mode and structured output generation | Rust, Go, Python, CLI/Bash |
-| [timeout-config](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/timeout-config/) | Community | Timeout configuration and connection management | Rust, Go, Python |
-| [token-budget](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/token-budget/) | Community | Token budget management and cost estimation | Rust, Go, Python, CLI/Bash |
-| [vision](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/vision/) | Community | Vision and multimodal capabilities with images | Rust, Go, Python, CLI/Bash |
-| [auth-helper](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/auth-helper/) | Community | OAuth login flow and credential management helper | Rust, Go |
+| [basic-chat](/nxuskit/examples/patterns/basic-chat/) | Community | Basic chat completion with a simple prompt | Rust, Go, Python |
+| [streaming](/nxuskit/examples/patterns/streaming/) | Community | Streaming chat completion with real-time output | Rust, Go, Python |
+| [multi-provider](/nxuskit/examples/patterns/multi-provider/) | Community | Using multiple providers in one application | Rust, Go, Python, CLI/Bash |
+| [convenience-api](/nxuskit/examples/patterns/convenience-api/) | Community | LiteLLM-style convenience API usage | Rust, Go |
+| [blocking-api](/nxuskit/examples/patterns/blocking-api/) | Community | Synchronous blocking API for simpler use cases | Rust, Go |
+| [capability-detection](/nxuskit/examples/patterns/capability-detection/) | Community | Detecting provider capabilities at runtime | Rust, Go, CLI/Bash |
+| [cost-routing](/nxuskit/examples/patterns/cost-routing/) | Community | Cost-aware provider routing and selection | Rust, Go, Python, CLI/Bash |
+| [polymorphic](/nxuskit/examples/patterns/polymorphic/) | Community | Polymorphic provider patterns with trait objects | Rust, Go |
+| [retry-fallback](/nxuskit/examples/patterns/retry-fallback/) | Community | Retry and fallback strategies across providers | Rust, Go, Python, CLI/Bash |
+| [structured-output](/nxuskit/examples/patterns/structured-output/) | Community | JSON mode and structured output generation | Rust, Go, Python, CLI/Bash |
+| [timeout-config](/nxuskit/examples/patterns/timeout-config/) | Community | Timeout configuration and connection management | Rust, Go, Python |
+| [token-budget](/nxuskit/examples/patterns/token-budget/) | Community | Token budget management and cost estimation | Rust, Go, Python, CLI/Bash |
+| [vision](/nxuskit/examples/patterns/vision/) | Community | Vision and multimodal capabilities with images | Rust, Go, Python, CLI/Bash |
+| [auth-helper](/nxuskit/examples/patterns/auth-helper/) | Community | OAuth login flow and credential management helper | Rust, Go |
 | &nbsp;&nbsp;↳ `status` |  | List provider authentication status and stored credentials |  |
 | &nbsp;&nbsp;↳ `set` |  | Store an API key for a specific provider |  |
 | &nbsp;&nbsp;↳ `remove` |  | Remove a stored API key for a provider |  |
 | &nbsp;&nbsp;↳ `dashboard` |  | Open provider credential dashboard in browser |  |
-| [solver](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/solver/) | Pro | Z3 constraint solver integration via nxusKit SDK | Rust, Go, Python, CLI/Bash |
+| [solver](/nxuskit/examples/patterns/solver/) | Pro | Z3 constraint solver integration via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `theme-park` |  | Budget and space planning for a theme park with rides, food courts, and entertainment zones |  |
 | &nbsp;&nbsp;↳ `space-colony` |  | Resource allocation for a space colony dealing with solar storm what-if scenarios |  |
 | &nbsp;&nbsp;↳ `fantasy-draft` |  | Fantasy sports draft optimization under salary cap with injury what-if analysis |  |
 | &nbsp;&nbsp;↳ real-world: **Theme Park Planning** |  | Facility layout, capital budgeting, resource allocation |  |
 | &nbsp;&nbsp;↳ real-world: **Space Colony Planning** |  | Infrastructure sizing, capacity planning, disaster recovery modeling |  |
 | &nbsp;&nbsp;↳ real-world: **Fantasy Sports Draft** |  | Portfolio optimization, team composition, auction bidding strategies |  |
-| [bayesian-inference](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/bayesian-inference/) | Community | Bayesian network inference via nxusKit SDK | Rust, Go, Python, CLI/Bash |
+| [bayesian-inference](/nxuskit/examples/patterns/bayesian-inference/) | Community | Bayesian network inference via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `haunted-house` |  | Investigate a haunted house — is it a ghost or a raccoon? |  |
 | &nbsp;&nbsp;↳ `coffee-shop` |  | Diagnose bad espresso from grind size, temperature, and bean age |  |
 | &nbsp;&nbsp;↳ `plant-doctor` |  | Diagnose a sick plant from overwatering, nutrient, and disease evidence |  |
 | &nbsp;&nbsp;↳ real-world: **Haunted House** |  | Fault diagnosis, anomaly detection, sensor fusion from multiple noisy sensors pointing to hidden causes |  |
 | &nbsp;&nbsp;↳ real-world: **Coffee Shop** |  | Manufacturing quality control, process parameter tuning, root cause analysis in production |  |
 | &nbsp;&nbsp;↳ real-world: **Plant Doctor** |  | Medical diagnosis, agricultural advisory systems, multi-symptom differential diagnosis |  |
-| [solver-what-if](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/patterns/solver-what-if/) | Pro | What-if scenario analysis with solver scoping | Rust, Go, Python, CLI/Bash |
+| [solver-what-if](/nxuskit/examples/patterns/solver-what-if/) | Pro | What-if scenario analysis with solver scoping | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `wedding` |  | Wedding budget planning with $25k constraint and vendor what-if scenarios |  |
 | &nbsp;&nbsp;↳ `mars` |  | Mars colony resource allocation with dust storm what-if disruptions |  |
 | &nbsp;&nbsp;↳ `recipe` |  | Recipe scaling with vegan substitution — may be UNSAT |  |
@@ -87,13 +87,13 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 
 | Example | Edition | Description | Languages |
 |---------|---------|-------------|-----------|
-| [ollama](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/ollama/) | Community | Using Ollama for local inference | Rust, Go, Python |
-| [lmstudio](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/lmstudio/) | Community | Using LM Studio for local inference | Rust, Go |
-| [alert-triage](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/alert-triage/) | Community | Alert triage with LLM-powered analysis | Rust, Go, CLI/Bash |
-| [cli-assistant](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/cli-assistant/) | Community | Interactive CLI assistant with LLM backend | Rust, Go |
-| [clips-basics](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/clips-basics/) | Community | CLIPS rule engine basics via nxusKit SDK | Rust, Go, CLI/Bash |
-| [clips-llm-hybrid](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/clips-llm-hybrid/) | Community | Hybrid CLIPS rules + LLM reasoning | Rust, Go, Python, CLI/Bash |
-| [common-sense-guardrails](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/common-sense-guardrails/) | Community<br/>Runs in Community Edition. Pro adds optional Solver and ZEN proof stages. | Progressive LLM guardrails with Community CLIPS validation and optional Pro proof stages | Python, CLI/Bash |
+| [ollama](/nxuskit/examples/integrations/ollama/) | Community | Using Ollama for local inference | Rust, Go, Python |
+| [lmstudio](/nxuskit/examples/integrations/lmstudio/) | Community | Using LM Studio for local inference | Rust, Go |
+| [alert-triage](/nxuskit/examples/integrations/alert-triage/) | Community | Alert triage with LLM-powered analysis | Rust, Go, CLI/Bash |
+| [cli-assistant](/nxuskit/examples/integrations/cli-assistant/) | Community | Interactive CLI assistant with LLM backend | Rust, Go |
+| [clips-basics](/nxuskit/examples/integrations/clips-basics/) | Community | CLIPS rule engine basics via nxusKit SDK | Rust, Go, CLI/Bash |
+| [clips-llm-hybrid](/nxuskit/examples/integrations/clips-llm-hybrid/) | Community | Hybrid CLIPS rules + LLM reasoning | Rust, Go, Python, CLI/Bash |
+| [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) | Community<br/>Runs in Community Edition. Pro adds optional Solver and ZEN proof stages. | Progressive LLM guardrails with Community CLIPS validation and optional Pro proof stages | Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `car-wash` |  | Catch the classic car-wash walk-vs-drive failure with object-presence rules and optional solver proof |  |
 | &nbsp;&nbsp;↳ `coupon-stack` |  | Reject promotion stacking that violates eligibility and margin policy, with optional ZEN validation |  |
 | &nbsp;&nbsp;↳ `pallet-door` |  | Block unsafe warehouse advice that ignores dimensional clearance, with optional solver what-if |  |
@@ -101,7 +101,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **LLM answer validation** |  | Catch plausible recommendations that fail physical, operational, or policy preconditions before they reach users |  |
 | &nbsp;&nbsp;↳ real-world: **Policy enforcement** |  | Turn free-form answers into facts, apply deterministic rules, and produce auditable repair context |  |
 | &nbsp;&nbsp;↳ real-world: **Operational decision support** |  | Preserve fast LLM drafting while requiring concrete feasibility evidence for workflow-critical recommendations |  |
-| [model-research-harness](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/model-research-harness/) | Community<br/>Runs in Community Edition. Future Pro profiles may add Solver portfolio optimization and ZEN decision tables. | Python-first harness for provider-neutral model research, Promptfoo import, CLIPS policy, Bayesian scoring, and dry-run lifecycle recommendations | Python, CLI/Bash |
+| [model-research-harness](/nxuskit/examples/integrations/model-research-harness/) | Community<br/>Runs in Community Edition. Future Pro profiles may add Solver portfolio optimization and ZEN decision tables. | Python-first harness for provider-neutral model research, Promptfoo import, CLIPS policy, Bayesian scoring, and dry-run lifecycle recommendations | Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `basic-ticket-routing` |  | Run a credentials-free support ticket classification research smoke |  |
 | &nbsp;&nbsp;↳ `promptfoo-import` |  | Import a Promptfoo config and run the converted nxusKit harness matrix |  |
 | &nbsp;&nbsp;↳ `software-dev` |  | Evaluate code analysis, bug finding, patching, generation, refactoring, and review outputs |  |
@@ -109,7 +109,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Provider comparison** |  | Compare local and cloud providers through one provider-neutral workflow while keeping capability claims honest |  |
 | &nbsp;&nbsp;↳ real-world: **Lifecycle policy** |  | Generate dry-run pull, pin, keep, or retest recommendations bounded by deterministic policy |  |
 | &nbsp;&nbsp;↳ real-world: **Software development workflow research** |  | Exercise code analysis, bug finding, bugfixing, generation, refactoring, and review scenarios with public-safe fixtures |  |
-| [bn-solver-clips-pipeline](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/bn-solver-clips-pipeline/) | Pro | Three-stage BN prediction → Solver optimization → CLIPS safety pipeline | Rust, Go, CLI/Bash |
+| [bn-solver-clips-pipeline](/nxuskit/examples/integrations/bn-solver-clips-pipeline/) | Pro | Three-stage BN prediction → Solver optimization → CLIPS safety pipeline | Rust, Go, CLI/Bash |
 | &nbsp;&nbsp;↳ `festival` |  | Music festival staging — crowd predictions drive band scheduling and safety |  |
 | &nbsp;&nbsp;↳ `rescue` |  | Search and rescue — survivor probability drives team assignment and safety checks |  |
 | &nbsp;&nbsp;↳ `bakery` |  | Bakery scheduling — demand forecasts drive oven allocation and allergen separation |  |
@@ -118,11 +118,11 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Manufacturing** |  | Forecast demand, schedule production, enforce quality and safety standards |  |
 | &nbsp;&nbsp;↳ real-world: **Logistics** |  | Predict delivery volumes, optimize fleet routing, enforce regulatory compliance |  |
 | &nbsp;&nbsp;↳ real-world: **Healthcare** |  | Predict patient load, optimize staff scheduling, enforce clinical safety protocols |  |
-| [llm-solver-hybrid](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/llm-solver-hybrid/) | Pro | Hybrid LLM + Z3 solver problem solving | Rust, Go, Python, CLI/Bash |
+| [llm-solver-hybrid](/nxuskit/examples/integrations/llm-solver-hybrid/) | Pro | Hybrid LLM + Z3 solver problem solving | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `seating` |  | Wedding dinner seating — 12 guests across 3 tables with constraints |  |
 | &nbsp;&nbsp;↳ `dungeon` |  | Dungeon layout — 5 rooms with boss and treasure placement rules |  |
 | &nbsp;&nbsp;↳ `road-trip` |  | Road trip planning — 14 days across 5 national parks with preferences |  |
-| [bn-structure-learning](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/bn-structure-learning/) | Community | Bayesian network structure learning from data | Rust, Go, Python |
+| [bn-structure-learning](/nxuskit/examples/integrations/bn-structure-learning/) | Community | Bayesian network structure learning from data | Rust, Go, Python |
 | &nbsp;&nbsp;↳ `golf` |  | Golf course conditions — weather, soil, and maintenance factor learning |  |
 | &nbsp;&nbsp;↳ `bmx` |  | BMX performance — skill level, technique, and jump factor learning |  |
 | &nbsp;&nbsp;↳ `sourdough` |  | Sourdough baking — feeding schedule, flour type, and temperature factor learning |  |
@@ -131,7 +131,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ real-world: **Finance** |  | Map causal relationships between economic indicators |  |
 | &nbsp;&nbsp;↳ real-world: **Genomics** |  | Learn gene regulatory networks from expression data |  |
 | &nbsp;&nbsp;↳ real-world: **Quality control** |  | Find which process parameters affect product quality |  |
-| [zen-decisions](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/integrations/zen-decisions/) | Pro | ZEN decision table evaluation via nxusKit SDK | Rust, Go, Python, CLI/Bash |
+| [zen-decisions](/nxuskit/examples/integrations/zen-decisions/) | Pro | ZEN decision table evaluation via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `maze-rat` |  | First Hit Policy — route a maze runner through personality-driven decisions |  |
 | &nbsp;&nbsp;↳ `potion` |  | Collect Hit Policy — match ingredient lists against brewing recipes |  |
 | &nbsp;&nbsp;↳ `food-truck` |  | Expression Nodes — compute dynamic pricing with conditional logic |  |
@@ -140,27 +140,27 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 
 | Example | Edition | Description | Languages |
 |---------|---------|-------------|-----------|
-| [puzzler](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/apps/puzzler/) | Pro | Multi-approach puzzle solver comparing CLIPS, LLM, and hybrid strategies | Rust, Go |
+| [puzzler](/nxuskit/examples/apps/puzzler/) | Pro | Multi-approach puzzle solver comparing CLIPS, LLM, and hybrid strategies | Rust, Go |
 | &nbsp;&nbsp;↳ `sudoku` |  | Solve Sudoku puzzles using CLIPS constraint propagation |  |
 | &nbsp;&nbsp;↳ `set-game` |  | Find valid SET card combinations using CLIPS pattern matching |  |
 | &nbsp;&nbsp;↳ `compare` |  | Side-by-side comparison of CLIPS, LLM, and hybrid solvers |  |
-| [racer](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/apps/racer/) | Pro | CLIPS vs LLM head-to-head benchmarking tool | Rust, Go |
+| [racer](/nxuskit/examples/apps/racer/) | Pro | CLIPS vs LLM head-to-head benchmarking tool | Rust, Go |
 | &nbsp;&nbsp;↳ `race` |  | Head-to-head CLIPS vs LLM race on a single problem |  |
 | &nbsp;&nbsp;↳ `benchmark` |  | Statistical benchmarking with multiple runs and timing |  |
 | &nbsp;&nbsp;↳ `list` |  | List all available problems with difficulty ratings |  |
 | &nbsp;&nbsp;↳ `describe` |  | Show detailed description of a specific problem |  |
-| [riffer](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/apps/riffer/) | Pro | Music sequence analysis and transformation tool (still learning to shred) | Rust, Go |
+| [riffer](/nxuskit/examples/apps/riffer/) | Pro | Music sequence analysis and transformation tool (still learning to shred) | Rust, Go |
 | &nbsp;&nbsp;↳ `analyze` |  | Analyze a music sequence for key, intervals, and rhythm patterns |  |
 | &nbsp;&nbsp;↳ `score` |  | Score a sequence on six musical dimensions |  |
 | &nbsp;&nbsp;↳ `transform` |  | Transform a sequence — transpose, invert, or retrograde |  |
 | &nbsp;&nbsp;↳ `convert` |  | Convert between MIDI and MusicXML formats |  |
-| [ruler](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/apps/ruler/) | Pro | LLM-powered CLIPS rule generator with automatic validation | Rust, Go, CLI/Bash |
+| [ruler](/nxuskit/examples/apps/ruler/) | Pro | LLM-powered CLIPS rule generator with automatic validation | Rust, Go, CLI/Bash |
 | &nbsp;&nbsp;↳ `generate` |  | Generate CLIPS rules from natural language descriptions |  |
 | &nbsp;&nbsp;↳ `validate` |  | Validate CLIPS rule syntax and semantic correctness |  |
 | &nbsp;&nbsp;↳ `save` |  | Save generated rules to a file for later use |  |
 | &nbsp;&nbsp;↳ `load` |  | Load previously saved rules from a file |  |
 | &nbsp;&nbsp;↳ `examples` |  | Run progressive complexity examples demonstrating rule generation |  |
-| [arbiter](https://github.com/nxus-SYSTEMS/nxusKit-examples/tree/main/examples/apps/arbiter/) | Pro | CLIPS-validated LLM retry app with rule-based answer verification | Rust, Go, CLI/Bash |
+| [arbiter](/nxuskit/examples/apps/arbiter/) | Pro | CLIPS-validated LLM retry app with rule-based answer verification | Rust, Go, CLI/Bash |
 | &nbsp;&nbsp;↳ `classification` |  | Categorize input text into specified categories |  |
 | &nbsp;&nbsp;↳ `extraction` |  | Extract structured information from unstructured text |  |
 | &nbsp;&nbsp;↳ `reasoning` |  | Perform logical inference and multi-step reasoning |  |

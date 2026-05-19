@@ -22,6 +22,8 @@ const SDK_REPO = process.env.NXUSKIT_REPO;
 const CODEX_PLUGINS_REPO = process.env.NXUS_CODEX_PLUGINS_REPO;
 const PUBLIC_EXAMPLES_URL = 'https://github.com/nxus-SYSTEMS/nxusKit-examples';
 const PUBLIC_CODEX_PLUGINS_URL = 'https://github.com/nxus-SYSTEMS/nxus-codex-plugins';
+const EXAMPLE_DOC_CATEGORIES = new Set(['patterns', 'integrations', 'apps']);
+const EXAMPLES_DOCS_MANIFEST_REL = 'conformance/docs_export_manifest.json';
 const SDK_PACKAGING_DOCS_MAP = [
   ['getting-started.md', 'getting-started/installation.md'],
   ['auth-modes-by-provider.md', 'getting-started/authentication.md'],
@@ -195,10 +197,21 @@ async function syncExamples() {
   leakGate(raw, sourceReadme);
 
   const examplesMetadata = await readExamplesManifestMetadata(EXAMPLES_REPO);
-  const exported = toExamplesStarlightPage(raw, examplesMetadata);
-  const target = path.join(DOCS_ROOT, 'src/content/docs/nxuskit/examples/index.md');
+  const docsManifest = await readExamplesDocsExportManifest(EXAMPLES_REPO, examplesMetadata);
+  const routeBySourceRel = examplesDocsRoutes(examplesMetadata, docsManifest);
+  const targetRoot = path.join(DOCS_ROOT, 'src/content/docs/nxuskit/examples');
+
+  await rm(targetRoot, { recursive: true, force: true });
+  mkdirSync(targetRoot, { recursive: true });
+
+  const exported = toExamplesStarlightPage(raw, examplesMetadata, routeBySourceRel);
+  const target = path.join(targetRoot, 'index.md');
   await writeFile(target, exported, 'utf8');
-  console.log(`Synced examples README -> ${path.relative(DOCS_ROOT, target)}`);
+  await exportExampleReadmePages(EXAMPLES_REPO, targetRoot, examplesMetadata, routeBySourceRel);
+  await exportExampleCompanionDocs(EXAMPLES_REPO, targetRoot, docsManifest, routeBySourceRel);
+  await leakGateFiles(targetRoot);
+
+  console.log(`Synced examples docs -> ${path.relative(DOCS_ROOT, targetRoot)}`);
 }
 
 async function syncSdk() {
@@ -588,8 +601,12 @@ async function readExamplesManifestMetadata(examplesRepo) {
   const manifest = JSON.parse(raw);
   return new Map(
     (manifest.examples ?? [])
-      .filter((example) => example?.name && example?.tier)
+      .filter((example) => example?.name && example?.tier && example?.category)
       .map((example) => [example.name, {
+        name: example.name,
+        category: example.category,
+        description: example.description ?? '',
+        scenario: example.scenario ?? '',
         tier: example.tier,
         editionNote: example.edition_note ?? '',
         tierProfile: example.tier_profile ?? null,
@@ -597,12 +614,138 @@ async function readExamplesManifestMetadata(examplesRepo) {
   );
 }
 
-function toExamplesStarlightPage(markdown, examplesMetadata = new Map()) {
+async function readExamplesDocsExportManifest(examplesRepo, examplesMetadata) {
+  const manifestPath = path.join(examplesRepo, EXAMPLES_DOCS_MANIFEST_REL);
+  if (!existsSync(manifestPath)) return { companionDocs: [] };
+
+  const raw = await readFile(manifestPath, 'utf8');
+  leakGate(raw, manifestPath);
+
+  const manifest = JSON.parse(raw);
+  if (manifest.schema_version !== 1) {
+    throw new Error(`${EXAMPLES_DOCS_MANIFEST_REL}: schema_version must be 1`);
+  }
+
+  const routeKeys = new Set();
+  const companionDocs = [];
+
+  for (const [index, doc] of (manifest.companion_docs ?? []).entries()) {
+    const sourceRel = normalizeRepoRelPath(doc.source);
+    const parsed = parseExampleDocPath(sourceRel);
+    const label = `${EXAMPLES_DOCS_MANIFEST_REL}: companion_docs[${index}]`;
+
+    if (!parsed || parsed.isReadme || parsed.remainder.includes('/')) {
+      throw new Error(`${label}: source must be an immediate non-README Markdown file under examples/{patterns,integrations,apps}/{example}/`);
+    }
+    const parentMetadata = examplesMetadata.get(parsed.name);
+    if (!parentMetadata) {
+      throw new Error(`${label}: parent example is not present in conformance/examples_manifest.json: ${parsed.name}`);
+    }
+    if (parentMetadata.category !== parsed.category) {
+      throw new Error(`${label}: companion category does not match manifest category for ${parsed.name}`);
+    }
+    if (!doc.title || !doc.description) {
+      throw new Error(`${label}: title and description are required`);
+    }
+
+    const sourcePath = path.join(examplesRepo, sourceRel);
+    if (!existsSync(sourcePath)) {
+      throw new Error(`${label}: source not found: ${sourceRel}`);
+    }
+
+    const slug = doc.slug ? slugify(doc.slug) : slugFromMarkdownSource(sourceRel);
+    const routeKey = `${parsed.category}/${parsed.name}/${slug}`;
+    if (routeKeys.has(routeKey)) {
+      throw new Error(`${label}: duplicate docs route slug: ${routeKey}`);
+    }
+    routeKeys.add(routeKey);
+
+    companionDocs.push({
+      sourceRel,
+      category: parsed.category,
+      name: parsed.name,
+      slug,
+      title: doc.title,
+      description: doc.description,
+    });
+  }
+
+  return { companionDocs };
+}
+
+function examplesDocsRoutes(examplesMetadata, docsManifest) {
+  const routes = new Map();
+
+  for (const metadata of examplesMetadata.values()) {
+    if (!EXAMPLE_DOC_CATEGORIES.has(metadata.category)) continue;
+
+    const sourceRel = `examples/${metadata.category}/${metadata.name}/README.md`;
+    const directoryRel = `examples/${metadata.category}/${metadata.name}`;
+    const route = `/nxuskit/examples/${metadata.category}/${metadata.name}/`;
+    routes.set(sourceRel, route);
+    routes.set(`${directoryRel}/`, route);
+    routes.set(directoryRel, route);
+  }
+
+  for (const doc of docsManifest.companionDocs) {
+    routes.set(doc.sourceRel, `/nxuskit/examples/${doc.category}/${doc.name}/${doc.slug}/`);
+  }
+
+  routes.set('examples/README.md', '/nxuskit/examples/');
+  routes.set('examples', '/nxuskit/examples/');
+  routes.set('examples/', '/nxuskit/examples/');
+
+  return routes;
+}
+
+async function exportExampleReadmePages(examplesRepo, targetRoot, examplesMetadata, routeBySourceRel) {
+  const examples = [...examplesMetadata.values()]
+    .filter((metadata) => EXAMPLE_DOC_CATEGORIES.has(metadata.category))
+    .sort((a, b) => `${a.category}/${a.name}`.localeCompare(`${b.category}/${b.name}`));
+
+  for (const metadata of examples) {
+    const sourceRel = `examples/${metadata.category}/${metadata.name}/README.md`;
+    const sourcePath = path.join(examplesRepo, sourceRel);
+    if (!existsSync(sourcePath)) {
+      throw new Error(`Example README missing for ${metadata.name}: ${sourceRel}`);
+    }
+
+    const raw = await readFile(sourcePath, 'utf8');
+    leakGate(raw, sourcePath);
+
+    const targetPath = path.join(targetRoot, metadata.category, metadata.name, 'index.md');
+    mkdirSync(path.dirname(targetPath), { recursive: true });
+    await writeFile(targetPath, toExampleDetailStarlightPage(raw, {
+      sourceRel,
+      routeBySourceRel,
+      description: metadata.description || metadata.scenario,
+    }), 'utf8');
+  }
+}
+
+async function exportExampleCompanionDocs(examplesRepo, targetRoot, docsManifest, routeBySourceRel) {
+  for (const doc of docsManifest.companionDocs) {
+    const sourcePath = path.join(examplesRepo, doc.sourceRel);
+    const raw = await readFile(sourcePath, 'utf8');
+    leakGate(raw, sourcePath);
+
+    const targetPath = path.join(targetRoot, doc.category, doc.name, `${doc.slug}.md`);
+    mkdirSync(path.dirname(targetPath), { recursive: true });
+    await writeFile(targetPath, toExampleDetailStarlightPage(raw, {
+      sourceRel: doc.sourceRel,
+      routeBySourceRel,
+      title: doc.title,
+      description: doc.description,
+    }), 'utf8');
+  }
+}
+
+function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBySourceRel = new Map()) {
   let body = markdown.replace(/^\uFEFF/, '').trimStart();
   const hasFrontmatter = body.startsWith('---\n');
 
   if (hasFrontmatter) {
-    return transformExamplesDocsBody(body, examplesMetadata);
+    return transformExamplesDocsBody(body, examplesMetadata, routeBySourceRel);
   }
 
   body = body.replace(/^# nxusKit Examples\s*\n+/, '');
@@ -613,15 +756,43 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map()) {
     'description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.',
     '---',
     '',
-    transformExamplesDocsBody(body, examplesMetadata).trimEnd(),
+    transformExamplesDocsBody(body, examplesMetadata, routeBySourceRel).trimEnd(),
     '',
   ].join('\n');
 }
 
-function transformExamplesDocsBody(markdown, examplesMetadata) {
+function toExampleDetailStarlightPage(markdown, options) {
+  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  const existingFrontmatter = parseFrontmatter(body);
+
+  if (existingFrontmatter) {
+    body = existingFrontmatter.body;
+  }
+
+  const title = options.title ?? existingFrontmatter?.title ?? extractMarkdownTitle(body);
+  const description = options.description ?? existingFrontmatter?.description ?? '';
+
+  body = body.replace(/^#\s+.+\n+/, '');
+  body = rewriteExampleDocLinks(body, options.sourceRel, options.routeBySourceRel).trimEnd();
+
+  return [
+    '---',
+    `title: ${JSON.stringify(title)}`,
+    ...(description ? [`description: ${JSON.stringify(description)}`] : []),
+    'sidebar:',
+    '  hidden: true',
+    '---',
+    '',
+    body,
+    '',
+  ].join('\n');
+}
+
+function transformExamplesDocsBody(markdown, examplesMetadata, routeBySourceRel) {
   const withEditionColumn = addExamplesEditionColumn(markdown, examplesMetadata);
   return rewriteSourceLinks(
     examplesMetadata.size === 0 ? withEditionColumn : addExamplesEditionCopy(withEditionColumn),
+    routeBySourceRel,
   );
 }
 
@@ -726,14 +897,94 @@ function addExamplesEditionCopy(markdown) {
   );
 }
 
-function rewriteSourceLinks(markdown) {
+function rewriteSourceLinks(markdown, routeBySourceRel = new Map()) {
+  return rewriteExampleDocLinks(markdown, 'README.md', routeBySourceRel);
+}
+
+function rewriteExampleDocLinks(markdown, sourceRel, routeBySourceRel = new Map()) {
   return markdown
-    .replace(/\]\((examples\/[^)\s]+)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/tree/main/${link})`)
-    .replace(/\]\((conformance\/[^)\s]+)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/tree/main/${link})`)
-    .replace(/\]\((scripts\/[^)\s]+)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/tree/main/${link})`)
-    .replace(/\]\((tools\/[^)\s]+)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/tree/main/${link})`)
-    .replace(/\]\(((?:ACKNOWLEDGEMENTS|NOTICE|THIRD-PARTY-NOTICES|SECURITY|CODE_OF_CONDUCT)\.md)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/blob/main/${link})`)
-    .replace(/\]\((LICENSE(?:-[A-Z]+)?)\)/g, (_, link) => `](${PUBLIC_EXAMPLES_URL}/blob/main/${link})`);
+    .replace(/\[(!\[[^\]]*\]\([^)]+\))\]\(([^)\s]+)\)/g, (match, image, rawLink) => {
+      const rewritten = rewriteExampleLinkTarget(rawLink, sourceRel, routeBySourceRel);
+      return rewritten ? `[${image}](${rewritten})` : match;
+    })
+    .replace(/(!?)\[([^\]]*)\]\(([^)\s]+)\)/g, (match, imagePrefix, text, rawLink) => {
+      const rewritten = rewriteExampleLinkTarget(rawLink, sourceRel, routeBySourceRel);
+      return rewritten ? `${imagePrefix}[${text}](${rewritten})` : match;
+    });
+}
+
+function rewriteExampleLinkTarget(rawLink, sourceRel, routeBySourceRel = new Map()) {
+  if (/^(?:https?:|mailto:)/.test(rawLink) || rawLink.startsWith('#') || rawLink.startsWith('/')) {
+    return null;
+  }
+
+  const { target, hash } = splitMarkdownLink(rawLink);
+  const normalized = normalizeRepoRelPath(path.posix.join(path.posix.dirname(sourceRel), target));
+  const route = routeBySourceRel.get(normalized) ?? routeBySourceRel.get(`${normalized}/`);
+  return route ? `${route}${hash}` : publicExamplesTarget(normalized, hash);
+}
+
+function publicExamplesTarget(normalized, hash = '') {
+  if (normalized === 'README.md') return `${PUBLIC_EXAMPLES_URL}${hash}`;
+  if (normalized === 'examples/README.md' || normalized === 'examples') return `/nxuskit/examples/${hash}`;
+
+  if (isPublicExamplesBlobPath(normalized)) {
+    return `${PUBLIC_EXAMPLES_URL}/blob/main/${normalized}${hash}`;
+  }
+
+  return `${PUBLIC_EXAMPLES_URL}/tree/main/${normalized}${hash}`;
+}
+
+function isPublicExamplesBlobPath(normalized) {
+  const basename = path.posix.basename(normalized);
+  if (/^(?:LICENSE(?:-[A-Z]+)?|NOTICE|SECURITY|CODE_OF_CONDUCT|CONTRIBUTING|ACKNOWLEDGEMENTS|THIRD-PARTY-NOTICES)$/.test(basename)) {
+    return true;
+  }
+  return /\.(?:md|mdx|json|ya?ml|toml|txt|clp|sh|py|go|rs|c|h)$/i.test(normalized);
+}
+
+function splitMarkdownLink(rawLink) {
+  const hashIndex = rawLink.indexOf('#');
+  if (hashIndex === -1) return { target: rawLink, hash: '' };
+  return {
+    target: rawLink.slice(0, hashIndex),
+    hash: rawLink.slice(hashIndex),
+  };
+}
+
+function parseExampleDocPath(sourceRel) {
+  const match = sourceRel.match(/^examples\/(patterns|integrations|apps)\/([^/]+)\/(.+\.md)$/);
+  if (!match) return null;
+  return {
+    category: match[1],
+    name: match[2],
+    remainder: match[3],
+    isReadme: match[3] === 'README.md',
+  };
+}
+
+function normalizeRepoRelPath(value) {
+  const normalized = path.posix.normalize(String(value ?? '').replace(/\\/g, '/'));
+  if (!normalized || normalized === '.' || normalized.startsWith('../') || path.posix.isAbsolute(normalized)) {
+    throw new Error(`Invalid repo-relative path: ${value}`);
+  }
+  if (normalized.includes('/.tmp/') || normalized.includes('/internal/') || normalized.includes('/.')) {
+    throw new Error(`Path is not eligible for public docs export: ${value}`);
+  }
+  return normalized;
+}
+
+function slugFromMarkdownSource(sourceRel) {
+  return slugify(path.posix.basename(sourceRel, '.md'));
+}
+
+function slugify(value) {
+  return String(value)
+    .trim()
+    .toLowerCase()
+    .replace(/_/g, '-')
+    .replace(/[^a-z0-9-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
 }
 
 async function replaceDirectoryContents(source, target, preserveNames = new Set()) {
