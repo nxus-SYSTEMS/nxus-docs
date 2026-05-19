@@ -3,29 +3,29 @@ title: "Codex Plugins"
 description: "Codex Plugin packages from nxus.SYSTEMS, including nxusKit Celerat."
 ---
 
-**Codex-ready workflows for nxusKit SDK integrations.**
+**Codex-ready workflows for nxusKit SDK integrations and local intelligence.**
 
 
 **[Install](/codex-plugins/install/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples](https://github.com/nxus-SYSTEMS/nxusKit-examples)** · **[Docs](/nxuskit/)** · **[Website](https://nxus.systems)**
 
-This repository publishes Codex Plugin packages from [nxus.SYSTEMS](https://nxus.systems). The first plugin, **nxusKit Celerat**, helps Codex use the nxusKit SDK and nxusKit Examples to add provider-agnostic LLM integrations, symbolic reasoning, hybrid AI workflows, and `nxuskit-cli` CLI/Bash prototypes to real applications.
+This repository publishes public Codex Plugin packages from [nxus.SYSTEMS](https://nxus.systems). The current plugin, **nxusKit Celerat**, helps Codex use the nxusKit SDK and nxusKit Examples to add provider-agnostic LLM integrations, symbolic reasoning, hybrid AI workflows, CLI/Bash prototypes, and public-safe local intelligence patterns to real applications.
 
-nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, ZEN decision tables, and JSON-first CLI automation. Celerat packages the product knowledge Codex needs to pick the right nxusKit pattern, explain Community vs. Pro boundaries before implementation, and verify changes using the target project's own build or smoke commands.
+**Current public release:** `v0.9.4-20260522`
 
-> **v0.1 status**: nxusKit Celerat is a skills-only Codex Plugin. It does not ship an MCP server, app connector, lifecycle hook, telemetry, or automatic SDK installer.
+nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, ZEN decision tables, and JSON-first CLI automation. Celerat packages the product knowledge Codex needs to pick the right nxusKit pattern, explain Community vs. Pro boundaries before implementation, discover canonical examples through a bundled local MCP server, and verify changes using the target project's own build or smoke commands.
 
 ## Available Plugins
 
 | Plugin | Display name | Scope |
-|--------|--------------|-------|
-| [`nxuskit`](/codex-plugins/nxuskit/) | nxusKit Celerat | Helps Codex implement nxusKit SDK integrations for LLMs, reasoning engines, hybrid workflows, and CLI/Bash prototypes. |
+|---|---|---|
+| [`nxuskit`](/codex-plugins/nxuskit/) | nxusKit Celerat | Helps Codex implement nxusKit SDK integrations for LLMs, reasoning engines, hybrid workflows, CLI/Bash prototypes, and local intelligence workflows. |
 
 ## Install
 
-Add this repository as a Git-backed Codex Plugin marketplace:
+Add this repository as a Git-backed Codex Plugin marketplace pinned to the current public release:
 
 ```bash
-codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.1.0
+codex plugin marketplace add nxus-SYSTEMS/nxus-codex-plugins --ref v0.9.4-20260522
 ```
 
 Then open the Codex plugin directory and install **nxusKit Celerat** from the `nxus.SYSTEMS Codex Plugins` source.
@@ -34,10 +34,13 @@ See [INSTALL.md](/codex-plugins/install/) for verification and removal steps.
 
 ## What Celerat Helps With
 
-- Add basic chat, streaming, structured output, tool calling, vision, retry/fallback, provider routing, and local-provider support with nxusKit.
+- Add chat, streaming, structured output, tool calling, vision, retry/fallback, provider routing, and local-provider support with nxusKit.
 - Migrate direct OpenAI, Anthropic, Ollama, or LiteLLM-style code toward a provider-agnostic nxusKit integration.
 - Prototype workflows with `nxuskit-cli` and Bash/JSON before changing application code.
-- Use nxusKit Examples as canonical implementation references instead of relying on generic invention.
+- Use bundled MCP discovery to pick canonical nxusKit examples and task recipes instead of relying on generic invention.
+- Add Community Edition CLIPS guardrails around LLM recommendation workflows.
+- Compare model/provider fitness with the model research harness pattern before live calls.
+- Keep sensitive local files on the user's machine while returning only schema-level findings to Codex.
 - Stay Community Edition-first when a request can be satisfied without Pro.
 - Disclose Pro requirements before solver-backed what-if analysis, ZEN decision tables, runtime plugin loading, or other Pro-gated paths.
 - Avoid in-chat secret handling by directing users to environment variables, credential stores, provider dashboards, and nxusKit auth helpers.
@@ -46,9 +49,13 @@ See [INSTALL.md](/codex-plugins/install/) for verification and removal steps.
 
 After installing the plugin, start a Codex session inside a Rust, Go, Python, or CLI-oriented project and ask:
 
-> Use nxusKit to add basic chat to this app.
+> Find the smallest nxusKit example or recipe for this repo with setup, smoke steps, and CE/Pro tier.
 
-The skill should inspect the project before editing, choose a Community Edition pattern when it fits, avoid asking for secrets in chat, and recommend an appropriate verification step such as `cargo check`, `go test ./...`, a Python import smoke, or an `nxuskit-cli` setup check.
+Other useful prompts:
+
+> Use common-sense-guardrails to add Community CLIPS checks around an LLM recommendation workflow.
+
+> Use model-research-harness to compare model/provider fitness with dry-run scoring before live calls.
 
 For more task prompts, see [examples/](/codex-plugins/nxuskit/task-recipes/).
 
