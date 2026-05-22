@@ -4,11 +4,20 @@ description: "Input schemas and examples for every Level 1 nxuskit-cli command."
 ---
 
 Single source of truth for every Level 1 `nxuskit-cli` command's input schema,
-with copy-paste runnable examples using the loopback provider.
+with local loopback examples where the command can succeed without a semantic
+LLM response.
 
 All commands accept `--input -` for stdin and `--format json` (default).
 Output is wrapped in a `ResponseEnvelope` with `trace_id`, `request_metadata`,
 and timing fields.
+
+Loopback examples that are intended to execute locally use explicit loopback
+model names. In nxusKit CLI v0.9.4, do not rely on an omitted model resolving
+to `"default"` for the `loopback` provider; use `"echo"` for plain echo tests
+or `"echo-json-native"` when you need a loopback model that advertises native
+JSON support. Commands that require a semantic structured answer, such as
+`judge select`, should use a configured non-loopback LLM provider because
+loopback models echo the prompt.
 
 ---
 
@@ -55,7 +64,7 @@ LLM invocation. Accepts either `prompt` (single-turn) or `messages` (multi-turn)
 | `messages` | array of `{role, content}` | no | Multi-turn conversation messages |
 | `system` | string | no | System message prepended to the conversation |
 | `provider` | string | no | Provider name (default: `loopback`, or `$NXUSKIT_PROVIDER`) |
-| `model` | string | no | Model identifier (default: `"default"`) |
+| `model` | string | no | Model identifier. For `loopback`, use a valid loopback model such as `"echo"` or `"echo-json-native"`; do not rely on the implicit `"default"` model in v0.9.4. |
 | `tool_definitions` | array of JSON objects | no | Tool/function schemas passed to the LLM |
 | `tool_choice` | JSON value | no | Provider-compatible tool choice policy passed with `tool_definitions` |
 | `response_format` | object | no | Response format constraint: `{"type":"text"}`, `{"type":"json_object"}`, or `{"type":"json_schema","schema":{...}}` |
@@ -69,7 +78,7 @@ At least one of `prompt` or `messages` should be provided.
 **Example:**
 
 ```bash
-echo '{"prompt": "Hello", "provider": "loopback"}' \
+echo '{"prompt": "Hello", "provider": "loopback", "model": "echo"}' \
   | nxuskit-cli call --input - --format json
 ```
 
@@ -688,13 +697,13 @@ echo '{
     {
       "name": "generate",
       "type": "llm",
-      "config": {"prompt": "Say hello", "provider": "loopback"},
+      "config": {"prompt": "Say hello", "provider": "loopback", "model": "echo"},
       "output_key": "llm_result"
     },
     {
       "name": "evaluate",
       "type": "llm",
-      "config": {"prompt": "Summarize: {{llm_result}}", "provider": "loopback"}
+      "config": {"prompt": "Summarize: {{llm_result}}", "provider": "loopback", "model": "echo"}
     }
   ]
 }' | nxuskit-cli pipeline run --input - --format json
@@ -823,7 +832,7 @@ converges (stops requesting tool calls) or hits `max_iterations`.
 |-------|------|----------|-------------|
 | `prompt` | string | **yes** | Initial user prompt |
 | `provider` | string | no | Provider name (default: `loopback` or `$NXUSKIT_PROVIDER`) |
-| `model` | string | no | Model identifier (default: `"default"`) |
+| `model` | string | no | Model identifier. For `loopback`, use a valid loopback model such as `"echo"`; do not rely on the implicit `"default"` model in v0.9.4. |
 | `max_iterations` | u32 | no | Maximum loop iterations (default: `10`) |
 | `tools` | array of strings | no | Tool adapter names: `"file_reader"`, `"calculator"`, `"web_search"` |
 | `tool_configs` | JSON object | no | Per-tool configuration |
@@ -841,6 +850,7 @@ Built-in tool adapters:
 echo '{
   "prompt": "What is 2 + 2?",
   "provider": "loopback",
+  "model": "echo",
   "tools": ["calculator"],
   "max_iterations": 5
 }' | nxuskit-cli tool-loop run --input - --format json
@@ -866,7 +876,7 @@ parses a structured JSON response with scores and reasoning.
 | `candidates` | array of `Candidate` | **yes** | Candidates to evaluate |
 | `criteria` | string | no | Evaluation criteria description |
 | `provider` | string | no | Provider name (default: `"loopback"`) |
-| `model` | string | no | Model identifier (default: `"default"`) |
+| `model` | string | no | Model identifier. Use a configured LLM model; `loopback` echoes the judge prompt and can fail structured parsing. |
 
 **`Candidate` fields:**
 
@@ -884,7 +894,8 @@ echo '{
     {"id": "b", "content": "The answer is approximately 42.0."}
   ],
   "criteria": "accuracy and conciseness",
-  "provider": "loopback"
+  "provider": "your-provider",
+  "model": "your-json-capable-model"
 }' | nxuskit-cli judge select --input - --format json
 ```
 
@@ -916,7 +927,7 @@ comma-separated list, which overrides the `models` field in the JSON input.
 ```bash
 echo '{
   "prompt": "Explain recursion in one sentence.",
-  "models": ["model-a", "model-b"],
+  "models": ["echo", "echo-json-native"],
   "provider": "loopback"
 }' | nxuskit-cli branch fork --input - --format json
 ```
@@ -924,8 +935,8 @@ echo '{
 **Using `--models` flag:**
 
 ```bash
-echo '{"prompt": "Explain recursion."}' \
-  | nxuskit-cli branch fork --input - --models model-a,model-b --format json
+echo '{"prompt": "Explain recursion.", "provider": "loopback"}' \
+  | nxuskit-cli branch fork --input - --models echo,echo-json-native --format json
 ```
 
 **Common errors:**
@@ -965,7 +976,7 @@ output of `branch fork` (the `BranchForkResult` object).
 ```bash
 echo '{
   "prompt": "Explain recursion.",
-  "models": ["model-a", "model-b"],
+  "models": ["echo", "echo-json-native"],
   "provider": "loopback"
 }' | nxuskit-cli branch fork --input - --format json \
    | jq '.result' \
