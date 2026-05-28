@@ -8,6 +8,7 @@ import {
   compareDocsVersions,
   currentDocsVersion,
   currentDocsVersionLabel,
+  DOCS_VERSIONS_URL,
   NXUSKIT_CHANGELOG_URL,
   releasedVersionsFromChangelog,
   skippedDocsVersions,
@@ -53,6 +54,8 @@ async function checkArchivePolicy() {
     if (compareDocsVersions(version, current) >= 0) {
       throw new Error(`Archived docs version ${version} must be older than current ${current}.`);
     }
+
+    await checkArchivedVersionConfig(version);
   }
 
   for (const { version } of skipped) {
@@ -78,6 +81,24 @@ async function checkArchivePolicy() {
       `Released docs versions need archive directories or skip records: ${missing.join(', ')}. ` +
       'Run npm run archive:docs before syncing a newer SDK release, or add a deliberate skip record in scripts/docs-version-policy.mjs.',
     );
+  }
+}
+
+async function checkArchivedVersionConfig(version) {
+  const relativePath = `src/content/versions/${version}.json`;
+  const configPath = join(DOCS_VERSIONS_URL.pathname, `${version}.json`);
+
+  if (!existsSync(configPath)) {
+    throw new Error(
+      `Archived docs version ${version} is missing its Starlight version config at ${relativePath}. ` +
+      'Run npm run archive:docs before syncing a newer SDK release, or add the missing version config.',
+    );
+  }
+
+  try {
+    JSON.parse(await readFile(configPath, 'utf8'));
+  } catch (error) {
+    throw new Error(`Archived docs version ${version} has invalid JSON in ${relativePath}: ${error.message}`);
   }
 }
 

@@ -6,6 +6,7 @@ export const NXUSKIT_CHANGELOG_URL = new URL(
   import.meta.url,
 );
 export const DOCS_CONTENT_URL = new URL('../src/content/docs', import.meta.url);
+export const DOCS_VERSIONS_URL = new URL('../src/content/versions', import.meta.url);
 
 export function latestReleasedVersionFromChangelog(markdown) {
   const [releaseHeading] = releasedVersionsFromChangelog(markdown);

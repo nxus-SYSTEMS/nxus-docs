@@ -1,9 +1,20 @@
 import { copyFile, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promises';
 import { existsSync } from 'node:fs';
 import path from 'node:path';
-import { DOCS_CONTENT_URL, normalizeDocsVersion } from './docs-version.mjs';
+import { DOCS_CONTENT_URL, DOCS_VERSIONS_URL, normalizeDocsVersion } from './docs-version.mjs';
 
 const CURRENT_DOCS_ENTRIES = ['index.mdx', 'github', 'nxuskit'];
+const ARCHIVED_VERSION_CONFIG = {
+  sidebar: [
+    {
+      label: 'nxusKit SDK',
+      collapsed: false,
+      autogenerate: {
+        directory: 'nxuskit',
+      },
+    },
+  ],
+};
 
 export async function archiveCurrentDocs(version, options = {}) {
   const normalizedVersion = normalizeDocsVersion(version);
@@ -11,6 +22,7 @@ export async function archiveCurrentDocs(version, options = {}) {
   const archiveRoot = path.join(docsRoot, normalizedVersion);
 
   if (existsSync(archiveRoot)) {
+    await ensureVersionConfig(normalizedVersion, { overwrite: options.overwrite });
     if (!options.overwrite) {
       return { version: normalizedVersion, archived: false, path: archiveRoot };
     }
@@ -25,7 +37,18 @@ export async function archiveCurrentDocs(version, options = {}) {
     await copyArchiveEntry(sourcePath, path.join(archiveRoot, entryName), normalizedVersion, archiveRoot);
   }
 
+  await ensureVersionConfig(normalizedVersion, { overwrite: options.overwrite });
+
   return { version: normalizedVersion, archived: true, path: archiveRoot };
+}
+
+async function ensureVersionConfig(version, options = {}) {
+  const configPath = path.join(DOCS_VERSIONS_URL.pathname, `${version}.json`);
+
+  if (existsSync(configPath) && !options.overwrite) return;
+
+  await mkdir(DOCS_VERSIONS_URL.pathname, { recursive: true });
+  await writeFile(configPath, `${JSON.stringify(ARCHIVED_VERSION_CONFIG, null, 2)}\n`, 'utf8');
 }
 
 async function copyArchiveEntry(sourcePath, targetPath, version, archiveRoot) {
