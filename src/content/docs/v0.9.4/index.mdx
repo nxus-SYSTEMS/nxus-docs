@@ -1,0 +1,57 @@
+---
+title: nxus.SYSTEMS Documentation
+description: Documentation hub for nxus.SYSTEMS products.
+template: splash
+hero:
+  tagline: Documentation for nxus.SYSTEMS products and services.
+  actions:
+    - text: Start with nxusKit
+      link: /v0.9.4/nxuskit/
+      icon: right-arrow
+      variant: primary
+    - text: Browse examples
+      link: /v0.9.4/nxuskit/examples/
+      icon: puzzle
+slug: v0.9.4
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard
+    title="nxusKit SDK"
+    href="/v0.9.4/nxuskit/"
+    description="Install nxusKit and build with LLM providers, rule engines, solvers, and decision tables across Rust, Go, Python, C ABI, and CLI/Bash."
+  />
+  <LinkCard
+    title="Getting Started"
+    href="/v0.9.4/nxuskit/getting-started/installation/"
+    description="Download the SDK, configure credentials, and make your first call."
+  />
+  <LinkCard
+    title="Examples"
+    href="/v0.9.4/nxuskit/examples/"
+    description="Browse runnable scenarios for common integration patterns and complete applications."
+  />
+  <LinkCard
+    title="Codex Plugins"
+    href="/codex-plugins/"
+    description="Install nxusKit Celerat and use Codex-ready workflows for nxusKit integrations."
+  />
+  <LinkCard
+    title="GitHub Repositories"
+    href="/v0.9.4/github/"
+    description="Find the public nxus.SYSTEMS organization, SDK source, examples, and docs repository."
+  />
+  <LinkCard
+    title="Reference"
+    href="/v0.9.4/nxuskit/reference/api/"
+    description="Find API, CLI, provider, and C ABI details for production integrations."
+  />
+</CardGrid>
+
+<nav className="agent-index-links" aria-label="Agent indexes">
+  <span>Agent indexes</span>
+  <a href="/llms.txt">llms.txt</a>
+  <a href="/llms-full.txt">llms-full.txt</a>
+</nav>
