@@ -33,7 +33,7 @@ Use these first because they are small local smoke-test candidates that match th
 |------|-------|----------------|------------------------|------------------|
 | Primary live walkthrough | `qwen3.5:4b` | 3.4 GB | Stronger small Qwen 3.5 option from the 2026-05-11/12 local smokes. | Desired car-wash shape: naive answer fails as `walk`, constrained output is parseable, and enhanced object-presence prompting recovers to `drive`. Use this first when available. |
 | Low-resource walkthrough | `qwen3.5:2b` | 2.7 GB | Smaller Qwen 3.5 option from the 2026-05-12 local smoke. | Same fail/recover car-wash shape at a smaller footprint. Use when local resource constraints matter more than maximum tool-intent strength. |
-| Very small demo candidates | `gemma3:1b` or `erukude/omni-json:1b` | 815 MB / 1.4 GB | Very small models that reproduced the demo failure and recovery shape in local smokes. | Useful for constrained machines, but keep the primary docs and article proof centered on `qwen3.5:4b`. |
+| Very small demo candidates | `gemma3:1b` or `erukude/omni-json:1b` | 815 MB / 1.4 GB | Very small models that reproduced the demo failure and recovery shape in local smokes. | Useful for constrained machines, but keep the primary docs and walkthrough centered on `qwen3.5:4b`. |
 | Comparison candidate | `nemotron-3-nano:4b` | 2.8 GB | Car-wash fail/recover target plus separate native strict tool-call smoke evidence. | Interesting for comparison, but adding it to the main walkthrough can dilute the guardrails story. |
 
 Other observed models:
