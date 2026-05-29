@@ -12,6 +12,8 @@ This repository publishes public Codex Plugin packages from [nxus.SYSTEMS](https
 
 **Current public release:** `v0.9.4-20260522`
 
+**SDK compatibility note:** nxusKit SDK docs and packages are now `v1.0.0` GA/latest. The currently published nxusKit Celerat Codex Plugin remains `v0.9.4`-based until the next plugin refresh ships.
+
 nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, ZEN decision tables, and JSON-first CLI automation. Celerat packages the product knowledge Codex needs to pick the right nxusKit pattern, explain Community vs. Pro boundaries before implementation, discover canonical examples through a bundled local MCP server, and verify changes using the target project's own build or smoke commands.
 
 ## Available Plugins

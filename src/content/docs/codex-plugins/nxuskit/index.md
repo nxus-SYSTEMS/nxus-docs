@@ -7,6 +7,8 @@ nxusKit Celerat is a Codex Plugin for accelerating nxusKit SDK integrations acro
 
 ## v0.9.4 — current release
 
+nxusKit SDK docs and packages are now `v1.0.0` GA/latest. This currently published Celerat plugin remains `v0.9.4`-based until the next plugin refresh ships.
+
 v0.9.4 includes:
 
 - **A local read-only Model Context Protocol (MCP) server** under `mcp/` (Python stdio; **requires Python 3.11+**) that lets Codex discover canonical nxusKit examples and CLI/Bash recipes from a bundled offline metadata snapshot — no cloud microservice, no live cross-repo querying.
