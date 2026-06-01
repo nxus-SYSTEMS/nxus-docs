@@ -7,7 +7,7 @@ nxusKit Celerat is a Codex Plugin for accelerating nxusKit SDK integrations acro
 
 ## v0.9.4 — current release
 
-nxusKit SDK docs and packages are now `v1.0.0` GA/latest. This currently published Celerat plugin remains `v0.9.4`-based until the next plugin refresh ships.
+nxusKit SDK docs and packages are now `v1.0.0` GA/latest. This currently published Celerat plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
 
 v0.9.4 includes:
 
@@ -19,6 +19,15 @@ v0.9.4 includes:
 Persona-specific recipes and fixtures are not part of the public plugin.
 
 If the MCP fails to start, Codex falls back to the bundled reference index with a visible "MCP unavailable" message.
+
+## Key Pages
+
+- [Install nxusKit Celerat](/codex-plugins/install/)
+- [Task recipes](/codex-plugins/nxuskit/task-recipes/)
+- [Streaming Rust recipe](/codex-plugins/nxuskit/task-recipes/01-streaming-rust/)
+- [Structured JSON Python recipe](/codex-plugins/nxuskit/task-recipes/02-structured-json-python/)
+- [Retry and fallback recipe](/codex-plugins/nxuskit/task-recipes/04-retry-fallback/)
+- [CLI/Bash setup recipe](/codex-plugins/nxuskit/task-recipes/14-cli-bash-setup/)
 
 ## Scope
 

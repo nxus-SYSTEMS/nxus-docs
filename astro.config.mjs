@@ -26,6 +26,8 @@ export default defineConfig({
 	redirects: {
 		'/nxuskit/examples/examples/integrations/common-sense-guardrails/':
 			'/nxuskit/examples/integrations/common-sense-guardrails/',
+		'/nxuskit/examples/examples/patterns/retry-fallback/':
+			'/nxuskit/examples/patterns/retry-fallback/',
 	},
 	integrations: [
 		sitemap({

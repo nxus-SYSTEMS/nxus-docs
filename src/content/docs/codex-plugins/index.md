@@ -12,7 +12,7 @@ This repository publishes public Codex Plugin packages from [nxus.SYSTEMS](https
 
 **Current public release:** `v0.9.4-20260522`
 
-**SDK compatibility note:** nxusKit SDK docs and packages are now `v1.0.0` GA/latest. The currently published nxusKit Celerat Codex Plugin remains `v0.9.4`-based until the next plugin refresh ships.
+**SDK compatibility note:** nxusKit SDK docs and packages are now `v1.0.0` GA/latest. The currently published nxusKit Celerat Codex Plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
 
 nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, ZEN decision tables, and JSON-first CLI automation. Celerat packages the product knowledge Codex needs to pick the right nxusKit pattern, explain Community vs. Pro boundaries before implementation, discover canonical examples through a bundled local MCP server, and verify changes using the target project's own build or smoke commands.
 
@@ -21,6 +21,15 @@ nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constr
 | Plugin | Display name | Scope |
 |---|---|---|
 | [`nxuskit`](/codex-plugins/nxuskit/) | nxusKit Celerat | Helps Codex implement nxusKit SDK integrations for LLMs, reasoning engines, hybrid workflows, CLI/Bash prototypes, and local intelligence workflows. |
+
+## Primary Pages
+
+- [Install nxusKit Celerat](/codex-plugins/install/)
+- [nxusKit Celerat overview](/codex-plugins/nxuskit/)
+- [Celerat task recipes](/codex-plugins/nxuskit/task-recipes/)
+- [Retry and fallback recipe](/codex-plugins/nxuskit/task-recipes/04-retry-fallback/)
+- [Local Ollama recipe](/codex-plugins/nxuskit/task-recipes/13-local-ollama/)
+- [CLI/Bash setup recipe](/codex-plugins/nxuskit/task-recipes/14-cli-bash-setup/)
 
 ## Install
 

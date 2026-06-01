@@ -1,20 +1,37 @@
 ---
-import DefaultHead from '@astrojs/starlight/components/Head.astro';
-
 const { starlightRoute } = Astro.locals;
 
 const docsOrigin = 'https://docs.nxus.systems';
 const orgId = 'https://nxus.systems/#organization';
 const docsSiteId = `${docsOrigin}/#website`;
 const nxusKitId = `${docsOrigin}/nxuskit/#software`;
-const canonicalUrl = new URL(Astro.url.pathname, docsOrigin).href;
 const title = starlightRoute.entry.data.title ?? 'nxus.SYSTEMS Documentation';
 const description =
 	starlightRoute.entry.data.description ?? 'Documentation for nxus.SYSTEMS products and services.';
 const isNxusKitPage = Astro.url.pathname.includes('/nxuskit/');
 const versionSegmentPattern = /^v\d+\.\d+\.\d+$/;
-const [firstPathSegment] = Astro.url.pathname.split('/').filter(Boolean);
+const pathSegments = Astro.url.pathname.split('/').filter(Boolean);
+const [firstPathSegment] = pathSegments;
 const isArchivedVersionPage = versionSegmentPattern.test(firstPathSegment ?? '');
+const archivedCanonicalBase = `/${pathSegments.slice(1).join('/')}`;
+const archivedCanonicalPathname =
+	archivedCanonicalBase === '/'
+		? '/'
+		: `${archivedCanonicalBase}${Astro.url.pathname.endsWith('/') ? '/' : ''}`;
+const canonicalUrl = new URL(
+	isArchivedVersionPage ? archivedCanonicalPathname : Astro.url.pathname,
+	docsOrigin
+).href;
+
+const head = starlightRoute.head.map((entry) => {
+	if (entry.tag === 'link' && entry.attrs?.rel === 'canonical') {
+		return { ...entry, attrs: { ...entry.attrs, href: canonicalUrl } };
+	}
+	if (entry.tag === 'meta' && entry.attrs?.property === 'og:url') {
+		return { ...entry, attrs: { ...entry.attrs, content: canonicalUrl } };
+	}
+	return entry;
+});
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -62,6 +79,6 @@ const structuredData = {
 };
 ---
 
-<DefaultHead />
+{head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
 {isArchivedVersionPage && <meta name="robots" content="noindex, follow" />}
 <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
