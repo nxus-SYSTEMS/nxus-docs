@@ -5,6 +5,8 @@ const docsOrigin = 'https://docs.nxus.systems';
 const orgId = 'https://nxus.systems/#organization';
 const docsSiteId = `${docsOrigin}/#website`;
 const nxusKitId = `${docsOrigin}/nxuskit/#software`;
+const socialImageUrl = new URL('/brand/docs-social-preview.png', docsOrigin).href;
+const socialImageAlt = 'nxus.SYSTEMS Docs preview image';
 const title = starlightRoute.entry.data.title ?? 'nxus.SYSTEMS Documentation';
 const description =
 	starlightRoute.entry.data.description ?? 'Documentation for nxus.SYSTEMS products and services.';
@@ -32,6 +34,8 @@ const head = starlightRoute.head.map((entry) => {
 	}
 	return entry;
 });
+const hasMeta = (key: 'name' | 'property', value: string) =>
+	head.some((entry) => entry.tag === 'meta' && entry.attrs?.[key] === value);
 
 const structuredData = {
 	'@context': 'https://schema.org',
@@ -69,6 +73,7 @@ const structuredData = {
 			'@id': `${canonicalUrl}#article`,
 			headline: title,
 			description,
+			image: socialImageUrl,
 			url: canonicalUrl,
 			mainEntityOfPage: canonicalUrl,
 			isPartOf: { '@id': docsSiteId },
@@ -80,5 +85,21 @@ const structuredData = {
 ---
 
 {head.map(({ tag: Tag, attrs, content }) => <Tag {...attrs} set:html={content} />)}
+{!hasMeta('property', 'og:image') && <meta property="og:image" content={socialImageUrl} />}
+{
+	!hasMeta('property', 'og:image:secure_url') && (
+		<meta property="og:image:secure_url" content={socialImageUrl} />
+	)
+}
+{!hasMeta('property', 'og:image:type') && <meta property="og:image:type" content="image/png" />}
+{!hasMeta('property', 'og:image:width') && <meta property="og:image:width" content="1200" />}
+{!hasMeta('property', 'og:image:height') && <meta property="og:image:height" content="630" />}
+{!hasMeta('property', 'og:image:alt') && <meta property="og:image:alt" content={socialImageAlt} />}
+{!hasMeta('name', 'twitter:image') && <meta name="twitter:image" content={socialImageUrl} />}
+{
+	!hasMeta('name', 'twitter:image:alt') && (
+		<meta name="twitter:image:alt" content={socialImageAlt} />
+	)
+}
 {isArchivedVersionPage && <meta name="robots" content="noindex, follow" />}
 <script is:inline type="application/ld+json" set:html={JSON.stringify(structuredData)} />
