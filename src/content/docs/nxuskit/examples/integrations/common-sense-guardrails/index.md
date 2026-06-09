@@ -242,7 +242,7 @@ This is not a medical, legal, financial, or safety certification system. Do not 
 Attach an **installed SDK** (`NXUSKIT_SDK_DIR`: extracted bundle or installer layout) for live SDK checks. Mock acceptance commands do not need the SDK.
 
 ```bash
-# From examples/integrations/common-sense-guardrails:
+# From `/examples/integrations/common-sense-guardrails`:
 cd python && python3 main.py --help
 cd ../bash && make test
 ```
