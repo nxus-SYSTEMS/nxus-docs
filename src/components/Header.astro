@@ -3,9 +3,10 @@ import config from 'virtual:starlight/user-config';
 
 import LanguageSelect from 'virtual:starlight/components/LanguageSelect';
 import Search from 'virtual:starlight/components/Search';
-import SiteTitle from 'virtual:starlight/components/SiteTitle';
 import SocialIcons from 'virtual:starlight/components/SocialIcons';
 import ThemeSelect from 'virtual:starlight/components/ThemeSelect';
+import logoDark from '../assets/logo-dark.svg';
+import logoLight from '../assets/logo-light.svg';
 
 const shouldRenderSearch =
 	config.pagefind || config.components.Search !== '@astrojs/starlight/components/Search.astro';
@@ -13,14 +14,31 @@ const shouldRenderSearch =
 
 <div class="header">
 	<div class="title-wrapper sl-flex">
-		<SiteTitle />
+		<a href="https://nxus.systems/" class="site-title sl-flex" aria-label="nxus.SYSTEMS website">
+			<img
+				class="light:sl-hidden print:hidden"
+				alt="nxus.SYSTEMS Docs"
+				src={logoDark.src}
+				width={logoDark.width}
+				height={logoDark.height}
+			/>
+			<img
+				class="dark:sl-hidden print:block"
+				alt="nxus.SYSTEMS Docs"
+				src={logoLight.src}
+				width={logoLight.width}
+				height={logoLight.height}
+			/>
+			<span class="sr-only" translate="no">nxus.SYSTEMS Docs</span>
+		</a>
 	</div>
 	<div class="sl-flex print:hidden">
 		{shouldRenderSearch && <Search />}
 	</div>
 	<div class="sl-hidden md:sl-flex print:hidden right-group">
 		<nav class="site-links" aria-label="nxus.SYSTEMS links">
-			<a href="https://nxus.systems">Website</a>
+			<a href="https://nxus.systems/">Website</a>
+			<a href="https://nxus.systems/field-notes">Field Notes</a>
 			<a href="https://nxus.systems/pricing">Plans</a>
 		</nav>
 		<div class="sl-flex social-icons">

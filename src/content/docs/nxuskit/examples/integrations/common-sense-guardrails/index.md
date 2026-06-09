@@ -223,6 +223,8 @@ bash test.sh
 
 Shout-out to [Haris Rahi](https://harisrahi.ai) and [Tamara Storm](https://www.linkedin.com/in/tamarastorm) for their LinkedIn discussions on the car-wash scenario from Opper.ai, Focus AI, and the HOB benchmark line.
 
+For related engineering notes and release-adjacent writeups, see [nxus.SYSTEMS Field Notes](https://nxus.systems/field-notes).
+
 ## Scope Exclusions
 
 This is not a medical, legal, financial, or safety certification system. Do not add PHI, regulated personal data, certification claims, or model-ranking claims to scenarios. The examples demonstrate an engineering pattern for auditable guardrails, not a complete common-sense benchmark.
