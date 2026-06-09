@@ -22,4 +22,5 @@ The public nxus.SYSTEMS GitHub organization is
 - [Codex Plugins documentation](/codex-plugins/)
 - [Commercial website](https://nxus.systems/)
 - [Field Notes](https://nxus.systems/field-notes)
+- [Voice / Question of the Fortnight](https://nxus.systems/voice)
 - [Plans](https://nxus.systems/pricing)
