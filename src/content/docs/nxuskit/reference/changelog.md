@@ -14,6 +14,20 @@ historical version resets.
 
 ## [Unreleased]
 
+## [1.0.1] - 2026-06-08
+
+> Patch release for Pro SDK bundle composition. No API or C ABI signature
+> changes from v1.0.0 are introduced.
+
+### Fixed
+
+- Pro SDK bundles now compile `nxuskit-cli solver` and `nxuskit-cli zen` with
+  the real Pro engine command modules instead of CE-safe stubs.
+- Pro CLI builds now enable solver/ZEN capability flags in both `nxuskit-engine`
+  and `nxuskit-core`, so valid Pro tokens can execute the bundled commands.
+- SDK bundle verification now fails if a Pro CLI is compiled with CE stubs or
+  OSS edition metadata.
+
 ## [1.0.0] - 2026-05-28
 
 > General Availability release for the v0.9.4-stabilized SDK API surface.

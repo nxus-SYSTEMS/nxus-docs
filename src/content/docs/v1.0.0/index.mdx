@@ -1,0 +1,82 @@
+---
+title: nxus.SYSTEMS Documentation
+description: Documentation hub for nxus.SYSTEMS products.
+template: splash
+hero:
+  tagline: Documentation for nxus.SYSTEMS products and services.
+  actions:
+    - text: Start with nxusKit
+      link: /v1.0.0/nxuskit/
+      icon: right-arrow
+      variant: primary
+    - text: Browse examples
+      link: /v1.0.0/nxuskit/examples/
+      icon: puzzle
+slug: v1.0.0
+---
+
+import { CardGrid, LinkCard } from '@astrojs/starlight/components';
+
+<CardGrid>
+  <LinkCard
+    title="nxusKit SDK"
+    href="/v1.0.0/nxuskit/"
+    description="Install nxusKit and build with LLM providers, rule engines, solvers, and decision tables across Rust, Go, Python, C ABI, and CLI/Bash."
+  />
+  <LinkCard
+    title="Getting Started"
+    href="/v1.0.0/nxuskit/getting-started/installation/"
+    description="Download the SDK, configure credentials, and make your first call."
+  />
+  <LinkCard
+    title="Examples"
+    href="/v1.0.0/nxuskit/examples/"
+    description="Browse runnable scenarios for common integration patterns and complete applications."
+  />
+  <LinkCard
+    title="Codex Plugins"
+    href="/codex-plugins/"
+    description="Install nxusKit Celerat and use Codex-ready workflows for nxusKit integrations."
+  />
+  <LinkCard
+    title="GitHub Repositories"
+    href="/v1.0.0/github/"
+    description="Find the public nxus.SYSTEMS organization, SDK source, examples, and docs repository."
+  />
+  <LinkCard
+    title="Reference"
+    href="/v1.0.0/nxuskit/reference/api/"
+    description="Find API, CLI, provider, and C ABI details for production integrations."
+  />
+</CardGrid>
+
+## Current Entry Points
+
+<CardGrid>
+  <LinkCard
+    title="C ABI Reference"
+    href="/v1.0.0/nxuskit/reference/api-reference/"
+    description="Review function signatures, ownership rules, handles, and memory management for native integrations."
+  />
+  <LinkCard
+    title="CLI Reference"
+    href="/v1.0.0/nxuskit/reference/cli-reference/"
+    description="Use command input schemas and runnable loopback examples for shell-first nxusKit workflows."
+  />
+  <LinkCard
+    title="nxusKit Celerat"
+    href="/codex-plugins/nxuskit/"
+    description="Review the current public Codex plugin package, scope, install path, and SDK compatibility note."
+  />
+  <LinkCard
+    title="Celerat Task Recipes"
+    href="/codex-plugins/nxuskit/task-recipes/"
+    description="Browse Codex-ready prompts for streaming, structured output, provider routing, local models, and CLI/Bash setup."
+  />
+</CardGrid>
+
+<nav className="agent-index-links" aria-label="Agent indexes">
+  <span>Agent indexes</span>
+  <a href="/llms.txt">llms.txt</a>
+  <a href="/llms-full.txt">llms-full.txt</a>
+</nav>

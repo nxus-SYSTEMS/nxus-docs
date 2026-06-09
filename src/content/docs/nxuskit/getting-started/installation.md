@@ -20,6 +20,12 @@ Community Edition archive segment. Pro users can replace `oss` with `pro` in the
 asset patterns and extracted directory names after activating or receiving a Pro
 entitlement.
 
+For Pro CLI workflows, use the v1.0.1 or newer Pro SDK bundle. v1.0.1 makes no
+API or C ABI signature changes from v1.0.0; it fixes Pro CLI package
+composition so Pro archives include the real Solver/ZEN engine command modules
+instead of CE-safe stubs. Community Edition archives do not include Pro engine
+execution.
+
 ### macOS (Apple Silicon)
 
 ```bash
@@ -75,7 +81,7 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.0-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.1-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
@@ -90,8 +96,8 @@ nxuskit-cli completions zsh  > ~/.zfunc/_nxuskit-cli      # add ~/.zfunc to $fpa
 nxuskit-cli completions fish > ~/.config/fish/completions/nxuskit-cli.fish
 ```
 
-Supported shells for `completions` in v1.0.0: **bash**, **zsh**, **fish**.
-PowerShell completion is **not generated** in v1.0.0 (the `completions` command
+Supported shells for `completions` in v1.0.x: **bash**, **zsh**, **fish**.
+PowerShell completion is **not generated** in v1.0.x (the `completions` command
 accepts only those three shell names). JSON schemas referenced by the CLI ship
 under the bundle's `include/` (the C header) and `conformance/` (packet/pipeline
 schemas) directories; see [SDK Bundle Contents](#2-sdk-bundle-contents) above.
@@ -147,7 +153,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.0-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -155,7 +161,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.0-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run

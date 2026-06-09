@@ -7,7 +7,7 @@ nxusKit Celerat is a Codex Plugin for accelerating nxusKit SDK integrations acro
 
 ## v0.9.4 — current release
 
-nxusKit SDK docs and packages are now `v1.0.0` GA/latest. This currently published Celerat plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
+nxusKit SDK docs and packages are now `v1.0.1` GA/latest. This currently published Celerat plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
 
 v0.9.4 includes:
 

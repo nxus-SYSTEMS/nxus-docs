@@ -5,7 +5,7 @@ description: "Install the nxusKit Celerat Codex Plugin from the public nxus.SYST
 
 This repository publishes Codex Plugin packages from nxus.SYSTEMS. The current public plugin is **nxusKit Celerat** `v0.9.4-20260522`.
 
-nxusKit SDK docs and packages are now `v1.0.0` GA/latest. The currently published Celerat plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
+nxusKit SDK docs and packages are now `v1.0.1` GA/latest. The currently published Celerat plugin remains `v0.9.4`-based until the refreshed plugin package has a verified install path.
 
 ## Requirements
 

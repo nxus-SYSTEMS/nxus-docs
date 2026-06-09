@@ -93,11 +93,11 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | [cli-assistant](/nxuskit/examples/integrations/cli-assistant/) | Community | Interactive CLI assistant with LLM backend | Rust, Go |
 | [clips-basics](/nxuskit/examples/integrations/clips-basics/) | Community | CLIPS rule engine basics via nxusKit SDK | Rust, Go, CLI/Bash |
 | [clips-llm-hybrid](/nxuskit/examples/integrations/clips-llm-hybrid/) | Community | Hybrid CLIPS rules + LLM reasoning | Rust, Go, Python, CLI/Bash |
-| [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) | Community<br/>Runs in Community Edition. Pro adds optional Solver and ZEN proof stages. | Progressive LLM guardrails with Community CLIPS validation and optional Pro proof stages | Python, CLI/Bash |
-| &nbsp;&nbsp;↳ `car-wash` |  | Catch the classic car-wash walk-vs-drive failure with object-presence rules and optional solver proof |  |
-| &nbsp;&nbsp;↳ `coupon-stack` |  | Reject promotion stacking that violates eligibility and margin policy, with optional ZEN validation |  |
-| &nbsp;&nbsp;↳ `pallet-door` |  | Block unsafe warehouse advice that ignores dimensional clearance, with optional solver what-if |  |
-| &nbsp;&nbsp;↳ `cold-chain` |  | Prevent cheaper logistics recommendations that violate handling requirements, with optional ZEN validation |  |
+| [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) | Community<br/>Runs in Community Edition with CLIPS and selected BN risk scoring. Pro adds Solver/Z3 and ZEN guardrails for repair feedback when selected. | Progressive LLM guardrails with CE CLIPS/BN and optional Pro Solver/ZEN repair feedback | Python, CLI/Bash |
+| &nbsp;&nbsp;↳ `car-wash` |  | Catch the classic car-wash walk-vs-drive failure with CLIPS rules and optional Solver/Z3 feasibility |  |
+| &nbsp;&nbsp;↳ `coupon-stack` |  | Reject promotion stacking that violates eligibility and margin policy, with optional ZEN validation and BN risk scoring |  |
+| &nbsp;&nbsp;↳ `pallet-door` |  | Block unsafe warehouse advice that ignores dimensional clearance, with optional Solver/Z3 feasibility |  |
+| &nbsp;&nbsp;↳ `cold-chain` |  | Prevent cheaper logistics recommendations that violate handling requirements, with optional ZEN validation and BN review-risk scoring |  |
 | &nbsp;&nbsp;↳ real-world: **LLM answer validation** |  | Catch plausible recommendations that fail physical, operational, or policy preconditions before they reach users |  |
 | &nbsp;&nbsp;↳ real-world: **Policy enforcement** |  | Turn free-form answers into facts, apply deterministic rules, and produce auditable repair context |  |
 | &nbsp;&nbsp;↳ real-world: **Operational decision support** |  | Preserve fast LLM drafting while requiring concrete feasibility evidence for workflow-critical recommendations |  |
