@@ -741,7 +741,8 @@ async function exportExampleCompanionDocs(examplesRepo, targetRoot, docsManifest
 }
 
 function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBySourceRel = new Map()) {
-  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  let body = scrubExamplesTrustWording(markdown);
+  body = preserveExamplesIndexBacklinks(body).replace(/^\uFEFF/, '').trimStart();
   const hasFrontmatter = body.startsWith('---\n');
 
   if (hasFrontmatter) {
@@ -753,7 +754,7 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBy
   return [
     '---',
     'title: nxusKit Examples',
-    'description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.',
+    'description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.',
     '---',
     '',
     transformExamplesDocsBody(body, examplesMetadata, routeBySourceRel).trimEnd(),
@@ -762,7 +763,7 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBy
 }
 
 function toExampleDetailStarlightPage(markdown, options) {
-  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  let body = scrubExamplesTrustWording(markdown).replace(/^\uFEFF/, '').trimStart();
   const existingFrontmatter = parseFrontmatter(body);
 
   if (existingFrontmatter) {
@@ -770,9 +771,10 @@ function toExampleDetailStarlightPage(markdown, options) {
   }
 
   const title = options.title ?? existingFrontmatter?.title ?? extractMarkdownTitle(body);
-  const description = options.description ?? existingFrontmatter?.description ?? '';
+  const description = scrubExamplesTrustWording(options.description ?? existingFrontmatter?.description ?? '');
 
-  body = body.replace(/^#\s+.+\n+/, '');
+  body = scrubExamplesTrustWording(body.replace(/^#\s+.+\n+/, ''));
+  body = preserveExampleDetailBacklinks(body, options.sourceRel);
   body = rewriteExampleDocLinks(body, options.sourceRel, options.routeBySourceRel).trimEnd();
 
   return [
@@ -786,6 +788,44 @@ function toExampleDetailStarlightPage(markdown, options) {
     body,
     '',
   ].join('\n');
+}
+
+// Temporary public-docs guard while upstream examples source wording catches up
+// to the v1.0.2 production-claim policy.
+function scrubExamplesTrustWording(markdown) {
+  return markdown
+    .replace(/Production-ready nxusKit examples across Rust, Go, Python, and CLI\/Bash\./g, 'Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.')
+    .replace(/A curated collection of \*\*(\d+) production-ready examples\*\*/g, 'A curated collection of **$1 runnable examples**')
+    .replace(/(\d+) production-quality examples for the nxusKit SDK/g, '$1 runnable examples for the nxusKit SDK')
+    .replace(/get production-ready expert system code/g, 'get validated CLIPS rule code')
+    .replace(/single production-ready pipeline/g, 'single repeatable pipeline')
+    .replace(/production-grade expert system/g, 'structured expert system');
+}
+
+function preserveExamplesIndexBacklinks(markdown) {
+  const examplesLinks = '**[Examples Portfolio](https://nxus.systems/examples)**';
+  const fieldNotesLink = '**[Field Notes](https://nxus.systems/field-notes)**';
+
+  if (markdown.includes(fieldNotesLink)) return markdown;
+
+  return markdown.replace(
+    `${examplesLinks} · **[Website](https://nxus.systems)**`,
+    `${examplesLinks} · ${fieldNotesLink} · **[Website](https://nxus.systems)**`,
+  );
+}
+
+function preserveExampleDetailBacklinks(markdown, sourceRel) {
+  if (sourceRel !== 'examples/integrations/common-sense-guardrails/README.md') {
+    return markdown;
+  }
+
+  const fieldNotesSentence = 'For related engineering notes and release-adjacent writeups, see [nxus.SYSTEMS Field Notes](https://nxus.systems/field-notes).';
+  if (markdown.includes(fieldNotesSentence)) return markdown;
+
+  return markdown.replace(
+    '\n## Scope Exclusions',
+    `\n${fieldNotesSentence}\n\n## Scope Exclusions`,
+  );
 }
 
 function transformExamplesDocsBody(markdown, examplesMetadata, routeBySourceRel) {

@@ -19,12 +19,6 @@ JSON support. Commands that require a semantic structured answer, such as
 `judge select`, should use a configured non-loopback LLM provider because
 loopback models echo the prompt.
 
-For Pro `solver` and `zen` command execution, install the v1.0.1 or newer Pro
-SDK bundle. v1.0.1 makes no API or C ABI signature changes from v1.0.0; it
-fixes Pro CLI package composition so Pro archives include the real Solver/ZEN
-engine command modules instead of CE-safe stubs. Pro engine commands still
-require a valid Pro entitlement at runtime.
-
 ---
 
 ## Table of Contents

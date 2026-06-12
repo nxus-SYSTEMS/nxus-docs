@@ -20,12 +20,6 @@ Community Edition archive segment. Pro users can replace `oss` with `pro` in the
 asset patterns and extracted directory names after activating or receiving a Pro
 entitlement.
 
-For Pro CLI workflows, use the v1.0.1 or newer Pro SDK bundle. v1.0.1 makes no
-API or C ABI signature changes from v1.0.0; it fixes Pro CLI package
-composition so Pro archives include the real Solver/ZEN engine command modules
-instead of CE-safe stubs. Community Edition archives do not include Pro engine
-execution.
-
 ### macOS (Apple Silicon)
 
 ```bash
@@ -81,7 +75,7 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.1-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
@@ -98,9 +92,10 @@ nxuskit-cli completions fish > ~/.config/fish/completions/nxuskit-cli.fish
 
 Supported shells for `completions` in v1.0.x: **bash**, **zsh**, **fish**.
 PowerShell completion is **not generated** in v1.0.x (the `completions` command
-accepts only those three shell names). JSON schemas referenced by the CLI ship
-under the bundle's `include/` (the C header) and `conformance/` (packet/pipeline
-schemas) directories; see [SDK Bundle Contents](#2-sdk-bundle-contents) above.
+accepts only those three shell names). JSON schemas ship under the bundle's
+`include/` and `conformance/` directories. The
+`conformance/validated_examples_portfolio_snapshot.json` file is release-time
+QA provenance for the offline catalog, not a CLI runtime dependency.
 
 ## 2. SDK Bundle Contents
 
@@ -108,6 +103,12 @@ schemas) directories; see [SDK Bundle Contents](#2-sdk-bundle-contents) above.
 nxuskit-sdk-{version}-{edition}-{platform}/
 ├── include/
 │   └── nxuskit.h          # C header — all API declarations
+├── conformance/
+│   ├── examples_manifest.json
+│   ├── example-groups.json
+│   ├── example-tiers.json
+│   └── validated_examples_portfolio_snapshot.json
+│                         # release QA provenance for the offline catalog
 ├── lib/
 │   ├── libnxuskit.so      # Shared library (Linux)
 │   │   libnxuskit.dylib   # Shared library (macOS)
@@ -116,6 +117,8 @@ nxuskit-sdk-{version}-{edition}-{platform}/
 │   │   nxuskit.lib        # Static library (Windows)
 │   └── nxuskit.dll.lib    # Import library (Windows only)
 ├── rust/                  # nxuskit Rust SDK wrapper (use as path dependency)
+├── python/
+│   └── src/               # nxuskit Python SDK source (add to PYTHONPATH)
 ├── docs/                  # This documentation
 └── examples/              # Working examples in C, Rust, Go, Python
 ```
@@ -153,7 +156,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -161,7 +164,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -196,8 +199,13 @@ See [nxusKit examples](/nxuskit/examples/) for a runnable project, and
 
 ## 6. First Example — Python
 
+The Python SDK source ships inside the SDK bundle. Point `PYTHONPATH` at the
+bundle's `python/src` directory and set `NXUSKIT_SDK_DIR` so FFI-backed features
+can locate the native library:
+
 ```bash
-pip install nxuskit-py
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
 export OPENAI_API_KEY="sk-..."
 
 python examples/python/basic_chat.py

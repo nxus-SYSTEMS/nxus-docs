@@ -102,10 +102,13 @@ func main() {
 
 ## Python
 
-Install the Python wrapper, then create a provider and call it:
+Use the Python SDK source bundled with the SDK, then create a provider and call
+it:
 
 ```bash
-pip install nxuskit-py
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
+export OPENAI_API_KEY="sk-..."
 ```
 
 ```python
