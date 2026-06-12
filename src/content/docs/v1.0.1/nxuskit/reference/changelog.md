@@ -1,6 +1,7 @@
 ---
 title: "Changelog"
 description: "Release notes for nxusKit SDK versions."
+slug: v1.0.1/nxuskit/reference/changelog
 ---
 
 All notable changes to this project will be documented in this file.
@@ -14,51 +15,19 @@ historical version resets.
 
 ## [Unreleased]
 
-## [1.0.2] - 2026-06-12
-
-> Public-trust and packaging hardening patch for the v1.0 SDK line. This
-> patch preserves the v1.0.0 API and C ABI contracts; no API or
-> C ABI signature change is introduced.
-
-### Changed
-
-- Updated current-release posture across the SDK README and shipped bundle docs
-  to `1.0.2`.
-- Aligned internal engine workspace package metadata to `1.0.2` so
-  `nxuskit_version()` matches the Go and Python FFI wrappers.
-- Replaced PyPI-style Python installation copy with SDK-bundle setup guidance
-  using `NXUSKIT_SDK_DIR` and the bundle's `python/src` path.
-- Framed the validated Examples portfolio snapshot as release QA/provenance,
-  not an SDK runtime dependency on the Examples companion portfolio.
-
-### Fixed
-
-- Corrected invalid Python snippets that imported from `nxuskit-py`; bundled
-  examples now use the `nxuskit` module path.
-- Qualified unsupported production-readiness wording in SDK-local Examples
-  catalog metadata.
-- Extended release inventory checks to guard stale Python install, invalid
-  Python import, production-claim, and current-version posture regressions.
-
-### Compatibility
-
-- No API or C ABI signature changes from v1.0.0 are introduced.
-- The v1.0.1 Pro CLI packaging fix remains included: Pro SDK bundles compile
-  solver and ZEN command modules with `pro-engines`.
-
 ## [1.0.1] - 2026-06-08
 
+> Patch release for Pro SDK bundle composition. No API or C ABI signature
+> changes from v1.0.0 are introduced.
+
 ### Fixed
 
-- Rebuilt Pro SDK CLI packaging so `nxuskit-cli solver` and `nxuskit-cli zen`
-  compile the real Pro engine command modules instead of CE-safe stubs.
-- Extended the CLI `pro-engines` feature to enable solver/ZEN capability flags
-  in both `nxuskit-engine` and `nxuskit-core`.
-- Added Pro CLI wiring verification to SDK bundle validation.
-
-### Compatibility
-
-- No API or C ABI signature changes from v1.0.0 were introduced.
+- Pro SDK bundles now compile `nxuskit-cli solver` and `nxuskit-cli zen` with
+  the real Pro engine command modules instead of CE-safe stubs.
+- Pro CLI builds now enable solver/ZEN capability flags in both `nxuskit-engine`
+  and `nxuskit-core`, so valid Pro tokens can execute the bundled commands.
+- SDK bundle verification now fails if a Pro CLI is compiled with CE stubs or
+  OSS edition metadata.
 
 ## [1.0.0] - 2026-05-28
 
@@ -225,7 +194,7 @@ historical version resets.
   - **Engine**: `parameter_adapter.rs::adapt_logprobs` performs warn-and-
     drop when a provider lacks `supports_logprobs`, with structured Info
     warning. `provider_options` does **not** tunnel logprobs.
-  - **Migration guide:** The [logprobs migration guide](/nxuskit/migration/logprobs-migration/) covers
+  - **Migration guide:** The [logprobs migration guide](/v1.0.1/nxuskit/migration/logprobs-migration/) covers
     Rust + Python + C ABI before/after with capability-gating rationale.
 
 - **ABI / version consistency** (Phase 3):

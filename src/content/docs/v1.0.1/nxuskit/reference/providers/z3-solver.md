@@ -1,6 +1,7 @@
 ---
 title: "Z3 Constraint Satisfaction Provider"
 description: "Configuration and input/output reference for the Z3 SMT solver provider."
+slug: v1.0.1/nxuskit/reference/providers/z3-solver
 ---
 
 The Z3 provider integrates [Microsoft Z3](https://github.com/Z3Prover/z3), an industry-grade SMT (Satisfiability Modulo Theories) solver, into the nxusKit provider interface. It enables constraint satisfaction, optimization, and formal verification problems to be expressed and solved using the same `chat()` / `chat_stream()` API as LLM providers.
@@ -232,7 +233,7 @@ response, err := provider.Chat(ctx, &nxuskit-go.ChatRequest{
 ### Via C ABI (Python)
 
 ```python
-from nxuskit._ffi_provider import create_ffi_provider
+from nxuskit-py._ffi_provider import create_ffi_provider
 
 provider = create_ffi_provider({
     "provider_type": "z3",

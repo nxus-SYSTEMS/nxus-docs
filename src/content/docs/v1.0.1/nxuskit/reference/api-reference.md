@@ -1,6 +1,7 @@
 ---
 title: "C ABI Reference"
 description: "Complete reference for the nxusKit C ABI — all functions, types, and ownership rules."
+slug: v1.0.1/nxuskit/reference/api-reference
 ---
 
 All functions are declared in `nxuskit.h`. The ABI uses opaque handles and JSON
@@ -14,7 +15,7 @@ strings for all data exchange. Every function is thread-safe unless noted.
 const char *nxuskit_version(void);
 ```
 
-Returns the library version string (e.g., `"1.0.2"`). The returned pointer is
+Returns the library version string (e.g., `"1.0.1"`). The returned pointer is
 static and valid for the process lifetime. Never returns NULL.
 
 ## Provider Lifecycle

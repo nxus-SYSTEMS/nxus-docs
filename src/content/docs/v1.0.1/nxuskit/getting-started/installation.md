@@ -1,6 +1,7 @@
 ---
 title: "Installation"
 description: "Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows."
+slug: v1.0.1/nxuskit/getting-started/installation
 ---
 
 This guide walks you through downloading, installing, and using the nxuskit SDK
@@ -19,6 +20,12 @@ The examples below download Community Edition from the public
 Community Edition archive segment. Pro users can replace `oss` with `pro` in the
 asset patterns and extracted directory names after activating or receiving a Pro
 entitlement.
+
+For Pro CLI workflows, use the v1.0.1 or newer Pro SDK bundle. v1.0.1 makes no
+API or C ABI signature changes from v1.0.0; it fixes Pro CLI package
+composition so Pro archives include the real Solver/ZEN engine command modules
+instead of CE-safe stubs. Community Edition archives do not include Pro engine
+execution.
 
 ### macOS (Apple Silicon)
 
@@ -75,7 +82,7 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.1-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
@@ -92,11 +99,9 @@ nxuskit-cli completions fish > ~/.config/fish/completions/nxuskit-cli.fish
 
 Supported shells for `completions` in v1.0.x: **bash**, **zsh**, **fish**.
 PowerShell completion is **not generated** in v1.0.x (the `completions` command
-accepts only those three shell names). JSON schemas and validated Examples
-portfolio provenance referenced by the CLI ship under the bundle's `include/`
-(the C header) and `conformance/` (packet/pipeline schemas plus
-`validated_examples_portfolio_snapshot.json`) directories; see
-[SDK Bundle Contents](#2-sdk-bundle-contents) above.
+accepts only those three shell names). JSON schemas referenced by the CLI ship
+under the bundle's `include/` (the C header) and `conformance/` (packet/pipeline
+schemas) directories; see [SDK Bundle Contents](#2-sdk-bundle-contents) above.
 
 ## 2. SDK Bundle Contents
 
@@ -104,12 +109,6 @@ portfolio provenance referenced by the CLI ship under the bundle's `include/`
 nxuskit-sdk-{version}-{edition}-{platform}/
 ├── include/
 │   └── nxuskit.h          # C header — all API declarations
-├── conformance/
-│   ├── examples_manifest.json
-│   ├── example-groups.json
-│   ├── example-tiers.json
-│   └── validated_examples_portfolio_snapshot.json
-│                         # release QA provenance for the offline catalog
 ├── lib/
 │   ├── libnxuskit.so      # Shared library (Linux)
 │   │   libnxuskit.dylib   # Shared library (macOS)
@@ -134,18 +133,18 @@ make basic_chat
 ./bin/basic_chat
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.1/nxuskit/examples/) for the source.
 
 ## 4. First Example — Go
 
 ```bash
-export OPENAI_API_KEY="<your-openai-api-key>"
+export OPENAI_API_KEY="sk-..."
 
 cd nxuskit-sdk-*/examples/go
 go run basic_chat.go
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.1/nxuskit/examples/) for the source.
 
 ## 5. First Example — Rust
 
@@ -155,7 +154,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -163,7 +162,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.1-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -193,24 +192,19 @@ fn main() -> Result<(), nxuskit::NxuskitError> {
 2. The `lib/` subdirectory exists: `ls $NXUSKIT_SDK_DIR/lib/`
 3. On macOS: quarantine was removed (see Step 1 above)
 
-See [nxusKit examples](/nxuskit/examples/) for a runnable project, and
-[Rust SDK API documentation](/nxuskit/reference/api/) for the full nxuskit API documentation.
+See [nxusKit examples](/v1.0.1/nxuskit/examples/) for a runnable project, and
+[Rust SDK API documentation](/v1.0.1/nxuskit/reference/api/) for the full nxuskit API documentation.
 
 ## 6. First Example — Python
 
-The Python SDK source ships inside the SDK bundle. Point `PYTHONPATH` at the
-bundle's `python/src` directory and set `NXUSKIT_SDK_DIR` so FFI-backed features
-can locate the native library:
-
 ```bash
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
-export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
+pip install nxuskit-py
 export OPENAI_API_KEY="sk-..."
 
 python examples/python/basic_chat.py
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.1/nxuskit/examples/) for the source.
 
 ## Core Concepts
 
@@ -282,9 +276,9 @@ const char *input = "{\"facts\": [{\"template\": \"sensor\", \"values\": {\"name
 ```
 
 The user message must conform to the `ClipsInput` schema — see the
-[Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/#clipsinput-json-reference) for the full
+[Rule Authoring Guide](/v1.0.1/nxuskit/guides/clips-rule-authoring/#clipsinput-json-reference) for the full
 field reference. CLIPS also provides a session API for direct engine access; see
-the [API Reference](/nxuskit/reference/api-reference/#clips-session-api).
+the [API Reference](/v1.0.1/nxuskit/reference/api-reference/#clips-session-api).
 
 ## Linking Reference
 
@@ -353,7 +347,7 @@ curl -L -H "Authorization: Bearer $GH_TOKEN" \
 
 ## Next Steps
 
-- [API Reference](/nxuskit/reference/api-reference/) — full C ABI documentation
-- [Provider Reference](/nxuskit/reference/providers/cloud-llms/) — provider-specific configuration
-- [Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/) — writing, testing, and deploying custom CLIPS rules
-- [nxusKit examples](/nxuskit/examples/) — working code for SDK languages and C ABI workflows
+- [API Reference](/v1.0.1/nxuskit/reference/api-reference/) — full C ABI documentation
+- [Provider Reference](/v1.0.1/nxuskit/reference/providers/cloud-llms/) — provider-specific configuration
+- [Rule Authoring Guide](/v1.0.1/nxuskit/guides/clips-rule-authoring/) — writing, testing, and deploying custom CLIPS rules
+- [nxusKit examples](/v1.0.1/nxuskit/examples/) — working code for SDK languages and C ABI workflows

@@ -1,6 +1,7 @@
 ---
 title: "Tier System"
 description: "Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit."
+slug: v1.0.1/nxuskit/concepts/tier-system
 ---
 
 ## Overview
@@ -56,9 +57,9 @@ All editions provide wrappers for all three languages:
 
 | Language | Package | Install |
 |----------|---------|---------|
-| Rust | `nxuskit` | Path dependency from SDK bundle |
+| Rust | `nxuskit` | `cargo add nxuskit` |
 | Go | `nxuskit` | `go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go` |
-| Python | `nxuskit-py` | SDK bundle `python/src` on `PYTHONPATH` |
+| Python | `nxuskit-py` | `pip install nxuskit-py` |
 
 ## Example Tier Assignments
 
@@ -92,4 +93,4 @@ All editions provide wrappers for all three languages:
 3. Activate on your machine: `nxuskit-cli license activate --key <purchase_id>`
 4. For CI/CD: set `NXUSKIT_LICENSE_TOKEN` with your deployment token
 
-See the [License Activation Guide](/nxuskit/concepts/licensing/) for the full workflow.
+See the [License Activation Guide](/v1.0.1/nxuskit/concepts/licensing/) for the full workflow.
