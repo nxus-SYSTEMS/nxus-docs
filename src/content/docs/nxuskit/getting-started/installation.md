@@ -15,10 +15,14 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 ## 1. Download and Install the SDK
 
 The examples below download Community Edition from the public
-`nxus-SYSTEMS/nxusKit` release. Current release asset names use `oss` for the
-Community Edition archive segment. Pro users can replace `oss` with `pro` in the
-asset patterns and extracted directory names after activating or receiving a Pro
-entitlement.
+`nxus-SYSTEMS/nxusKit` release. Current public release assets use `oss` for the
+Community Edition archive segment. The public `sdk-v1.0.2` release is OSS-only:
+it provides `install.sh`, four OSS platform archives, and their checksums.
+
+Pro archives are not published on the public release page. Pro users should use
+the authenticated Pro release channel provided with their entitlement, currently
+the authenticated `sdk-v1.0.2-pro` release, and download `pro` assets only after
+authenticating with the required access.
 
 ### macOS (Apple Silicon)
 
@@ -333,7 +337,9 @@ For CI systems that can't use `gh`, or that need authenticated GitHub API
 access:
 
 1. Create a fine-grained PAT at https://github.com/settings/personal-access-tokens
-   - **Repository access**: Select `nxus-SYSTEMS/nxusKit`
+   - **Repository access**: Select `nxus-SYSTEMS/nxusKit` for OSS assets, or
+     your entitlement-provided internal/pro-authenticated repository for Pro
+     assets.
    - **Permissions**: Contents → Read-only
 2. Use the token:
 
