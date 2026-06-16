@@ -26,9 +26,15 @@ historical version resets.
   install path for pure-Python APIs.
 - Clarified that native CLIPS, Bayesian network, and FFI-backed features require
   a compatible SDK bundle in addition to the Python package.
-- Clarified the public v1.0.5 release-channel policy: public release assets
-  include Community/OSS and Pro binary packages, while public source archives
+- Clarified the public v1.0.5 release-channel policy: the public
+  [`sdk-v1.0.5` release](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
+  contains 17 assets total: `install.sh`, four Community/OSS archives with
+  checksums, and four Pro archives with checksums, while public source archives
   remain Community-safe.
+- Recorded that checksums were verified for all eight public v1.0.5 SDK
+  archives.
+- Noted that `nxuskit-py==1.0.5` links to the public SDK v1.0.5 tag and
+  release.
 - Documented that Solver and ZEN workflows require a Pro SDK package and a valid
   Pro entitlement.
 - Clarified Python provider naming: `Provider` is the factory and `LLMProvider`
