@@ -3,6 +3,7 @@ title: "Bayesian Inference Pattern"
 description: "Bayesian network inference via nxusKit SDK"
 sidebar:
   hidden: true
+slug: v1.0.2/nxuskit/examples/patterns/bayesian-inference
 ---
 
 Demonstrates Bayesian Network inference using multiple algorithms: load a BIF model, set observed evidence, and compute posterior probability distributions over unobserved variables using exact and approximate methods.
@@ -92,8 +93,7 @@ make build
 ### Python
 ```bash
 cd python
-python -m pip install "nxuskit-py==1.0.5"   # pure-Python APIs
-# Native BN execution also requires a compatible SDK bundle and NXUSKIT_SDK_DIR.
+pip install -e ../../../../packages/nxuskit-py   # if not already installed
 python main.py --scenario haunted-house
 python main.py --scenario coffee-shop --step
 ```

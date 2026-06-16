@@ -3,6 +3,7 @@ title: "Solver Pattern"
 description: "Z3 constraint solver integration via nxusKit SDK"
 sidebar:
   hidden: true
+slug: v1.0.2/nxuskit/examples/patterns/solver
 ---
 
 Demonstrates the full solver lifecycle: satisfaction checking, single- and multi-objective optimization, soft constraints, and what-if analysis using push/pop scoping.
@@ -90,8 +91,7 @@ make build
 ### Python
 ```bash
 cd python
-python -m pip install "nxuskit-py==1.0.5"   # pure-Python APIs
-# Solver execution also requires the Pro SDK package and entitlement.
+pip install -e ../../../../packages/nxuskit-py   # if not already installed
 python main.py --scenario theme-park
 python main.py --scenario fantasy-draft --step
 ```

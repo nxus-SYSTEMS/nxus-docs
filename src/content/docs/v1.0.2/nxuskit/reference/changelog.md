@@ -1,6 +1,7 @@
 ---
 title: "Changelog"
 description: "Release notes for nxusKit SDK versions."
+slug: v1.0.2/nxuskit/reference/changelog
 ---
 
 All notable changes to this project will be documented in this file.
@@ -13,31 +14,6 @@ pre-public development history with normalized pre-public version numbers after
 historical version resets.
 
 ## [Unreleased]
-
-## [1.0.5] - 2026-06-16
-
-> Package, release-channel, and downstream documentation alignment for the
-> v1.0 SDK line.
-
-### Changed
-
-- Updated current-release posture across public docs to `1.0.5`.
-- Documented the published PyPI package `nxuskit-py==1.0.5` as the Python
-  install path for pure-Python APIs.
-- Clarified that native CLIPS, Bayesian network, and FFI-backed features require
-  a compatible SDK bundle in addition to the Python package.
-- Clarified the public v1.0.5 release-channel policy: public release assets
-  include Community/OSS and Pro binary packages, while public source archives
-  remain Community-safe.
-- Documented that Solver and ZEN workflows require a Pro SDK package and a valid
-  Pro entitlement.
-- Clarified Python provider naming: `Provider` is the factory and `LLMProvider`
-  is the protocol/type contract; they are not aliases.
-
-### Compatibility
-
-- This patch stays within the v1.0 release line and does not announce a later
-  release.
 
 ## [1.0.2] - 2026-06-12
 
@@ -120,10 +96,9 @@ historical version resets.
 
 - No API or C ABI signature changes from v0.9.4 are introduced in this GA cut.
 - At v1.0.0, Pro installation packages were published on the public release
-  page; Pro capabilities still required a valid license key. The v1.0.2 release
-  posture was OSS-only on the public release page. v1.0.5 release-channel
-  guidance restores public CE and Pro binary package guidance while keeping
-  public source archives Community-safe.
+  page; Pro capabilities still required a valid license key. In the current
+  v1.0.2 release posture, the public release is OSS-only and Pro bundles use the
+  internal/pro-authenticated release channel.
 
 ## [0.9.4] - 2026-05-11
 
@@ -259,7 +234,7 @@ historical version resets.
   - **Engine**: `parameter_adapter.rs::adapt_logprobs` performs warn-and-
     drop when a provider lacks `supports_logprobs`, with structured Info
     warning. `provider_options` does **not** tunnel logprobs.
-  - **Migration guide:** The [logprobs migration guide](/nxuskit/migration/logprobs-migration/) covers
+  - **Migration guide:** The [logprobs migration guide](/v1.0.2/nxuskit/migration/logprobs-migration/) covers
     Rust + Python + C ABI before/after with capability-gating rationale.
 
 - **ABI / version consistency** (Phase 3):

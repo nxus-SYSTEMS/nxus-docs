@@ -1,6 +1,7 @@
 ---
 title: Provider Model
 description: How nxusKit abstracts over LLM providers.
+slug: v1.0.2/nxuskit/concepts/provider-model
 ---
 
 ## Overview
@@ -13,10 +14,6 @@ Ollama, CLIPS, Z3, Mock, or Loopback.
 
 The goal is portability: application code can switch providers without changing
 its surrounding orchestration, logging, retry, or licensing logic.
-
-For Python users, `Provider` is the factory that creates configured provider
-instances. `LLMProvider` is the protocol/type contract implemented by provider
-classes. Treat them as separate concepts rather than aliases.
 
 ## Provider Types
 
@@ -44,7 +41,7 @@ All providers use the same high-level configuration fields:
 
 Only `provider_type` is always required. API keys can come from explicit
 configuration, environment variables, or the credential store. See
-[Authentication](/nxuskit/getting-started/authentication/) for the precedence
+[Authentication](/v1.0.2/nxuskit/getting-started/authentication/) for the precedence
 rules.
 
 ## Request Flow
@@ -77,10 +74,10 @@ metadata to choose a provider at runtime instead of hard-coding assumptions.
 
 For provider-specific details, see:
 
-- [Cloud LLM Providers](/nxuskit/reference/providers/cloud-llms/)
-- [Local LLM Providers](/nxuskit/reference/providers/local-llms/)
-- [Expert System & Utility Providers](/nxuskit/reference/providers/expert-systems/)
-- [Z3 Constraint Satisfaction Provider](/nxuskit/reference/providers/z3-solver/)
+- [Cloud LLM Providers](/v1.0.2/nxuskit/reference/providers/cloud-llms/)
+- [Local LLM Providers](/v1.0.2/nxuskit/reference/providers/local-llms/)
+- [Expert System & Utility Providers](/v1.0.2/nxuskit/reference/providers/expert-systems/)
+- [Z3 Constraint Satisfaction Provider](/v1.0.2/nxuskit/reference/providers/z3-solver/)
 
 ## Choosing a Provider
 

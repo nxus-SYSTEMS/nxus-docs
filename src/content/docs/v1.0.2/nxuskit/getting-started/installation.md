@@ -1,6 +1,7 @@
 ---
 title: "Installation"
 description: "Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows."
+slug: v1.0.2/nxuskit/getting-started/installation
 ---
 
 This guide walks you through downloading, installing, and using the nxuskit SDK
@@ -16,12 +17,13 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 
 The examples below download Community Edition from the public
 `nxus-SYSTEMS/nxusKit` release. Current public release assets use `oss` for the
-Community Edition archive segment and `pro` for Pro binary packages.
+Community Edition archive segment. The public `sdk-v1.0.2` release is OSS-only:
+it provides `install.sh`, four OSS platform archives, and their checksums.
 
-For SDK v1.0.5, the public release includes both Community/OSS and Pro binary
-packages. Public source archives remain Community-safe. Pro binary packages
-require a valid Pro entitlement to use Pro-only capabilities; Solver and ZEN
-workflows require the Pro SDK package plus entitlement.
+Pro archives are not published on the public release page. Pro users should use
+the authenticated Pro release channel provided with their entitlement, currently
+the authenticated `sdk-v1.0.2-pro` release, and download `pro` assets only after
+authenticating with the required access.
 
 ### macOS (Apple Silicon)
 
@@ -78,37 +80,10 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.5-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
-
-### Pro packages
-
-If you have a Pro entitlement, download the matching `pro` package for your
-platform from the public release assets:
-
-```bash
-gh release download --repo nxus-SYSTEMS/nxusKit \
-  --pattern "nxuskit-sdk-*-pro-macos-arm64.tar.gz" \
-  --pattern "nxuskit-sdk-*-pro-macos-arm64.tar.gz.sha256"
-```
-
-The Pro package includes Pro engine command modules. A valid license is still
-required at runtime for Pro-only features such as Solver and ZEN.
-
-### Python package
-
-Install the Python package from PyPI:
-
-```bash
-python -m pip install "nxuskit-py==1.0.5"
-```
-
-The import package is `nxuskit`. The PyPI package provides pure-Python APIs.
-Native CLIPS, Bayesian network, and FFI-backed features require a compatible SDK
-bundle and `NXUSKIT_SDK_DIR`. Solver and ZEN also require the Pro SDK package
-and a valid Pro entitlement.
 
 ### CLI shell completions (optional)
 
@@ -148,7 +123,7 @@ nxuskit-sdk-{version}-{edition}-{platform}/
 │   └── nxuskit.dll.lib    # Import library (Windows only)
 ├── rust/                  # nxuskit Rust SDK wrapper (use as path dependency)
 ├── python/
-│   └── src/               # bundled Python SDK source for native/FFI workflows
+│   └── src/               # nxuskit Python SDK source (add to PYTHONPATH)
 ├── docs/                  # This documentation
 └── examples/              # Working examples in C, Rust, Go, Python
 ```
@@ -165,7 +140,7 @@ make basic_chat
 ./bin/basic_chat
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.2/nxuskit/examples/) for the source.
 
 ## 4. First Example — Go
 
@@ -176,7 +151,7 @@ cd nxuskit-sdk-*/examples/go
 go run basic_chat.go
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.2/nxuskit/examples/) for the source.
 
 ## 5. First Example — Rust
 
@@ -186,7 +161,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -194,7 +169,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -224,24 +199,24 @@ fn main() -> Result<(), nxuskit::NxuskitError> {
 2. The `lib/` subdirectory exists: `ls $NXUSKIT_SDK_DIR/lib/`
 3. On macOS: quarantine was removed (see Step 1 above)
 
-See [nxusKit examples](/nxuskit/examples/) for a runnable project, and
-[Rust SDK API documentation](/nxuskit/reference/api/) for the full nxuskit API documentation.
+See [nxusKit examples](/v1.0.2/nxuskit/examples/) for a runnable project, and
+[Rust SDK API documentation](/v1.0.2/nxuskit/reference/api/) for the full nxuskit API documentation.
 
 ## 6. First Example — Python
 
-Install `nxuskit-py==1.0.5` from PyPI for pure-Python APIs. Set
-`NXUSKIT_SDK_DIR` when your code uses native CLIPS, Bayesian network, or other
-FFI-backed features:
+The Python SDK source ships inside the SDK bundle. Point `PYTHONPATH` at the
+bundle's `python/src` directory and set `NXUSKIT_SDK_DIR` so FFI-backed features
+can locate the native library:
 
 ```bash
-python -m pip install "nxuskit-py==1.0.5"
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
 export OPENAI_API_KEY="sk-..."
 
 python examples/python/basic_chat.py
 ```
 
-See [nxusKit examples](/nxuskit/examples/) for the source.
+See [nxusKit examples](/v1.0.2/nxuskit/examples/) for the source.
 
 ## Core Concepts
 
@@ -313,9 +288,9 @@ const char *input = "{\"facts\": [{\"template\": \"sensor\", \"values\": {\"name
 ```
 
 The user message must conform to the `ClipsInput` schema — see the
-[Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/#clipsinput-json-reference) for the full
+[Rule Authoring Guide](/v1.0.2/nxuskit/guides/clips-rule-authoring/#clipsinput-json-reference) for the full
 field reference. CLIPS also provides a session API for direct engine access; see
-the [API Reference](/nxuskit/reference/api-reference/#clips-session-api).
+the [API Reference](/v1.0.2/nxuskit/reference/api-reference/#clips-session-api).
 
 ## Linking Reference
 
@@ -386,7 +361,7 @@ curl -L -H "Authorization: Bearer $GH_TOKEN" \
 
 ## Next Steps
 
-- [API Reference](/nxuskit/reference/api-reference/) — full C ABI documentation
-- [Provider Reference](/nxuskit/reference/providers/cloud-llms/) — provider-specific configuration
-- [Rule Authoring Guide](/nxuskit/guides/clips-rule-authoring/) — writing, testing, and deploying custom CLIPS rules
-- [nxusKit examples](/nxuskit/examples/) — working code for SDK languages and C ABI workflows
+- [API Reference](/v1.0.2/nxuskit/reference/api-reference/) — full C ABI documentation
+- [Provider Reference](/v1.0.2/nxuskit/reference/providers/cloud-llms/) — provider-specific configuration
+- [Rule Authoring Guide](/v1.0.2/nxuskit/guides/clips-rule-authoring/) — writing, testing, and deploying custom CLIPS rules
+- [nxusKit examples](/v1.0.2/nxuskit/examples/) — working code for SDK languages and C ABI workflows

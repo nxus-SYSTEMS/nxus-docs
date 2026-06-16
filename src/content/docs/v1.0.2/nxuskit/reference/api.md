@@ -1,6 +1,7 @@
 ---
 title: API Reference
 description: Complete nxusKit SDK API reference.
+slug: v1.0.2/nxuskit/reference/api
 ---
 
 ## Overview
@@ -16,20 +17,16 @@ nxusKit APIs are organized around a small set of shared contracts:
 
 Use this page as the entry point for API-level reference material.
 
-In Python, `Provider` is the factory used to create provider instances.
-`LLMProvider` is the protocol/type contract for provider implementations. They
-are separate concepts, not aliases.
-
 ## Core References
 
 | Reference | Use for |
 |-----------|---------|
-| [C ABI Reference](/nxuskit/reference/api-reference/) | C functions, ownership rules, FFI handles, CLIPS session calls, and memory management. |
-| [CLI Input Format Reference](/nxuskit/reference/cli-reference/) | Structured JSON/YAML/JSONL input contracts for `nxuskit-cli`. |
-| [Cloud LLM Providers](/nxuskit/reference/providers/cloud-llms/) | Provider configuration for hosted LLM APIs. |
-| [Local LLM Providers](/nxuskit/reference/providers/local-llms/) | Ollama, LM Studio, and in-process local model configuration. |
-| [Expert System & Utility Providers](/nxuskit/reference/providers/expert-systems/) | CLIPS, MCP, Mock, and Loopback configuration. |
-| [Z3 Constraint Satisfaction Provider](/nxuskit/reference/providers/z3-solver/) | Z3 input, output, optimization, and streaming contracts. |
+| [C ABI Reference](/v1.0.2/nxuskit/reference/api-reference/) | C functions, ownership rules, FFI handles, CLIPS session calls, and memory management. |
+| [CLI Input Format Reference](/v1.0.2/nxuskit/reference/cli-reference/) | Structured JSON/YAML/JSONL input contracts for `nxuskit-cli`. |
+| [Cloud LLM Providers](/v1.0.2/nxuskit/reference/providers/cloud-llms/) | Provider configuration for hosted LLM APIs. |
+| [Local LLM Providers](/v1.0.2/nxuskit/reference/providers/local-llms/) | Ollama, LM Studio, and in-process local model configuration. |
+| [Expert System & Utility Providers](/v1.0.2/nxuskit/reference/providers/expert-systems/) | CLIPS, MCP, Mock, and Loopback configuration. |
+| [Z3 Constraint Satisfaction Provider](/v1.0.2/nxuskit/reference/providers/z3-solver/) | Z3 input, output, optimization, and streaming contracts. |
 
 ## Shared Chat Shape
 
@@ -70,5 +67,5 @@ backends.
 
 When calling through the C ABI, every returned provider handle, response handle,
 stream handle, and allocated string has an explicit free function. Use the
-[ownership summary](/nxuskit/reference/api-reference/#ownership-summary) before
+[ownership summary](/v1.0.2/nxuskit/reference/api-reference/#ownership-summary) before
 integrating from C, C++, Go FFI, Python FFI, or another native boundary.

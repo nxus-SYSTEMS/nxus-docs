@@ -1,12 +1,13 @@
 ---
 title: First Call
 description: Make your first LLM call with nxusKit in Rust, Go, Python, or the C ABI.
+slug: v1.0.2/nxuskit/getting-started/first-call
 ---
 
 This guide assumes you have installed the SDK and configured at least one
 provider credential. If you have not done that yet, start with
-[Installation](/nxuskit/getting-started/installation/) and
-[Authentication](/nxuskit/getting-started/authentication/).
+[Installation](/v1.0.2/nxuskit/getting-started/installation/) and
+[Authentication](/v1.0.2/nxuskit/getting-started/authentication/).
 
 ## Fastest Path: CLI
 
@@ -102,10 +103,12 @@ func main() {
 
 ## Python
 
-Install the Python package from PyPI, then create a provider and call it:
+Use the Python SDK source bundled with the SDK, then create a provider and call
+it:
 
 ```bash
-python -m pip install "nxuskit-py==1.0.5"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
 export OPENAI_API_KEY="sk-..."
 ```
 
@@ -122,14 +125,6 @@ response = provider.chat(
 print(response.content)
 ```
 
-The import module is `nxuskit`. `Provider` is the Python factory used to create
-providers. `LLMProvider` is the protocol/type contract for provider
-implementations; it is not an alias for `Provider`.
-
-Native CLIPS, Bayesian network, and FFI-backed features also require a
-compatible SDK bundle and `NXUSKIT_SDK_DIR`. Solver and ZEN require the Pro SDK
-package plus a valid Pro entitlement.
-
 ## C
 
 The SDK bundle includes `include/nxuskit.h` and platform libraries under
@@ -145,7 +140,7 @@ cc -I "$NXUSKIT_SDK_DIR/include" \
   -Wl,-rpath,"$NXUSKIT_SDK_DIR/lib"
 ```
 
-Use the [C ABI Reference](/nxuskit/reference/api-reference/) for function,
+Use the [C ABI Reference](/v1.0.2/nxuskit/reference/api-reference/) for function,
 ownership, and error-handling details.
 
 ## Local Providers
@@ -160,16 +155,16 @@ export OLLAMA_HOST="http://localhost:11434"
 export LMSTUDIO_HOST="http://localhost:1234/v1"
 ```
 
-Use [Local LLM Providers](/nxuskit/reference/providers/local-llms/) for model
+Use [Local LLM Providers](/v1.0.2/nxuskit/reference/providers/local-llms/) for model
 setup and provider-specific options.
 
 ## Next Steps
 
 | Goal | Read |
 |------|------|
-| Configure credentials | [Authentication](/nxuskit/getting-started/authentication/) |
-| Browse runnable projects | [Examples](/nxuskit/examples/) |
-| Stream responses | [Streaming](/nxuskit/guides/streaming/) |
-| Choose a provider | [Provider Model](/nxuskit/concepts/provider-model/) |
-| Use CLI JSON contracts | [CLI Input Format Reference](/nxuskit/reference/cli-reference/) |
-| Integrate through native boundaries | [C ABI Reference](/nxuskit/reference/api-reference/) |
+| Configure credentials | [Authentication](/v1.0.2/nxuskit/getting-started/authentication/) |
+| Browse runnable projects | [Examples](/v1.0.2/nxuskit/examples/) |
+| Stream responses | [Streaming](/v1.0.2/nxuskit/guides/streaming/) |
+| Choose a provider | [Provider Model](/v1.0.2/nxuskit/concepts/provider-model/) |
+| Use CLI JSON contracts | [CLI Input Format Reference](/v1.0.2/nxuskit/reference/cli-reference/) |
+| Integrate through native boundaries | [C ABI Reference](/v1.0.2/nxuskit/reference/api-reference/) |
