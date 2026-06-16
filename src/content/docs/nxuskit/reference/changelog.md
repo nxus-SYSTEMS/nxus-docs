@@ -14,6 +14,37 @@ historical version resets.
 
 ## [Unreleased]
 
+## [1.0.5] - 2026-06-16
+
+> Package, release-channel, and downstream documentation alignment for the
+> v1.0 SDK line.
+
+### Changed
+
+- Updated current-release posture across public docs to `1.0.5`.
+- Documented the published PyPI package `nxuskit-py==1.0.5` as the Python
+  install path for pure-Python APIs.
+- Clarified that native CLIPS, Bayesian network, and FFI-backed features require
+  a compatible SDK bundle in addition to the Python package.
+- Clarified the public v1.0.5 release-channel policy: the public
+  [`sdk-v1.0.5` release](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
+  contains 17 assets total: `install.sh`, four Community/OSS archives with
+  checksums, and four Pro archives with checksums, while public source archives
+  remain Community-safe.
+- Recorded that checksums were verified for all eight public v1.0.5 SDK
+  archives.
+- Noted that `nxuskit-py==1.0.5` links to the public SDK v1.0.5 tag and
+  release.
+- Documented that Solver and ZEN workflows require a Pro SDK package and a valid
+  Pro entitlement.
+- Clarified Python provider naming: `Provider` is the factory and `LLMProvider`
+  is the protocol/type contract; they are not aliases.
+
+### Compatibility
+
+- This patch stays within the v1.0 release line and does not announce a later
+  release.
+
 ## [1.0.2] - 2026-06-12
 
 > Public-trust and packaging hardening patch for the v1.0 SDK line. This
@@ -24,6 +55,9 @@ historical version resets.
 
 - Updated current-release posture across the SDK README and shipped bundle docs
   to `1.0.2`.
+- Clarified release-channel posture: the public `sdk-v1.0.2` release contains
+  OSS assets only, while Pro bundles are distributed through the
+  internal/pro-authenticated Pro release channel.
 - Aligned internal engine workspace package metadata to `1.0.2` so
   `nxuskit_version()` matches the Go and Python FFI wrappers.
 - Replaced PyPI-style Python installation copy with SDK-bundle setup guidance
@@ -35,6 +69,9 @@ historical version resets.
 
 - Corrected invalid Python snippets that imported from `nxuskit-py`; bundled
   examples now use the `nxuskit` module path.
+- Corrected GitHub release metadata and source archive posture after release
+  cleanup so release tags and generated archives point at the intended SDK
+  source commits.
 - Qualified unsupported production-readiness wording in SDK-local Examples
   catalog metadata.
 - Extended release inventory checks to guard stale Python install, invalid
@@ -88,8 +125,11 @@ historical version resets.
 ### Compatibility
 
 - No API or C ABI signature changes from v0.9.4 are introduced in this GA cut.
-- Pro installation packages continue to be published on the public release page;
-  Pro capabilities still require a valid license key.
+- At v1.0.0, Pro installation packages were published on the public release
+  page; Pro capabilities still required a valid license key. The v1.0.2 release
+  posture was OSS-only on the public release page. v1.0.5 release-channel
+  guidance restores public CE and Pro binary package guidance while keeping
+  public source archives Community-safe.
 
 ## [0.9.4] - 2026-05-11
 

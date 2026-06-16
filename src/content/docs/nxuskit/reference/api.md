@@ -16,6 +16,10 @@ nxusKit APIs are organized around a small set of shared contracts:
 
 Use this page as the entry point for API-level reference material.
 
+In Python, `Provider` is the factory used to create provider instances.
+`LLMProvider` is the protocol/type contract for provider implementations. They
+are separate concepts, not aliases.
+
 ## Core References
 
 | Reference | Use for |

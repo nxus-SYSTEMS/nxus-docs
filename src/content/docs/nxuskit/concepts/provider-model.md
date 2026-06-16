@@ -14,6 +14,10 @@ Ollama, CLIPS, Z3, Mock, or Loopback.
 The goal is portability: application code can switch providers without changing
 its surrounding orchestration, logging, retry, or licensing logic.
 
+For Python users, `Provider` is the factory that creates configured provider
+instances. `LLMProvider` is the protocol/type contract implemented by provider
+classes. Treat them as separate concepts rather than aliases.
+
 ## Provider Types
 
 | Category | Provider types | Use when |

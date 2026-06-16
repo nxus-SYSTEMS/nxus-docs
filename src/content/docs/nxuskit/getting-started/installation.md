@@ -15,21 +15,27 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 ## 1. Download and Install the SDK
 
 The examples below download Community Edition from the public
-`nxus-SYSTEMS/nxusKit` release. Current release asset names use `oss` for the
-Community Edition archive segment. Pro users can replace `oss` with `pro` in the
-asset patterns and extracted directory names after activating or receiving a Pro
-entitlement.
+`nxus-SYSTEMS/nxusKit` release. Current public release assets use `oss` for the
+Community Edition archive segment and `pro` for Pro binary packages.
+
+For SDK v1.0.5, the public
+[`sdk-v1.0.5` release](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
+includes both Community/OSS and Pro binary packages. The release has 17 assets
+total: `install.sh`, four OSS archives with checksums, and four Pro archives
+with checksums. Public source archives remain Community-safe. Pro binary
+packages require a valid Pro entitlement to use Pro-only capabilities; Solver
+and ZEN workflows require the Pro SDK package plus entitlement.
 
 ### macOS (Apple Silicon)
 
 ```bash
 # Download, extract, and remove macOS quarantine in one go
-gh release download --repo nxus-SYSTEMS/nxusKit \
-  --pattern "nxuskit-sdk-*-oss-macos-arm64.tar.gz" \
-  --pattern "nxuskit-sdk-*-oss-macos-arm64.tar.gz.sha256"
+gh release download sdk-v1.0.5 --repo nxus-SYSTEMS/nxusKit \
+  --pattern "nxuskit-sdk-1.0.5-oss-macos-arm64.tar.gz" \
+  --pattern "nxuskit-sdk-1.0.5-oss-macos-arm64.tar.gz.sha256"
 
-shasum -a 256 -c nxuskit-sdk-*-oss-macos-arm64.tar.gz.sha256
-tar xzf nxuskit-sdk-*-oss-macos-arm64.tar.gz
+shasum -a 256 -c nxuskit-sdk-1.0.5-oss-macos-arm64.tar.gz.sha256
+tar xzf nxuskit-sdk-1.0.5-oss-macos-arm64.tar.gz
 xattr -dr com.apple.quarantine nxuskit-sdk-*/
 ```
 
@@ -40,23 +46,23 @@ check it for malicious software" when loading the dylib.
 ### Linux (x86_64)
 
 ```bash
-gh release download --repo nxus-SYSTEMS/nxusKit \
-  --pattern "nxuskit-sdk-*-oss-linux-x86_64.tar.gz" \
-  --pattern "nxuskit-sdk-*-oss-linux-x86_64.tar.gz.sha256"
+gh release download sdk-v1.0.5 --repo nxus-SYSTEMS/nxusKit \
+  --pattern "nxuskit-sdk-1.0.5-oss-linux-x86_64.tar.gz" \
+  --pattern "nxuskit-sdk-1.0.5-oss-linux-x86_64.tar.gz.sha256"
 
-sha256sum -c nxuskit-sdk-*-oss-linux-x86_64.tar.gz.sha256
-tar xzf nxuskit-sdk-*-oss-linux-x86_64.tar.gz
+sha256sum -c nxuskit-sdk-1.0.5-oss-linux-x86_64.tar.gz.sha256
+tar xzf nxuskit-sdk-1.0.5-oss-linux-x86_64.tar.gz
 ```
 
 ### Windows (x86_64)
 
 ```powershell
-gh release download --repo nxus-SYSTEMS/nxusKit `
-  --pattern "nxuskit-sdk-*-oss-windows-x86_64.zip" `
-  --pattern "nxuskit-sdk-*-oss-windows-x86_64.zip.sha256"
+gh release download sdk-v1.0.5 --repo nxus-SYSTEMS/nxusKit `
+  --pattern "nxuskit-sdk-1.0.5-oss-windows-x86_64.zip" `
+  --pattern "nxuskit-sdk-1.0.5-oss-windows-x86_64.zip.sha256"
 
 # Extract
-Expand-Archive nxuskit-sdk-*-oss-windows-x86_64.zip -DestinationPath .
+Expand-Archive nxuskit-sdk-1.0.5-oss-windows-x86_64.zip -DestinationPath .
 ```
 
 ### Set SDK Path
@@ -75,10 +81,38 @@ To persist across sessions, add to your shell profile (`~/.bashrc`, `~/.zshrc`,
 etc.):
 
 ```bash
-export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/absolute/path/to/nxuskit-sdk-1.0.5-oss-macos-arm64"
 ```
 
 For CI systems, see [Download via PAT](#download-via-pat) below.
+
+### Pro packages
+
+If you have a Pro entitlement, download the matching `pro` package for your
+platform from the public release assets:
+
+```bash
+gh release download sdk-v1.0.5 --repo nxus-SYSTEMS/nxusKit \
+  --pattern "nxuskit-sdk-1.0.5-pro-macos-arm64.tar.gz" \
+  --pattern "nxuskit-sdk-1.0.5-pro-macos-arm64.tar.gz.sha256"
+```
+
+The Pro package includes Pro engine command modules. A valid license is still
+required at runtime for Pro-only features such as Solver and ZEN.
+
+### Python package
+
+Install the Python package from PyPI:
+
+```bash
+python -m pip install "nxuskit-py==1.0.5"
+```
+
+The import package is `nxuskit`. The PyPI package provides pure-Python APIs.
+`nxuskit-py==1.0.5` links to the public SDK v1.0.5 tag and release.
+Native CLIPS, Bayesian network, and FFI-backed features require a compatible SDK
+bundle and `NXUSKIT_SDK_DIR`. Solver and ZEN also require the Pro SDK package
+and a valid Pro entitlement.
 
 ### CLI shell completions (optional)
 
@@ -92,11 +126,10 @@ nxuskit-cli completions fish > ~/.config/fish/completions/nxuskit-cli.fish
 
 Supported shells for `completions` in v1.0.x: **bash**, **zsh**, **fish**.
 PowerShell completion is **not generated** in v1.0.x (the `completions` command
-accepts only those three shell names). JSON schemas and validated Examples
-portfolio provenance referenced by the CLI ship under the bundle's `include/`
-(the C header) and `conformance/` (packet/pipeline schemas plus
-`validated_examples_portfolio_snapshot.json`) directories; see
-[SDK Bundle Contents](#2-sdk-bundle-contents) above.
+accepts only those three shell names). JSON schemas ship under the bundle's
+`include/` and `conformance/` directories. The
+`conformance/validated_examples_portfolio_snapshot.json` file is release-time
+QA provenance for the offline catalog, not a CLI runtime dependency.
 
 ## 2. SDK Bundle Contents
 
@@ -118,6 +151,8 @@ nxuskit-sdk-{version}-{edition}-{platform}/
 │   │   nxuskit.lib        # Static library (Windows)
 │   └── nxuskit.dll.lib    # Import library (Windows only)
 ├── rust/                  # nxuskit Rust SDK wrapper (use as path dependency)
+├── python/
+│   └── src/               # bundled Python SDK source for native/FFI workflows
 ├── docs/                  # This documentation
 └── examples/              # Working examples in C, Rust, Go, Python
 ```
@@ -155,7 +190,7 @@ in your `Cargo.toml` using the **absolute path** to the SDK's `rust/` directory:
 ```toml
 # Cargo.toml
 [dependencies]
-nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64/rust" }
+nxuskit = { path = "/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64/rust" }
 ```
 
 Then set your environment and run:
@@ -163,7 +198,7 @@ Then set your environment and run:
 ```bash
 # NXUSKIT_SDK_DIR tells the wrapper where to find libnxuskit at runtime.
 # Must be an absolute path (relative paths are unreliable across tools).
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 cargo run
@@ -198,13 +233,13 @@ See [nxusKit examples](/nxuskit/examples/) for a runnable project, and
 
 ## 6. First Example — Python
 
-The Python SDK source ships inside the SDK bundle. Point `PYTHONPATH` at the
-bundle's `python/src` directory and set `NXUSKIT_SDK_DIR` so FFI-backed features
-can locate the native library:
+Install `nxuskit-py==1.0.5` from PyPI for pure-Python APIs. Set
+`NXUSKIT_SDK_DIR` when your code uses native CLIPS, Bayesian network, or other
+FFI-backed features:
 
 ```bash
-export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.2-oss-macos-arm64"
-export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
+python -m pip install "nxuskit-py==1.0.5"
+export NXUSKIT_SDK_DIR="/Users/you/nxuskit-sdk-1.0.5-oss-macos-arm64"
 export OPENAI_API_KEY="sk-..."
 
 python examples/python/basic_chat.py
@@ -332,7 +367,9 @@ For CI systems that can't use `gh`, or that need authenticated GitHub API
 access:
 
 1. Create a fine-grained PAT at https://github.com/settings/personal-access-tokens
-   - **Repository access**: Select `nxus-SYSTEMS/nxusKit`
+   - **Repository access**: Select `nxus-SYSTEMS/nxusKit` for public OSS and Pro
+     SDK assets. Use an entitlement-provided private repository only when your
+     support channel directs you to one.
    - **Permissions**: Contents → Read-only
 2. Use the token:
 

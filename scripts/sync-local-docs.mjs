@@ -24,6 +24,10 @@ const PUBLIC_EXAMPLES_URL = 'https://github.com/nxus-SYSTEMS/nxusKit-examples';
 const PUBLIC_CODEX_PLUGINS_URL = 'https://github.com/nxus-SYSTEMS/nxus-codex-plugins';
 const EXAMPLE_DOC_CATEGORIES = new Set(['patterns', 'integrations', 'apps']);
 const EXAMPLES_DOCS_MANIFEST_REL = 'conformance/docs_export_manifest.json';
+const EXAMPLES_PUBLICATION_SELECTION_REL = 'conformance/examples_publication_selection.json';
+const EXAMPLES_PUBLIC_SELECTION_TYPE = 'nxuskit-examples-approved-public-selection';
+const EXAMPLES_DOCS_PUBLIC_CHANNEL = 'docs';
+const EXAMPLES_LEGACY_RAW_MANIFEST_ENV = 'NXUSKIT_DOCS_ALLOW_LEGACY_RAW_EXAMPLES_MANIFEST';
 const SDK_PACKAGING_DOCS_MAP = [
   ['getting-started.md', 'getting-started/installation.md'],
   ['auth-modes-by-provider.md', 'getting-started/authentication.md'],
@@ -209,6 +213,7 @@ async function syncExamples() {
   await writeFile(target, exported, 'utf8');
   await exportExampleReadmePages(EXAMPLES_REPO, targetRoot, examplesMetadata, routeBySourceRel);
   await exportExampleCompanionDocs(EXAMPLES_REPO, targetRoot, docsManifest, routeBySourceRel);
+  await validateGeneratedExampleDocs(targetRoot, examplesMetadata, docsManifest);
   await leakGateFiles(targetRoot);
 
   console.log(`Synced examples docs -> ${path.relative(DOCS_ROOT, targetRoot)}`);
@@ -592,6 +597,112 @@ function scrubChangelog(markdown) {
 }
 
 async function readExamplesManifestMetadata(examplesRepo) {
+  const selectionPath = path.join(examplesRepo, EXAMPLES_PUBLICATION_SELECTION_REL);
+  if (existsSync(selectionPath)) {
+    return readExamplesPublicationSelectionMetadata(selectionPath);
+  }
+
+  if (process.env[EXAMPLES_LEGACY_RAW_MANIFEST_ENV] === '1') {
+    console.warn(
+      `${EXAMPLES_PUBLICATION_SELECTION_REL} not found; using legacy raw manifest because ${EXAMPLES_LEGACY_RAW_MANIFEST_ENV}=1.`,
+    );
+    return readExamplesRawManifestMetadata(examplesRepo);
+  }
+
+  throw new Error(
+    `${EXAMPLES_PUBLICATION_SELECTION_REL} is required for public/current Examples docs sync. ` +
+    `Set ${EXAMPLES_LEGACY_RAW_MANIFEST_ENV}=1 only for legacy/local raw-manifest sync.`,
+  );
+}
+
+async function readExamplesPublicationSelectionMetadata(selectionPath) {
+  const raw = await readFile(selectionPath, 'utf8');
+  leakGate(raw, selectionPath);
+
+  const selection = JSON.parse(raw);
+  const publication = requireObject(selection.publication_selection, `${EXAMPLES_PUBLICATION_SELECTION_REL}.publication_selection`);
+
+  requireString(publication.schema_version, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.schema_version`);
+  requireString(publication.source_manifest, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.source_manifest`);
+  requireString(publication.publication_ledger, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.publication_ledger`);
+  requireString(publication.generated_by, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.generated_by`);
+
+  if (publication.selection_type !== EXAMPLES_PUBLIC_SELECTION_TYPE) {
+    throw new Error(`${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.selection_type must be ${EXAMPLES_PUBLIC_SELECTION_TYPE}`);
+  }
+
+  const publicChannels = requireArray(publication.public_channels, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.public_channels`);
+  if (!publicChannels.includes(EXAMPLES_DOCS_PUBLIC_CHANNEL)) {
+    throw new Error(`${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.public_channels must include "${EXAMPLES_DOCS_PUBLIC_CHANNEL}"`);
+  }
+
+  const downstreamConsumers = requireArray(
+    publication.downstream_consumers,
+    `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.downstream_consumers`,
+  );
+  if (!downstreamConsumers.includes('docs_export')) {
+    throw new Error(`${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.downstream_consumers must include "docs_export"`);
+  }
+
+  const approvedRecords = requireArray(publication.approved_examples, `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.approved_examples`);
+  const approvedDocsRecords = new Map();
+
+  if (!Number.isInteger(publication.approved_examples_count) || publication.approved_examples_count !== approvedRecords.length) {
+    throw new Error(
+      `${EXAMPLES_PUBLICATION_SELECTION_REL}: publication_selection.approved_examples_count must match approved_examples length`,
+    );
+  }
+
+  for (const [index, record] of approvedRecords.entries()) {
+    const label = `${EXAMPLES_PUBLICATION_SELECTION_REL}: approved_examples[${index}]`;
+    const exampleId = requireString(record.example_id, `${label}.example_id`);
+    const recordChannels = requireArray(record.public_channels, `${label}.public_channels`);
+    if (record.publication_status !== 'approved' || !recordChannels.includes(EXAMPLES_DOCS_PUBLIC_CHANNEL)) {
+      continue;
+    }
+
+    requireString(record.approved_release, `${label}.approved_release`);
+    const approvedHash = requireSha256(record.approved_content_hash, `${label}.approved_content_hash`);
+    const selectedSource = requireObject(record.selected_source, `${label}.selected_source`);
+    requireString(selectedSource.kind, `${label}.selected_source.kind`);
+    const selectedHash = requireSha256(selectedSource.content_hash, `${label}.selected_source.content_hash`);
+
+    if (selectedHash !== approvedHash) {
+      throw new Error(`${label}: selected_source.content_hash must match approved_content_hash for docs publication`);
+    }
+
+    approvedDocsRecords.set(exampleId, record);
+  }
+
+  const selectedMetadata = new Map();
+  const examples = requireArray(selection.examples, `${EXAMPLES_PUBLICATION_SELECTION_REL}.examples`);
+
+  for (const [index, example] of examples.entries()) {
+    const label = `${EXAMPLES_PUBLICATION_SELECTION_REL}: examples[${index}]`;
+    if (!example?.name || !approvedDocsRecords.has(example.name)) continue;
+
+    const record = approvedDocsRecords.get(example.name);
+    const exampleHash = requireSha256(example.content_hash, `${label}.content_hash`);
+    if (exampleHash !== record.approved_content_hash) {
+      throw new Error(`${label}: content_hash must match approved_content_hash for ${example.name}`);
+    }
+
+    selectedMetadata.set(example.name, manifestExampleMetadata(example, label));
+  }
+
+  const missingExamples = [...approvedDocsRecords.keys()]
+    .filter((name) => !selectedMetadata.has(name))
+    .sort();
+  if (missingExamples.length) {
+    throw new Error(
+      `${EXAMPLES_PUBLICATION_SELECTION_REL}: approved docs-channel examples missing from examples array: ${missingExamples.join(', ')}`,
+    );
+  }
+
+  return selectedMetadata;
+}
+
+async function readExamplesRawManifestMetadata(examplesRepo) {
   const manifestPath = path.join(examplesRepo, 'conformance/examples_manifest.json');
   if (!existsSync(manifestPath)) return new Map();
 
@@ -602,15 +713,7 @@ async function readExamplesManifestMetadata(examplesRepo) {
   return new Map(
     (manifest.examples ?? [])
       .filter((example) => example?.name && example?.tier && example?.category)
-      .map((example) => [example.name, {
-        name: example.name,
-        category: example.category,
-        description: example.description ?? '',
-        scenario: example.scenario ?? '',
-        tier: example.tier,
-        editionNote: example.edition_note ?? '',
-        tierProfile: example.tier_profile ?? null,
-      }]),
+      .map((example) => [example.name, manifestExampleMetadata(example, manifestPath)]),
   );
 }
 
@@ -639,7 +742,7 @@ async function readExamplesDocsExportManifest(examplesRepo, examplesMetadata) {
     }
     const parentMetadata = examplesMetadata.get(parsed.name);
     if (!parentMetadata) {
-      throw new Error(`${label}: parent example is not present in conformance/examples_manifest.json: ${parsed.name}`);
+      throw new Error(`${label}: parent example is not approved for docs export: ${parsed.name}`);
     }
     if (parentMetadata.category !== parsed.category) {
       throw new Error(`${label}: companion category does not match manifest category for ${parsed.name}`);
@@ -671,6 +774,106 @@ async function readExamplesDocsExportManifest(examplesRepo, examplesMetadata) {
   }
 
   return { companionDocs };
+}
+
+async function validateGeneratedExampleDocs(targetRoot, examplesMetadata, docsManifest) {
+  const expectedPages = new Set();
+
+  for (const metadata of examplesMetadata.values()) {
+    if (EXAMPLE_DOC_CATEGORIES.has(metadata.category)) {
+      expectedPages.add(`${metadata.category}/${metadata.name}`);
+    }
+  }
+
+  const actualPages = new Set();
+  for (const category of EXAMPLE_DOC_CATEGORIES) {
+    const categoryRoot = path.join(targetRoot, category);
+    if (!existsSync(categoryRoot)) continue;
+
+    for (const entry of await readdir(categoryRoot, { withFileTypes: true })) {
+      if (!entry.isDirectory()) continue;
+      if (existsSync(path.join(categoryRoot, entry.name, 'index.md'))) {
+        actualPages.add(`${category}/${entry.name}`);
+      }
+    }
+  }
+
+  const unexpectedPages = [...actualPages].filter((route) => !expectedPages.has(route)).sort();
+  if (unexpectedPages.length) {
+    throw new Error(`Generated Examples docs include pages outside approved docs-channel selection: ${unexpectedPages.join(', ')}`);
+  }
+
+  const unexpectedMarkdown = [];
+  for await (const filePath of walkMarkdown(targetRoot)) {
+    const relative = path.relative(targetRoot, filePath).split(path.sep).join('/');
+    if (relative === 'index.md') continue;
+
+    const [category, name] = relative.split('/');
+    if (!EXAMPLE_DOC_CATEGORIES.has(category) || !name || !expectedPages.has(`${category}/${name}`)) {
+      unexpectedMarkdown.push(relative);
+    }
+  }
+  if (unexpectedMarkdown.length) {
+    throw new Error(`Generated Examples docs include Markdown outside approved docs-channel examples: ${unexpectedMarkdown.sort().join(', ')}`);
+  }
+
+  const missingPages = [...expectedPages].filter((route) => !actualPages.has(route)).sort();
+  if (missingPages.length) {
+    throw new Error(`Approved docs-channel Examples pages were not generated: ${missingPages.join(', ')}`);
+  }
+
+  for (const doc of docsManifest.companionDocs) {
+    const parentRoute = `${doc.category}/${doc.name}`;
+    if (!expectedPages.has(parentRoute)) {
+      throw new Error(`${EXAMPLES_DOCS_MANIFEST_REL}: companion doc references unapproved docs-channel example: ${parentRoute}`);
+    }
+  }
+}
+
+function manifestExampleMetadata(example, label) {
+  if (!example?.name || !example?.tier || !example?.category) {
+    throw new Error(`${label}: name, tier, and category are required for docs publication`);
+  }
+
+  return {
+    name: example.name,
+    category: example.category,
+    description: example.description ?? '',
+    scenario: example.scenario ?? '',
+    tier: example.tier,
+    editionNote: example.edition_note ?? '',
+    tierProfile: example.tier_profile ?? null,
+    contentHash: example.content_hash ?? null,
+  };
+}
+
+function requireObject(value, label) {
+  if (!value || typeof value !== 'object' || Array.isArray(value)) {
+    throw new Error(`${label} must be an object`);
+  }
+  return value;
+}
+
+function requireArray(value, label) {
+  if (!Array.isArray(value)) {
+    throw new Error(`${label} must be an array`);
+  }
+  return value;
+}
+
+function requireString(value, label) {
+  if (typeof value !== 'string' || value.trim() === '') {
+    throw new Error(`${label} must be a non-empty string`);
+  }
+  return value;
+}
+
+function requireSha256(value, label) {
+  const hash = requireString(value, label);
+  if (!/^[a-f0-9]{64}$/.test(hash)) {
+    throw new Error(`${label} must be a lowercase SHA-256 content hash`);
+  }
+  return hash;
 }
 
 function examplesDocsRoutes(examplesMetadata, docsManifest) {
@@ -741,7 +944,8 @@ async function exportExampleCompanionDocs(examplesRepo, targetRoot, docsManifest
 }
 
 function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBySourceRel = new Map()) {
-  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  let body = scrubExamplesTrustWording(markdown);
+  body = preserveExamplesIndexBacklinks(body).replace(/^\uFEFF/, '').trimStart();
   const hasFrontmatter = body.startsWith('---\n');
 
   if (hasFrontmatter) {
@@ -753,7 +957,7 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBy
   return [
     '---',
     'title: nxusKit Examples',
-    'description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.',
+    'description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.',
     '---',
     '',
     transformExamplesDocsBody(body, examplesMetadata, routeBySourceRel).trimEnd(),
@@ -762,7 +966,7 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBy
 }
 
 function toExampleDetailStarlightPage(markdown, options) {
-  let body = markdown.replace(/^\uFEFF/, '').trimStart();
+  let body = scrubExamplesTrustWording(markdown).replace(/^\uFEFF/, '').trimStart();
   const existingFrontmatter = parseFrontmatter(body);
 
   if (existingFrontmatter) {
@@ -770,9 +974,10 @@ function toExampleDetailStarlightPage(markdown, options) {
   }
 
   const title = options.title ?? existingFrontmatter?.title ?? extractMarkdownTitle(body);
-  const description = options.description ?? existingFrontmatter?.description ?? '';
+  const description = scrubExamplesTrustWording(options.description ?? existingFrontmatter?.description ?? '');
 
-  body = body.replace(/^#\s+.+\n+/, '');
+  body = scrubExamplesTrustWording(body.replace(/^#\s+.+\n+/, ''));
+  body = preserveExampleDetailBacklinks(body, options.sourceRel);
   body = rewriteExampleDocLinks(body, options.sourceRel, options.routeBySourceRel).trimEnd();
 
   return [
@@ -786,6 +991,44 @@ function toExampleDetailStarlightPage(markdown, options) {
     body,
     '',
   ].join('\n');
+}
+
+// Temporary public-docs guard while upstream examples source wording catches up
+// to the v1.0.2 production-claim policy.
+function scrubExamplesTrustWording(markdown) {
+  return markdown
+    .replace(/Production-ready nxusKit examples across Rust, Go, Python, and CLI\/Bash\./g, 'Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.')
+    .replace(/A curated collection of \*\*(\d+) production-ready examples\*\*/g, 'A curated collection of **$1 runnable examples**')
+    .replace(/(\d+) production-quality examples for the nxusKit SDK/g, '$1 runnable examples for the nxusKit SDK')
+    .replace(/get production-ready expert system code/g, 'get validated CLIPS rule code')
+    .replace(/single production-ready pipeline/g, 'single repeatable pipeline')
+    .replace(/production-grade expert system/g, 'structured expert system');
+}
+
+function preserveExamplesIndexBacklinks(markdown) {
+  const examplesLinks = '**[Examples Portfolio](https://nxus.systems/examples)**';
+  const fieldNotesLink = '**[Field Notes](https://nxus.systems/field-notes)**';
+
+  if (markdown.includes(fieldNotesLink)) return markdown;
+
+  return markdown.replace(
+    `${examplesLinks} · **[Website](https://nxus.systems)**`,
+    `${examplesLinks} · ${fieldNotesLink} · **[Website](https://nxus.systems)**`,
+  );
+}
+
+function preserveExampleDetailBacklinks(markdown, sourceRel) {
+  if (sourceRel !== 'examples/integrations/common-sense-guardrails/README.md') {
+    return markdown;
+  }
+
+  const fieldNotesSentence = 'For related engineering notes and release-adjacent writeups, see [nxus.SYSTEMS Field Notes](https://nxus.systems/field-notes).';
+  if (markdown.includes(fieldNotesSentence)) return markdown;
+
+  return markdown.replace(
+    '\n## Scope Exclusions',
+    `\n${fieldNotesSentence}\n\n## Scope Exclusions`,
+  );
 }
 
 function transformExamplesDocsBody(markdown, examplesMetadata, routeBySourceRel) {
@@ -1078,6 +1321,9 @@ Environment:
   NXUSKIT_EXAMPLES_REPO  Path to the local nxusKit examples source repo
   NXUSKIT_REPO           Path to the local nxusKit SDK source repo
   NXUS_CODEX_PLUGINS_REPO Path to the local nxus Codex Plugins source repo
+  ${EXAMPLES_LEGACY_RAW_MANIFEST_ENV}=1
+                         Legacy/local only: allow raw examples_manifest.json sync
+                         when examples_publication_selection.json is absent
 `);
 }
 

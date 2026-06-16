@@ -90,7 +90,8 @@ make build
 ### Python
 ```bash
 cd python
-pip install -e ../../../../packages/nxuskit-py   # if not already installed
+python -m pip install "nxuskit-py==1.0.5"   # pure-Python APIs
+# Solver execution also requires the Pro SDK package and entitlement.
 python main.py --scenario theme-park
 python main.py --scenario fantasy-draft --step
 ```

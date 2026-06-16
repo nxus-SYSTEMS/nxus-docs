@@ -54,11 +54,11 @@ nxusKit SDK Pro adds proprietary commercial capabilities for teams that need sol
 
 All editions provide wrappers for all three languages:
 
-| Language | Package | Install |
-|----------|---------|---------|
+| Language | Module | Setup |
+|----------|--------|-------|
 | Rust | `nxuskit` | Path dependency from SDK bundle |
 | Go | `nxuskit` | `go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go` |
-| Python | `nxuskit-py` | SDK bundle `python/src` on `PYTHONPATH` |
+| Python | `nxuskit` | `python -m pip install "nxuskit-py==1.0.5"` for pure-Python APIs; use a compatible SDK bundle for native/FFI features |
 
 ## Example Tier Assignments
 

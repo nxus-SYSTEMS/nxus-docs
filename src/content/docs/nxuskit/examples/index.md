@@ -1,6 +1,6 @@
 ---
 title: nxusKit Examples
-description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.
+description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.
 ---
 
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE)
@@ -8,9 +8,9 @@ description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/
 ![Go](https://img.shields.io/badge/Go-00ADD8?logo=go&logoColor=white)
 ![Python](https://img.shields.io/badge/Python-3776AB?logo=python&logoColor=white)
 
-**[Examples Docs](https://docs.nxus.systems/nxuskit/examples/)** · **[SDK Docs](https://docs.nxus.systems/nxuskit/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples Portfolio](https://nxus.systems/examples)** · **[Field Notes](https://nxus.systems/field-notes)** · **[Website](https://nxus.systems/)**
+**[Examples Docs](https://docs.nxus.systems/nxuskit/examples/)** · **[SDK Docs](https://docs.nxus.systems/nxuskit/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples Portfolio](https://nxus.systems/examples)** · **[Field Notes](https://nxus.systems/field-notes)** · **[Website](https://nxus.systems)**
 
-34 production-quality examples for the nxusKit SDK in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration — covering LLM patterns, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables.
+34 runnable examples for the nxusKit SDK in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration — covering LLM patterns, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables.
 
 ## A Word About CLIPS
 

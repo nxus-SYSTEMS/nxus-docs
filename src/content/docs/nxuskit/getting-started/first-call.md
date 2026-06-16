@@ -102,10 +102,11 @@ func main() {
 
 ## Python
 
-Install the Python wrapper, then create a provider and call it:
+Install the Python package from PyPI, then create a provider and call it:
 
 ```bash
-pip install nxuskit-py
+python -m pip install "nxuskit-py==1.0.5"
+export OPENAI_API_KEY="sk-..."
 ```
 
 ```python
@@ -120,6 +121,14 @@ response = provider.chat(
 
 print(response.content)
 ```
+
+The import module is `nxuskit`. `Provider` is the Python factory used to create
+providers. `LLMProvider` is the protocol/type contract for provider
+implementations; it is not an alias for `Provider`.
+
+Native CLIPS, Bayesian network, and FFI-backed features also require a
+compatible SDK bundle and `NXUSKIT_SDK_DIR`. Solver and ZEN require the Pro SDK
+package plus a valid Pro entitlement.
 
 ## C
 
