@@ -1,6 +1,6 @@
 ---
 title: nxusKit SDK
-description: A type-safe, multi-language SDK for LLM providers, rule engines, constraint solvers, and decision tables.
+description: Install and build with nxusKit across LLM providers, CLIPS, Bayesian networks, Solver/Z3, ZEN, Python, C ABI, and CLI/Bash workflows.
 ---
 
 nxusKit is a unified, type-safe SDK for calling LLM providers (Claude, OpenAI, Ollama, and more),
@@ -13,6 +13,14 @@ Install the SDK, configure credentials, and run your first request:
 - [Installation](/nxuskit/getting-started/installation/)
 - [First Call](/nxuskit/getting-started/first-call/)
 - [Authentication](/nxuskit/getting-started/authentication/)
+
+## High-Value References
+
+- [CLI input format reference](/nxuskit/reference/cli-reference/) - JSON schemas and local loopback examples for `nxuskit-cli`.
+- [Local LLM providers](/nxuskit/reference/providers/local-llms/) - Ollama, LM Studio, llama.cpp, and mistral.rs setup.
+- [Licensing](/nxuskit/concepts/licensing/) - Pro activation, entitlement checks, and offline-first license validation.
+- [Changelog](/nxuskit/reference/changelog/) - current v1.x packaging, docs, Python, and CLI release notes.
+- [Examples catalog](/nxuskit/examples/) - runnable patterns and integrations across supported languages and CLI/Bash.
 
 ## Browse by Task
 

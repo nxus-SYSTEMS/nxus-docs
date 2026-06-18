@@ -1,6 +1,6 @@
 ---
 title: nxus.SYSTEMS Documentation
-description: Documentation hub for nxus.SYSTEMS products.
+description: Public docs for nxusKit SDK installation, examples, CLI schemas, local LLMs, licensing, and Codex plugin workflows.
 template: splash
 hero:
   tagline: Documentation for nxus.SYSTEMS products and services.
@@ -25,7 +25,7 @@ import { CardGrid, LinkCard } from '@astrojs/starlight/components';
   <LinkCard
     title="Getting Started"
     href="/nxuskit/getting-started/installation/"
-    description="Download the SDK, configure credentials, and make your first call."
+    description="Install the current SDK, choose Community or Pro assets, configure Python, and make your first call."
   />
   <LinkCard
     title="Examples"
@@ -63,6 +63,16 @@ import { CardGrid, LinkCard } from '@astrojs/starlight/components';
 
 <CardGrid>
   <LinkCard
+    title="Install nxusKit"
+    href="/nxuskit/getting-started/installation/"
+    description="Download v1.x SDK assets, verify checksums, set SDK paths, and connect Python to native features."
+  />
+  <LinkCard
+    title="Local LLM Providers"
+    href="/nxuskit/reference/providers/local-llms/"
+    description="Configure Ollama, LM Studio, llama.cpp, and mistral.rs for local inference workflows."
+  />
+  <LinkCard
     title="C ABI Reference"
     href="/nxuskit/reference/api-reference/"
     description="Review function signatures, ownership rules, handles, and memory management for native integrations."
@@ -81,6 +91,11 @@ import { CardGrid, LinkCard } from '@astrojs/starlight/components';
     title="Celerat Task Recipes"
     href="/codex-plugins/nxuskit/task-recipes/"
     description="Browse Codex-ready prompts for streaming, structured output, provider routing, local models, and CLI/Bash setup."
+  />
+  <LinkCard
+    title="Release Changelog"
+    href="/nxuskit/reference/changelog/"
+    description="Track current SDK packaging, docs, CLI, Python, and compatibility changes across v1.x releases."
   />
 </CardGrid>
 

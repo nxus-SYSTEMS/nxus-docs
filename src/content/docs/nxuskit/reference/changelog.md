@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-description: "Release notes for nxusKit SDK versions."
+description: "Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes."
 ---
 
 All notable changes to this project will be documented in this file.
