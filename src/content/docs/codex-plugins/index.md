@@ -1,6 +1,6 @@
 ---
 title: "Codex Plugins"
-description: "Codex Plugin packages from nxus.SYSTEMS, including nxusKit Celerat."
+description: "Install nxusKit Celerat and browse Codex-ready recipes for LLM, CLIPS, Solver/ZEN, local-provider, and CLI/Bash work."
 ---
 
 **Codex-ready workflows for nxusKit SDK integrations and local intelligence.**
@@ -27,6 +27,8 @@ nxusKit is a multi-language SDK for LLM providers, CLIPS rule engines, Z3 constr
 - [Install nxusKit Celerat](/codex-plugins/install/)
 - [nxusKit Celerat overview](/codex-plugins/nxuskit/)
 - [Celerat task recipes](/codex-plugins/nxuskit/task-recipes/)
+- [Community Edition rule validation recipe](/codex-plugins/nxuskit/task-recipes/05-ce-rule-validation/)
+- [Pro solver what-if recipe](/codex-plugins/nxuskit/task-recipes/06-pro-solver-what-if/)
 - [Retry and fallback recipe](/codex-plugins/nxuskit/task-recipes/04-retry-fallback/)
 - [Local Ollama recipe](/codex-plugins/nxuskit/task-recipes/13-local-ollama/)
 - [CLI/Bash setup recipe](/codex-plugins/nxuskit/task-recipes/14-cli-bash-setup/)

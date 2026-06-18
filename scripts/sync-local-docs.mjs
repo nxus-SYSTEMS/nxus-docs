@@ -48,7 +48,7 @@ const SDK_PACKAGING_DOCS_MAP = [
 const SDK_DOC_METADATA = new Map([
   ['getting-started.md', {
     title: 'Installation',
-    description: 'Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows.',
+    description: 'Install nxusKit SDK v1.x, choose Community or Pro assets, configure nxuskit-py, and attach native CLIPS, BN, FFI, Solver, or ZEN features.',
   }],
   ['auth-modes-by-provider.md', {
     title: 'Authentication',
@@ -60,7 +60,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['cli-input-reference.md', {
     title: 'CLI Input Format Reference',
-    description: 'Input schemas and examples for every Level 1 nxuskit-cli command.',
+    description: 'JSON input schemas, loopback examples, and Pro-gated Solver/ZEN command contracts for every Level 1 nxuskit-cli command.',
   }],
   ['providers/cloud-llms.md', {
     title: 'Cloud LLM Providers',
@@ -68,7 +68,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['providers/local-llms.md', {
     title: 'Local LLM Providers',
-    description: 'Configuration reference for in-process (llama.cpp, mistral.rs) and HTTP-based (Ollama, LM Studio) local LLM providers.',
+    description: 'Configure Ollama, LM Studio, llama.cpp, and mistral.rs local LLM providers for offline or low-latency nxusKit workflows.',
   }],
   ['providers/expert-systems.md', {
     title: 'Expert System & Utility Providers',
@@ -88,7 +88,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['license-activation-guide.md', {
     title: 'Licensing',
-    description: 'How to activate, manage, and troubleshoot nxusKit Pro licenses.',
+    description: 'Activate, validate, renew, and troubleshoot nxusKit Pro licenses for Solver, ZEN, runtime plugins, and entitlement-gated SDK features.',
   }],
   ['tier-comparison.md', {
     title: 'Tier System',
@@ -108,7 +108,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['CHANGELOG.md', {
     title: 'Changelog',
-    description: 'Release notes for nxusKit SDK versions.',
+    description: 'Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes.',
   }],
 ]);
 const SDK_DOC_LINKS = new Map([
@@ -957,7 +957,7 @@ function toExamplesStarlightPage(markdown, examplesMetadata = new Map(), routeBy
   return [
     '---',
     'title: nxusKit Examples',
-    'description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.',
+    'description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solver/Z3, ZEN, local providers, and CLI/Bash workflows.',
     '---',
     '',
     transformExamplesDocsBody(body, examplesMetadata, routeBySourceRel).trimEnd(),

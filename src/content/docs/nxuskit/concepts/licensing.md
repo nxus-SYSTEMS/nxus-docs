@@ -1,6 +1,6 @@
 ---
 title: "Licensing"
-description: "How to activate, manage, and troubleshoot nxusKit Pro licenses."
+description: "Activate, validate, renew, and troubleshoot nxusKit Pro licenses for Solver, ZEN, runtime plugins, and entitlement-gated SDK features."
 ---
 
 ## Overview

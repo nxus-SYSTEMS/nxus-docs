@@ -1,6 +1,6 @@
 ---
 title: "Installation"
-description: "Download, install, and configure the nxusKit SDK on macOS, Linux, or Windows."
+description: "Install nxusKit SDK v1.x, choose Community or Pro assets, configure nxuskit-py, and attach native CLIPS, BN, FFI, Solver, or ZEN features."
 ---
 
 This guide walks you through downloading, installing, and using the nxuskit SDK

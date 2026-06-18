@@ -1,6 +1,6 @@
 ---
 title: "Task Recipes"
-description: "Prompt recipes for using nxusKit Celerat with Codex."
+description: "Codex-ready nxusKit Celerat prompt recipes for streaming, structured output, CLIPS, Solver/ZEN, local models, and CLI/Bash."
 ---
 
 Each recipe includes:
@@ -12,6 +12,13 @@ Each recipe includes:
 - verification commands to ask Codex to run or recommend
 
 The recipes are written for users who want to see what high-quality Codex behavior looks like when the nxusKit Celerat plugin is installed.
+
+## High-Value Paths
+
+- **Start with SDK basics:** [Streaming Rust](/codex-plugins/nxuskit/task-recipes/01-streaming-rust/), [Structured JSON Python](/codex-plugins/nxuskit/task-recipes/02-structured-json-python/), and [Multi-provider Go](/codex-plugins/nxuskit/task-recipes/03-multi-provider-go/).
+- **Keep Community Edition paths clear:** [Community Edition rule validation](/codex-plugins/nxuskit/task-recipes/05-ce-rule-validation/) and [Community Edition options](/codex-plugins/nxuskit/task-recipes/10-community-edition-options/).
+- **Use Pro-gated capabilities deliberately:** [Pro solver what-if](/codex-plugins/nxuskit/task-recipes/06-pro-solver-what-if/), [ZEN decision table](/codex-plugins/nxuskit/task-recipes/09-zen-decision-table/), and [Post-activation Pro](/codex-plugins/nxuskit/task-recipes/12-post-activation-pro/).
+- **Work locally first:** [Local Ollama](/codex-plugins/nxuskit/task-recipes/13-local-ollama/) and [CLI/Bash setup](/codex-plugins/nxuskit/task-recipes/14-cli-bash-setup/).
 
 ## Recipe Directory
 

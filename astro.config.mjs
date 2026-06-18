@@ -24,6 +24,9 @@ export default defineConfig({
 	site,
 	...(base ? { base } : {}),
 	redirects: {
+		'/nxuskit/examples/ACKNOWLEDGEMENTS.md': '/nxuskit/examples/',
+		'/nxuskit/examples/examples/integrations/clips-basics/':
+			'/nxuskit/examples/integrations/clips-basics/',
 		'/nxuskit/examples/examples/integrations/common-sense-guardrails/':
 			'/nxuskit/examples/integrations/common-sense-guardrails/',
 		'/nxuskit/examples/examples/patterns/retry-fallback/':

@@ -1,6 +1,6 @@
 ---
 title: nxusKit Examples
-description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.
+description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solver/Z3, ZEN, local providers, and CLI/Bash workflows.
 ---
 
 [![License: MIT OR Apache-2.0](https://img.shields.io/badge/license-MIT%20OR%20Apache--2.0-blue.svg)](https://github.com/nxus-SYSTEMS/nxusKit-examples/blob/main/LICENSE)
@@ -11,6 +11,15 @@ description: Runnable nxusKit examples across Rust, Go, Python, and CLI/Bash.
 **[Examples Docs](https://docs.nxus.systems/nxuskit/examples/)** · **[SDK Docs](https://docs.nxus.systems/nxuskit/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples Portfolio](https://nxus.systems/examples)** · **[Field Notes](https://nxus.systems/field-notes)** · **[Website](https://nxus.systems)**
 
 34 runnable examples for the nxusKit SDK in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration — covering LLM patterns, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables.
+
+## Start With These Examples
+
+- [basic-chat](/nxuskit/examples/patterns/basic-chat/) - minimal LLM provider call across supported languages.
+- [structured-output](/nxuskit/examples/patterns/structured-output/) - JSON mode and structured output patterns.
+- [clips-basics](/nxuskit/examples/integrations/clips-basics/) - Community CLIPS rule-engine integration.
+- [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) - CLIPS and selected BN guardrails with optional Pro Solver/ZEN repair feedback.
+- [ollama](/nxuskit/examples/integrations/ollama/) and [lmstudio](/nxuskit/examples/integrations/lmstudio/) - local provider examples.
+- [CLI reference](/nxuskit/reference/cli-reference/) - command input schemas for shell-first workflows.
 
 ## A Word About CLIPS
 

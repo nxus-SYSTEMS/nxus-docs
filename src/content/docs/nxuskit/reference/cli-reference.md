@@ -1,6 +1,6 @@
 ---
 title: "CLI Input Format Reference"
-description: "Input schemas and examples for every Level 1 nxuskit-cli command."
+description: "JSON input schemas, loopback examples, and Pro-gated Solver/ZEN command contracts for every Level 1 nxuskit-cli command."
 ---
 
 Single source of truth for every Level 1 `nxuskit-cli` command's input schema,
