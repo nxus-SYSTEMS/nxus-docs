@@ -83,3 +83,19 @@ styles, components, or generation scripts.
   refreshed in the build artifact.
 - Do not introduce repo-root full-content dumps or custom agent index formats
   unless there is an actual consuming workflow.
+
+## Codex In-App Browser Practical Rule
+
+Prefer the in-app browser (IAB) for browser-control work when the user asks for
+IAB or when the task depends on the current Codex browser context.
+
+If IAB is visibly open but Codex reports no selected/open tab, do not switch to
+Chrome as the first fallback. First open a new controlled IAB tab and continue
+there, using the same IAB browser/session where available.
+
+If controlled IAB tab creation fails or times out, stop and ask the
+user/operator to help resolve IAB. Capture the exact failure class and message.
+Do not fall back to Chrome unless the user/manager explicitly authorizes Chrome
+for that turn.
+
+Reference: `/Users/ken/codeRepos/DevOps/engineering-notebook/runbooks/codex-iab-practical-rule-20260622.md`.
