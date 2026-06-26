@@ -1,0 +1,21 @@
+{
+  "fixture_type": "examples-selection",
+  "description": "Raw examples manifest becomes default public/current sync input.",
+  "source_manifest": "conformance/examples_manifest.json",
+  "legacy_raw_manifest_default": true,
+  "selection": {
+    "publication_selection": {
+      "selection_type": "nxuskit-examples-raw-manifest",
+      "schema_version": "1",
+      "public_channels": [
+        "docs"
+      ],
+      "downstream_consumers": [
+        "docs_export"
+      ],
+      "approved_examples_count": 0,
+      "approved_examples": []
+    },
+    "examples": []
+  }
+}

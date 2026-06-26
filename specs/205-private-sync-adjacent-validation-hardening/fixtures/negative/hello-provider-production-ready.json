@@ -1,0 +1,51 @@
+{
+  "fixture_type": "examples-selection",
+  "description": "hello-provider collapses into production-ready/getting-started copy.",
+  "selection": {
+    "publication_selection": {
+      "selection_type": "nxuskit-examples-approved-public-selection",
+      "schema_version": "1",
+      "source_manifest": "conformance/examples_manifest.json",
+      "publication_ledger": "conformance/examples_publication_ledger.json",
+      "generated_by": "examples-publication-selection",
+      "public_channels": [
+        "docs"
+      ],
+      "downstream_consumers": [
+        "docs_export"
+      ],
+      "approved_examples_count": 1,
+      "approved_examples": [
+        {
+          "example_id": "hello-provider",
+          "publication_status": "approved",
+          "public_channels": [
+            "docs"
+          ],
+          "approved_release": "v2-planning",
+          "approved_content_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc",
+          "selected_source": {
+            "kind": "current",
+            "content_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+          }
+        }
+      ]
+    },
+    "examples": [
+      {
+        "name": "hello-provider",
+        "category": "patterns",
+        "tier": "community",
+        "description": "hello-provider is a production-ready getting-started onboarding path for new users.",
+        "public_readiness_profile": "production_ready",
+        "content_hash": "cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc"
+      }
+    ]
+  },
+  "text_blocks": [
+    {
+      "label": "example-detail-copy",
+      "text": "hello-provider is a production-ready getting-started onboarding path for new users."
+    }
+  ]
+}

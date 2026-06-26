@@ -1,0 +1,95 @@
+{
+  "fixture_type": "examples-selection",
+  "description": "Approved-public docs-channel selection with hello-provider labeled extension_authoring.",
+  "selection": {
+    "publication_selection": {
+      "selection_type": "nxuskit-examples-approved-public-selection",
+      "schema_version": "1",
+      "source_manifest": "conformance/examples_manifest.json",
+      "publication_ledger": "conformance/examples_publication_ledger.json",
+      "generated_by": "examples-publication-selection",
+      "public_channels": [
+        "docs"
+      ],
+      "downstream_consumers": [
+        "docs_export"
+      ],
+      "approved_examples_count": 2,
+      "approved_examples": [
+        {
+          "example_id": "common-sense-guardrails",
+          "publication_status": "approved",
+          "public_channels": [
+            "docs"
+          ],
+          "approved_release": "v1.0.5",
+          "approved_content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+          "selected_source": {
+            "kind": "current",
+            "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+          }
+        },
+        {
+          "example_id": "hello-provider",
+          "publication_status": "approved",
+          "public_channels": [
+            "docs"
+          ],
+          "approved_release": "v2-planning",
+          "approved_content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+          "selected_source": {
+            "kind": "current",
+            "content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+          }
+        }
+      ]
+    },
+    "examples": [
+      {
+        "name": "common-sense-guardrails",
+        "category": "integrations",
+        "tier": "community",
+        "description": "Runnable guardrail example with public docs-channel approval.",
+        "public_readiness_profile": "production_ready",
+        "content_hash": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+      },
+      {
+        "name": "hello-provider",
+        "category": "patterns",
+        "tier": "community",
+        "description": "Extension-authoring example for SDK extension authorship using a deterministic local fixture.",
+        "public_readiness_profile": "extension_authoring",
+        "content_hash": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+      }
+    ]
+  },
+  "companion_docs": [
+    {
+      "source": "examples/integrations/common-sense-guardrails/SCENARIOS.md",
+      "title": "Scenario Matrix",
+      "description": "Companion docs for an approved docs-channel example."
+    }
+  ],
+  "text_blocks": [
+    {
+      "label": "examples-index-summary",
+      "text": "Approved examples are shown from the approved-public docs selection. hello-provider is an extension_authoring example for SDK extension authorship."
+    }
+  ],
+  "source_refs": [
+    "conformance/examples_publication_selection.json",
+    "conformance/docs_export_manifest.json"
+  ],
+  "field_paths": [
+    "publication_selection.approved_examples",
+    "examples[].public_readiness_profile"
+  ],
+  "warning_keys": [
+    "selection_missing",
+    "companion_parent_unapproved"
+  ],
+  "generated_output_labels": [
+    "examples-index",
+    "example-detail"
+  ]
+}

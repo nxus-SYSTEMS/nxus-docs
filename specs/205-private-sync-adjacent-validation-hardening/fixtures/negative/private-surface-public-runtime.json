@@ -1,0 +1,14 @@
+{
+  "fixture_type": "provider-capability-output",
+  "description": "Private candidate surfaces become public runtime/provider support claims.",
+  "text_blocks": [
+    {
+      "label": "surface-copy",
+      "text": "Cedar is not private; it ships as a public runtime provider with supported package API availability."
+    },
+    {
+      "label": "projection-preview-copy",
+      "text": "Pydantic v2 and TypeScript/Zod are public wrapper APIs with default Node wrapper support."
+    }
+  ]
+}

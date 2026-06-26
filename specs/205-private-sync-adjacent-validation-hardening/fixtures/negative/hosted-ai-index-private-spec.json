@@ -1,0 +1,10 @@
+{
+  "fixture_type": "hosted-ai-index",
+  "description": "Hosted AI index output exposes private specs/dry-run artifacts.",
+  "hosted_ai_indexes": [
+    {
+      "label": "llms-full",
+      "text": "Public hosted AI index includes specs/205-private-sync-adjacent-validation-hardening and private dry-run packet content."
+    }
+  ]
+}

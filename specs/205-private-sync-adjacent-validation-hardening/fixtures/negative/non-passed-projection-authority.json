@@ -1,0 +1,10 @@
+{
+  "fixture_type": "projection-output",
+  "description": "Non-Passed rows become public/release/package/provider authority.",
+  "text_blocks": [
+    {
+      "label": "projection-copy",
+      "text": "Non-Passed projection rows are public docs allowed, release-ready, package-ready, provider-registry-ready, wrapper/API-ready, generated-artifact-ready, and downstream-emission-authorized."
+    }
+  ]
+}

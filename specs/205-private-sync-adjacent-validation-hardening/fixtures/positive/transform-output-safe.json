@@ -1,0 +1,41 @@
+{
+  "fixture_type": "transform-output",
+  "description": "Safe sync-adjacent output labels and public-boundary denial text.",
+  "text_blocks": [
+    {
+      "label": "trust-wording-scrub",
+      "text": "Runnable examples are generated only from approved docs-channel records. Production claims are scrubbed unless source truth and publication gates allow them."
+    },
+    {
+      "label": "private-surface-boundaries",
+      "text": "RRE, Prolog/Scryer, Cedar, CLIPS v2 rows, Pydantic v2, TypeScript/Zod, and Node wrapper preview remain private/static/planning/source-truth-bound without public runtime or support authority."
+    },
+    {
+      "label": "w198-denial-vocabulary",
+      "text": "The scan denies `public-docs`, `docs-allowed`, `downstream-emission`, `provider-registry`, `package-publication`, `npm-ready`, `release-ready`, `public-ready`, and `generated-artifact` as authority fragments."
+    }
+  ],
+  "source_refs": [
+    "scripts/sync-local-docs.mjs:readExamplesPublicationSelectionMetadata",
+    "scripts/sync-local-docs.mjs:scrubExamplesTrustWording"
+  ],
+  "field_paths": [
+    "publication_selection.public_channels",
+    "companion_docs[].source",
+    "text_blocks[].text"
+  ],
+  "warning_keys": [
+    "deny_w198_authority",
+    "deny_non_passed_projection_authority"
+  ],
+  "generated_output_labels": [
+    "examples-index-preview",
+    "hosted-ai-index-current-routed-content"
+  ],
+  "hosted_ai_indexes": [
+    {
+      "label": "llms-preview-boundary",
+      "text": "Hosted AI indexes must include routed public docs only and must not include private specs or dry-run packets."
+    }
+  ]
+}

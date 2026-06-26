@@ -1,0 +1,19 @@
+{
+  "fixture_type": "warning-callout",
+  "description": "W198 fragments are used as authority in labels, warning keys, and transformed copy.",
+  "text_blocks": [
+    {
+      "label": "claim-boundary-warning",
+      "text": "This provider-registry row is release-ready and authorized for downstream-emission."
+    }
+  ],
+  "warning_keys": [
+    "release-ready-provider-registry"
+  ],
+  "generated_output_labels": [
+    "public-docs-generated-artifact"
+  ],
+  "field_paths": [
+    "projection.rows.public_ready"
+  ]
+}
