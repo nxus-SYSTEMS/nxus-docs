@@ -10,7 +10,7 @@ description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solve
 
 **[Examples Docs](https://docs.nxus.systems/nxuskit/examples/)** · **[SDK Docs](https://docs.nxus.systems/nxuskit/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples Portfolio](https://nxus.systems/examples)** · **[Field Notes](https://nxus.systems/field-notes)** · **[Website](https://nxus.systems)**
 
-35 approved public examples for the nxusKit SDK: 34 runnable implementation examples in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration, and 1 extension-authoring example for SDK extension authorship.
+34 approved public examples for the nxusKit SDK: runnable implementation examples in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration.
 
 ## Start With These Examples
 
@@ -20,10 +20,6 @@ description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solve
 - [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) - CLIPS and selected BN guardrails with optional Pro Solver/ZEN repair feedback.
 - [ollama](/nxuskit/examples/integrations/ollama/) and [lmstudio](/nxuskit/examples/integrations/lmstudio/) - local provider examples.
 - [CLI reference](/nxuskit/reference/cli-reference/) - command input schemas for shell-first workflows.
-
-## Extension Authoring
-
-- [hello-provider](/nxuskit/examples/patterns/hello-provider/) - extension-authoring example for SDK extension authorship with a deterministic local manifest fixture and fixture-backed provider response.
 
 ## A Word About CLIPS
 
@@ -74,7 +70,6 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ `set` |  | Store an API key for a specific provider |  |
 | &nbsp;&nbsp;↳ `remove` |  | Remove a stored API key for a provider |  |
 | &nbsp;&nbsp;↳ `dashboard` |  | Open provider credential dashboard in browser |  |
-| [hello-provider](/nxuskit/examples/patterns/hello-provider/) | Community<br/>Extension-authoring profile | SDK extension authorship with deterministic local manifest fixture and fixture-backed provider response | Local fixture |
 | [solver](/nxuskit/examples/patterns/solver/) | Pro | Z3 constraint solver integration via nxusKit SDK | Rust, Go, Python, CLI/Bash |
 | &nbsp;&nbsp;↳ `theme-park` |  | Budget and space planning for a theme park with rides, food courts, and entertainment zones |  |
 | &nbsp;&nbsp;↳ `space-colony` |  | Resource allocation for a space colony dealing with solar storm what-if scenarios |  |
