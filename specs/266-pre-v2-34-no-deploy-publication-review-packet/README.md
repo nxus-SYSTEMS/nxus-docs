@@ -13,10 +13,15 @@ The publication candidate remains the W260 routed Docs candidate at checkpoint
 `e06eebc0b45261d63d43ca53fc7477baa2a10e02` on branch
 `codex/rb008-docs-w260-pre-v2-34-no-deploy-20260629`.
 
-The authoritative Examples source remains W257:
+The authoritative Examples source is now the W268 final pre-v2 34-example
+export RC package, which preserves W257 as the exact inventory source:
 
-- Branch: `codex/v2-pre-v2-34-release-candidate-w257-20260629`
-- Checkpoint: `6d6d87ccca9a88c445e8f46c485317cdac2b255b`
+- W268 branch: `codex/v2-pre-v2-34-export-rc-package-w268-20260629`
+- W268 checkpoint: `69e0122c370a1a0d00d43988b754fef720801b02`
+- W268 package path:
+  `/Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/w268-pre-v2-34-export-rc-package.json`
+- W257 branch: `codex/v2-pre-v2-34-release-candidate-w257-20260629`
+- W257 checkpoint: `6d6d87ccca9a88c445e8f46c485317cdac2b255b`
 - Package path:
   `/Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w257-pre-v2-34-release-candidate/internal/preview/v2-roadmap-integration/w257-pre-v2-34-release-candidate-package/w257-pre-v2-34-release-candidate-package.json`
 
@@ -41,6 +46,7 @@ Before any public Docs deploy, Manager/Operator/Leadership must explicitly
 approve all of these gates in the controlling thread:
 
 - [ ] Use W257 as the authoritative source for the exact 34-example pre-v2
+      inventory and W268 as the final Examples export RC proof for that
       inventory.
 - [ ] Approve W260 checkpoint
       `e06eebc0b45261d63d43ca53fc7477baa2a10e02` as the Docs publication
@@ -66,6 +72,23 @@ approve all of these gates in the controlling thread:
 Run these commands immediately before any separately authorized merge/deploy:
 
 ```bash
+python3 internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/test-w268-pre-v2-export-rc-package.py
+```
+
+Run from the Examples W268 worktree:
+`/Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package`.
+
+```bash
+python3 internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/validate-pre-v2-export-rc-package.py \
+  --package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/w268-pre-v2-34-export-rc-package.json \
+  --w257-package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w257-pre-v2-34-release-candidate-package/w257-pre-v2-34-release-candidate-package.json \
+  --w259-package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w259-pre-v2-34-export-release-dry-run/w259-pre-v2-34-export-release-dry-run.json \
+  --repo-root /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package
+```
+
+The W257 package checks remain useful for inventory provenance:
+
+```bash
 python3 internal/preview/v2-roadmap-integration/w257-pre-v2-34-release-candidate-package/test-w257-pre-v2-release-candidate-package.py
 ```
 
@@ -89,10 +112,16 @@ Run these from `/Users/ken/codeRepos/nxus-docs` on the candidate branch:
 node --check specs/260-pre-v2-34-no-deploy-consumption-check/validate-pre-v2-34-docs-candidate.mjs
 node specs/260-pre-v2-34-no-deploy-consumption-check/validate-pre-v2-34-docs-candidate.mjs \
   --package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w257-pre-v2-34-release-candidate/internal/preview/v2-roadmap-integration/w257-pre-v2-34-release-candidate-package/w257-pre-v2-34-release-candidate-package.json
+node --check specs/273-w268-pre-v2-34-no-deploy-refresh/validate-w268-pre-v2-34-docs-refresh.mjs
+node specs/273-w268-pre-v2-34-no-deploy-refresh/validate-w268-pre-v2-34-docs-refresh.mjs \
+  --package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/w268-pre-v2-34-export-rc-package.json
 npm run check:docs-version -- --explain
 npm run check:public-leaks
 npm run astro check
 npm run build
+node specs/273-w268-pre-v2-34-no-deploy-refresh/validate-w268-pre-v2-34-docs-refresh.mjs \
+  --package /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w268-pre-v2-34-export-rc-package/internal/preview/v2-roadmap-integration/w268-pre-v2-34-export-rc-package/w268-pre-v2-34-export-rc-package.json \
+  --dist
 rg -n "hello-provider|cedar-local-policy|prolog-scryer-refreshed-source|cedar-protected-boundary|clips-static-fixture|rre-research-internal|pydantic-v2-projection-drift|typescript-zod-projection-drift|node-wrapper-private-diagnostic|35 approved public examples|1 extension-authoring example" src/content/docs/nxuskit/examples dist
 git diff --check
 git diff --cached --check
