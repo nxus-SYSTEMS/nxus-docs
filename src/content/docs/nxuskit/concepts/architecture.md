@@ -69,6 +69,9 @@ memory returned across the boundary has a matching free function.
 Read the [C ABI Reference](/nxuskit/reference/api-reference/) before embedding
 nxusKit in C, C++, Go FFI, Python FFI, or another native runtime.
 
+For workflows that need a local decision before an action crosses a consequence
+boundary, see [Local Control Decisions](/nxuskit/concepts/local-control-decisions/).
+
 ## Operational Flow
 
 ```text
