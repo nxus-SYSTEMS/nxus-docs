@@ -152,8 +152,8 @@ function main() {
   if (options.checkDist) scanPublicDocs(DIST_ROOT, 'dist');
 
   console.log('W317 ControlDecision public-safe copy validation passed');
-  console.log(`W313 fixture: ${options.w313FixturePath}`);
-  console.log(`Candidate copy: ${options.candidatePath}`);
+  console.log(`W313 fixture: externally supplied ${path.basename(options.w313FixturePath)}`);
+  console.log(`Candidate copy: ${path.relative(REPO_ROOT, options.candidatePath)}`);
   console.log(`Built output checked: ${options.checkDist}`);
 }
 
@@ -165,7 +165,7 @@ function parseArgs(args) {
   }
   const resolvedFixturePath = path.resolve(fixturePath);
   if (!fs.existsSync(resolvedFixturePath)) {
-    fail(`W313 fixture not found: ${resolvedFixturePath}`);
+    fail('W313 fixture not found; set W313_FIXTURE or --w313-fixture to an operator-local W313 fixture path');
   }
 
   const candidateFlagIndex = args.indexOf('--candidate');

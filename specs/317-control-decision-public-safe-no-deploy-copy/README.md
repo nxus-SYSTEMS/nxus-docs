@@ -14,6 +14,14 @@ This packet is intentionally non-routed. It does not edit
 `src/content/docs/**`, `scripts/sync-local-docs.mjs`, Astro config, generated
 docs output, release notes, or deploy paths.
 
+## W322 Sanitization Note
+
+Docs W322 sanitizes this packet for checkpoint push by identifying upstream
+evidence through receiver names, wave ids, markers, and commit hashes instead
+of local checkout paths. Operator-local fixture paths may be supplied at
+validation time through the `W313_FIXTURE` environment variable, but must not
+be committed.
+
 ## Source Evidence
 
 Docs carry-forward:
@@ -46,8 +54,9 @@ Examples evidence:
   `READY_EXAMPLES_W313_W307_CONTROL_DECISION_ALIGNMENT`
 - Examples W313 checkpoint:
   `db1dae21093a2e5dd132a744b855b06f84b010b7`
-- Examples W313 package path:
-  `/Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w313-w307-control-decision-alignment/internal/preview/v2-roadmap-integration/w313-w307-control-decision-alignment/`
+- Examples W313 package identity:
+  W313 private Examples receiver handoff package for
+  `READY_EXAMPLES_W313_W307_CONTROL_DECISION_ALIGNMENT`
 
 ## W317 Decision
 
@@ -141,19 +150,18 @@ Before any routed/public Docs implementation lane, Manager must provide:
 
 ## Validation
 
-Run from `/Users/ken/codeRepos/nxus-docs`:
+Run from the `nxus-docs` repository root. Set `W313_FIXTURE` to the local
+operator-provided W313 `w307-control-decision-alignment.json` fixture path
+before running the W313-backed validator. Do not commit local fixture paths.
 
 ```bash
 node --check specs/317-control-decision-public-safe-no-deploy-copy/validate-w317-control-decision-copy.mjs
-node specs/317-control-decision-public-safe-no-deploy-copy/validate-w317-control-decision-copy.mjs \
-  --w313-fixture /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w313-w307-control-decision-alignment/internal/preview/v2-roadmap-integration/w313-w307-control-decision-alignment/fixtures/w307-control-decision-alignment.json
+node specs/317-control-decision-public-safe-no-deploy-copy/validate-w317-control-decision-copy.mjs
 npm run check:docs-version -- --explain
 npm run check:public-leaks
 npm run astro check
 npm run build
-node specs/317-control-decision-public-safe-no-deploy-copy/validate-w317-control-decision-copy.mjs \
-  --w313-fixture /Users/ken/codeRepos/nxusKit-examples-internal/tmp/worktrees/w313-w307-control-decision-alignment/internal/preview/v2-roadmap-integration/w313-w307-control-decision-alignment/fixtures/w307-control-decision-alignment.json \
-  --dist
+node specs/317-control-decision-public-safe-no-deploy-copy/validate-w317-control-decision-copy.mjs --dist
 ```
 
 The validator proves:
