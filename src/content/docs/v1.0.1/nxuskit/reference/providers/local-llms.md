@@ -21,7 +21,7 @@ nxusKit provides two in-process inference backends:
 
 | Backend | Feature Flag | Engine | Status |
 |---------|-------------|--------|--------|
-| llama.cpp | `provider-local-llama` | [llama-cpp-2](https://github.com/utilityai/llama-cpp-rs) (safe Rust bindings to llama.cpp) | Production-ready |
+| llama.cpp | `provider-local-llama` | [llama-cpp-2](https://github.com/utilityai/llama-cpp-rs) (safe Rust bindings to llama.cpp) | Mature local backend |
 | mistral.rs | `provider-local-mistralrs` | [mistral.rs](https://github.com/EricLBuehler/mistral.rs) (pure-Rust inference on Candle) | Experimental |
 
 Both backends load the same **GGUF** model format. If both features are enabled, you can select a backend explicitly or let nxusKit auto-select the first available one.
@@ -225,7 +225,7 @@ provider.unload_model("/models/llama-3.2-1b.Q4_K_M.gguf");
 
 | Feature | llama.cpp (`provider-local-llama`) | mistral.rs (`provider-local-mistralrs`) |
 |---|---|---|
-| Maturity | Production-ready | Experimental |
+| Maturity | Mature | Experimental |
 | Language | C++ with Rust bindings | Pure Rust (Candle) |
 | Build time | Fast (~30s) | Slow (~3-5 min, pulls Candle) |
 | GPU support | Metal, CUDA, Vulkan | Metal, CUDA (via Candle) |

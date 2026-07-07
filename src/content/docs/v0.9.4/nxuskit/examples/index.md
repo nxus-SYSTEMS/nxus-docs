@@ -1,6 +1,6 @@
 ---
 title: nxusKit Examples
-description: Production-ready nxusKit examples across Rust, Go, Python, and CLI/Bash.
+description: Production-quality nxusKit examples across Rust, Go, Python, and CLI/Bash.
 slug: v0.9.4/nxuskit/examples
 ---
 

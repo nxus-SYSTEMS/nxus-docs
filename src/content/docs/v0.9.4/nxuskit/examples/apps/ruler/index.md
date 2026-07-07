@@ -8,7 +8,7 @@ slug: v0.9.4/nxuskit/examples/apps/ruler
 
 A command-line tool for generating CLIPS rules from natural language descriptions using LLM, with validation and automatic retry logic.
 
-> Turn plain English into validated CLIPS rules — describe your business logic, get production-ready expert system code with automatic error correction.
+> Turn plain English into validated CLIPS rules — describe your business logic, get validated CLIPS rule code with automatic error correction.
 
 **Scenarios**: `generate` · `validate` · `save` · `load` · `examples`
 

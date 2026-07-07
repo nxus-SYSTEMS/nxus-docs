@@ -8,7 +8,7 @@ slug: v0.9.4/nxuskit/examples/integrations/bn-solver-clips-pipeline
 
 Demonstrates the flagship nxusKit integration pattern: chaining Bayesian Network prediction, constraint solver optimization, and CLIPS rule-based safety enforcement in a 3-stage pipeline. Each stage feeds its output into the next, showing how probabilistic, combinatorial, and symbolic reasoning compose through a unified SDK.
 
-> Chain probabilistic prediction, constraint optimization, and rule-based safety enforcement into a single production-ready pipeline using one unified SDK.
+> Chain probabilistic prediction, constraint optimization, and rule-based safety enforcement into a single repeatable pipeline using one unified SDK.
 
 **Scenarios**: `festival` · `rescue` · `bakery`
 
