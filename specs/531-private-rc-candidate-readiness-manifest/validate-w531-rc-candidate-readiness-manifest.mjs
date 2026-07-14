@@ -18,8 +18,10 @@ const W530_MARKDOWN_RECORD =
   '.codex/rb008/NXUSKIT-V2-MEGA-20260605/c9-w530-private-rc-integration-branch-preflight-over-w529.md';
 const W530_YAML_RECORD =
   '.codex/rb008/NXUSKIT-V2-MEGA-20260605/c9-w530-private-rc-integration-branch-preflight-over-w529.yaml';
-const W526_BRANCH = 'codex/rb008-docs-w526-w524-w525-clean-checkout-journey-20260713';
-const W531_BRANCH = 'codex/rb008-docs-w531-rc-candidate-readiness-manifest-20260714';
+const W532_BRANCH = 'codex/w532-docs-private-rc-integration-candidate-w428base-20260714';
+const W535_BRANCH = 'codex/w535-docs-sdk-normalized-rc-core-20260714';
+const SDK_W535_BRANCH = 'codex/w535-sdk-rc-core-normalization-v2base-20260714';
+const EXAMPLES_W535_BRANCH = 'codex/w535-examples-sdk-normalized-rc-core-20260714';
 
 const REQUIRED_PACKET_PATTERNS = [
   /\bDocs W531\b/,
@@ -55,23 +57,28 @@ const REQUIRED_W530_PATTERNS = [
 
 const REQUIRED_W526_PATTERNS = [
   /\bDocs W526\b/,
-  /\b34d81f0857ceca45e369e7baa22063131e3a4940\b/,
-  /\bREADY_DOCS_W526_PRIVATE_W524_W525_AGENT_ACTION_GATE_CLEAN_CHECKOUT_JOURNEY_REFRESH\b/,
-  new RegExp(escapeRegExp(W526_BRANCH)),
+  /\bDocs W532\b/,
+  /\b6f37d231265c1682c463bcf0cc70c20637266cf1\b/,
+  new RegExp(escapeRegExp(W532_BRANCH)),
+  /\bDocs W535\b/,
+  new RegExp(escapeRegExp(W535_BRANCH)),
   new RegExp(escapeRegExp(W526_README_PATH)),
   new RegExp(escapeRegExp(W526_VALIDATOR_PATH)),
-  /\bExamples W524\b/,
-  /\b1b3bf5dd01f92e642b570f1c25d33372470f8f3c\b/,
+  /\bExamples W535\b/,
+  /\be0cbf0736d5e65f37b1a91cd9db94af8d845154d\b/,
+  new RegExp(escapeRegExp(EXAMPLES_W535_BRANCH)),
   /\bDevOps W525\b/,
   /\b169c654\b/,
-  /\bSDK W517\b/,
-  /\bfc3d963f96bd51466d19baa5d626697f7da2eb26\b/,
-  /\bW526 is private\/no-deploy\b/i,
+  /\bSDK W535\b/,
+  /\b51ed2c4e64445f7170775804d4d98feea5ba6acd\b/,
+  /\bc1574cdfd1eefa9f8167c52bb3f384678fb12126\b/,
+  new RegExp(escapeRegExp(SDK_W535_BRANCH)),
+  /\bprivate\/no-deploy\b/i,
 ];
 
 const REQUIRED_BRANCH_PATTERNS = [
-  new RegExp(escapeRegExp(W531_BRANCH)),
-  /\bbase\b[\s\S]{0,120}\b34d81f0857ceca45e369e7baa22063131e3a4940\b/i,
+  new RegExp(escapeRegExp(W535_BRANCH)),
+  /\bbase\b[\s\S]{0,120}\b6f37d231265c1682c463bcf0cc70c20637266cf1\b/i,
   /\btracked tree\b[\s\S]{0,160}\bclean\b/i,
   /\.vexp\//,
   /\bsession-handoff\.md\b/,
@@ -85,7 +92,7 @@ const REQUIRED_DISPOSITION_PATTERNS = [
   /\bcherry-pick\b/i,
   /\bmerge\b/i,
   /\bdefer\b/i,
-  /\breference-only\b[\s\S]{0,240}\brecommended\b/i,
+  /\breference-only\b[\s\S]{0,240}\bNo longer sufficient\b/i,
   /\bcherry-pick\b[\s\S]{0,260}\bafter\b[\s\S]{0,160}\bprivate integration branch\b/i,
   /\bmerge\b[\s\S]{0,220}\bdeferred\b/i,
   /\bdefer\b[\s\S]{0,220}\bpublic\b/i,
@@ -108,7 +115,9 @@ const REQUIRED_VALIDATION_COMMANDS = [
 
 const REQUIRED_ROLLBACK_PATTERNS = [
   /\brollback\b|\bbackout\b/i,
-  /\bskip\b[\s\S]{0,120}\bW526\b/i,
+  /\bW532 checkpoint\b[\s\S]{0,160}\bmissing\b/i,
+  /\bSDK W535 checkpoint\b[\s\S]{0,200}\bhistorical SDK W517\b/i,
+  /\bExamples W535 checkpoint\b[\s\S]{0,200}\bstale W521\/W524\b/i,
   /\brevert\b[\s\S]{0,160}\bprivate specs\b/i,
   /\bremove\b[\s\S]{0,160}\bprivate RC integration branch\b/i,
   /\bvalidation\b[\s\S]{0,120}\bfail/i,
@@ -133,6 +142,11 @@ const REQUIRED_CLOSED_GATES = [
 ];
 
 const PACKET_FORBIDDEN_PATTERNS = [
+  ['stale SDK W517 checkpoint', /\bfc3d963f96bd51466d19baa5d626697f7da2eb26\b/],
+  ['stale Examples W521 checkpoint', /\badfc185fd2c411aa5956da377d5d8e9fa9e4fb3a\b/],
+  ['stale Examples W524 checkpoint', /\b1b3bf5dd01f92e642b570f1c25d33372470f8f3c\b/],
+  ['stale SDK W517 decision source', /\bsdk_w517_semantic_derivation_from_typed_facts\b/],
+  ['stale SDK W517 verification file', /\bsdk_w517_verification\.json\b/],
   ['production-ready wording', /\bprod(?:uction)?[- ]?ready\b/iu],
   ['customer availability wording', /\bcustomer[-_ ]available\b|\bgenerally available\b|\bGA\b/iu],
   ['support/compliance/security ready wording', /\b(?:support|compliance|security)[-_ ]ready\b/iu],
@@ -153,8 +167,12 @@ const PACKET_FORBIDDEN_PATTERNS = [
 const PUBLIC_SURFACE_DENIED_PATTERNS = [
   ['W531 private wave reference', /\bW531\b/],
   ['W530 private wave reference', /\bW530\b/],
+  ['W535 private wave reference', /\bW535\b/],
+  ['W532 private wave reference', /\bW532\b/],
   ['W526 private wave reference', /\bW526\b/],
-  ['W526 checkpoint reference', /\b34d81f0857ceca45e369e7baa22063131e3a4940\b/],
+  ['W532 checkpoint reference', /\b6f37d231265c1682c463bcf0cc70c20637266cf1\b/],
+  ['Examples W535 checkpoint reference', /\be0cbf0736d5e65f37b1a91cd9db94af8d845154d\b/],
+  ['SDK W535 checkpoint reference', /\b51ed2c4e64445f7170775804d4d98feea5ba6acd\b/],
   ['W530 checkpoint reference', /\bc984fc9\b/],
   ['W526 private spec path', new RegExp(escapeRegExp(W526_README_PATH))],
   ['W531 private RC manifest phrase', /\bRC candidate-readiness manifest\b/i],
