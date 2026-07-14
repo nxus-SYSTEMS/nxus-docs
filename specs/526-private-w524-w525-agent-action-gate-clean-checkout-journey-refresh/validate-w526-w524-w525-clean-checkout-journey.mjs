@@ -18,6 +18,8 @@ const W522_DOCS_PATH =
   'specs/522-private-w521-sdk-derived-agent-action-gate-journey-refresh';
 const W525_EVIDENCE_RECORD =
   '.codex/rb008/NXUSKIT-V2-MEGA-20260605/c9-w525-private-release-integration-review-over-w524.md';
+const SDK_W535_BRANCH = 'codex/w535-sdk-rc-core-normalization-v2base-20260714';
+const EXAMPLES_W535_BRANCH = 'codex/w535-examples-sdk-normalized-rc-core-20260714';
 
 const REQUIRED_PACKET_PATTERNS = [
   /\bDocs W526\b/,
@@ -44,13 +46,18 @@ const REQUIRED_PACKET_PATTERNS = [
 ];
 
 const REQUIRED_LINEAGE_PATTERNS = [
-  /\bSDK W517\b/,
-  /\bfc3d963f96bd51466d19baa5d626697f7da2eb26\b/,
+  /\bSDK W535\b/,
+  /\b51ed2c4e64445f7170775804d4d98feea5ba6acd\b/,
+  /\bc1574cdfd1eefa9f8167c52bb3f384678fb12126\b/,
+  new RegExp(escapeRegExp(SDK_W535_BRANCH)),
+  /\bRC Core\b/i,
+  /\bgeneric request\b/i,
+  /\breview-handoff\b/i,
+  /\bExamples W535\b/,
+  /\be0cbf0736d5e65f37b1a91cd9db94af8d845154d\b/,
+  new RegExp(escapeRegExp(EXAMPLES_W535_BRANCH)),
   /\bExamples W521\b/,
-  /\badfc185fd2c411aa5956da377d5d8e9fa9e4fb3a\b/,
   /\bExamples W524\b/,
-  /\b1b3bf5dd01f92e642b570f1c25d33372470f8f3c\b/,
-  /\bcodex\/v2-private-d1-agent-action-gate-clean-checkout-dx-smoke-w524-20260713\b/,
   new RegExp(escapeRegExp(W524_PACKAGE_PATH)),
   new RegExp(escapeRegExp(W521_PACKAGE_PATH)),
   /\bDocs W522\b/,
@@ -78,12 +85,12 @@ const REQUIRED_W524_DX_PATTERNS = [
 ];
 
 const REQUIRED_DERIVATION_PATTERNS = [
-  /\bsdk_w517_semantic_derivation_from_typed_facts\b/,
-  /\bSDK-derived\b/i,
+  /\bsdk_w535_rc_core_action_gate_from_typed_facts\b/,
+  /\bSDK RC Core-derived\b/i,
   /\btyped facts\b/i,
   /\bW521 runner\b/i,
   /\bW521 validator\b/i,
-  /\bSDK W517 evidence\b/i,
+  /\bSDK W535\b[\s\S]{0,80}\bevidence\b/i,
   /\bdecision source\b/i,
   /\bvalidation assertions\b/i,
 ];
@@ -102,7 +109,7 @@ const REQUIRED_EVIDENCE_PATTERNS = [
   /\breceipt refs\b/i,
   /\bw524-clean-checkout-dx-smoke-summary\.json\b/,
   /\bsummary\.json\b/,
-  /\bsdk_w517_verification\.json\b/,
+  /\bsdk_rc_core_verification\.json\b/,
   /\bevidence\b/,
   /\breceipts\b/,
   /\bnegative_cases\b/,
@@ -163,6 +170,11 @@ const REQUIRED_NEXT_STEP_PATTERNS = [
 ];
 
 const PACKET_FORBIDDEN_PATTERNS = [
+  ['stale SDK W517 checkpoint', /\bfc3d963f96bd51466d19baa5d626697f7da2eb26\b/],
+  ['stale Examples W521 checkpoint', /\badfc185fd2c411aa5956da377d5d8e9fa9e4fb3a\b/],
+  ['stale Examples W524 checkpoint', /\b1b3bf5dd01f92e642b570f1c25d33372470f8f3c\b/],
+  ['stale SDK W517 decision source', /\bsdk_w517_semantic_derivation_from_typed_facts\b/],
+  ['stale SDK W517 verification file', /\bsdk_w517_verification\.json\b/],
   ['production-ready wording', /\bprod(?:uction)?[- ]?ready\b/iu],
   ['public-ready wording', /\bpublic[-_ ]ready\b/iu],
   ['customer-available wording', /\bcustomer[-_ ]available\b|\bgenerally available\b|\bGA\b/iu],
@@ -181,15 +193,16 @@ const PACKET_FORBIDDEN_PATTERNS = [
 const PUBLIC_SURFACE_DENIED_PATTERNS = [
   ['W526 private wave reference', /\bW526\b/],
   ['W525 private wave reference', /\bW525\b/],
+  ['W535 private wave reference', /\bW535\b/],
   ['W524 private wave reference', /\bW524\b/],
-  ['W524 checkpoint reference', /\b1b3bf5dd01f92e642b570f1c25d33372470f8f3c\b/],
-  ['W521 checkpoint reference', /\badfc185fd2c411aa5956da377d5d8e9fa9e4fb3a\b/],
-  ['SDK W517 checkpoint reference', /\bfc3d963f96bd51466d19baa5d626697f7da2eb26\b/],
+  ['Examples W535 checkpoint reference', /\be0cbf0736d5e65f37b1a91cd9db94af8d845154d\b/],
+  ['SDK W535 checkpoint reference', /\b51ed2c4e64445f7170775804d4d98feea5ba6acd\b/],
+  ['SDK W535 base reference', /\bc1574cdfd1eefa9f8167c52bb3f384678fb12126\b/],
   ['W524 private package path', new RegExp(escapeRegExp(W524_PACKAGE_PATH))],
   ['W521 private package path', new RegExp(escapeRegExp(W521_PACKAGE_PATH))],
   ['D1 clean-checkout private proof leak', /\bD1 Agent Action Gate Clean-checkout DX Smoke\b/i],
   ['private proof case leak', /\bd1-support-reply-safe\b|\bd1-account-export-blocked\b|\bd1-service-credit-review\b/],
-  ['private proof output leak', /\bw524-clean-checkout-dx-smoke-summary\b|\bsdk_w517_verification\b|\bnegative_cases_fail_closed\b/i],
+  ['private proof output leak', /\bw524-clean-checkout-dx-smoke-summary\b|\bsdk_rc_core_verification\b|\bnegative_cases_fail_closed\b/i],
   ['production-ready overclaim', /\bprod(?:uction)?[- ]?ready\b/iu],
   ['public-ready overclaim', /\bpublic[-_ ]ready\b/iu],
   ['customer availability claim', /\bcustomer[-_ ]available\b|\bgenerally available\b|\bavailable now\b|\bnow available\b/iu],

@@ -3,11 +3,11 @@
 Private/no-deploy Docs receiver artifact for RB-008 /
 `NXUSKIT-V2-MEGA-20260605`, Docs W526, wave W526 of estimated W426-W492.
 
-This buyer/developer journey refreshes the Docs W522 private Agent Action Gate
-journey with Examples W524 clean-checkout developer experience proof and DevOps
-W525 private release-integration posture. W522 remains the current private
-journey over W521 SDK-derived proof truth; W526 adds the evaluator-friendly
-one-command clean-checkout path and private release-review meaning.
+This D1 Agent Action Gate buyer/developer journey refreshes the Docs W522 private Agent Action Gate
+journey with the Examples W535 update to the W521/W524 clean-checkout developer experience
+proof and the SDK W535 normalized RC Core action-gate primitive.
+DevOps W525 remains prior private release-integration posture; W535 is the
+current private proof-truth update for this journey.
 
 This is not routed Docs copy, public launch copy, release notes, public website
 copy, or a public availability statement.
@@ -16,25 +16,28 @@ copy, or a public availability statement.
 
 Private proof lineage:
 
-- SDK W517 checkpoint:
-  `fc3d963f96bd51466d19baa5d626697f7da2eb26`
-- SDK W517 meaning:
-  private semantic Agent Action Gate derivation over typed action, actor
-  context, consequence, policy, evidence, receipt, and gate facts.
-- Examples W521 checkpoint:
-  `adfc185fd2c411aa5956da377d5d8e9fa9e4fb3a`
+- SDK W535 normalized RC Core checkpoint:
+  `51ed2c4e64445f7170775804d4d98feea5ba6acd`
+- SDK W535 RC Core base:
+  `c1574cdfd1eefa9f8167c52bb3f384678fb12126`
+- SDK W535 branch:
+  `codex/w535-sdk-rc-core-normalization-v2base-20260714`
+- SDK W535 meaning:
+  private reusable action-gate primitive over generic request, decision,
+  evidence, receipt, policy fact, and review-handoff models, with D1
+  support-playbook behavior layered above it.
+- Examples W535 checkpoint:
+  `e0cbf0736d5e65f37b1a91cd9db94af8d845154d`
+- Examples W535 branch:
+  `codex/w535-examples-sdk-normalized-rc-core-20260714`
 - Examples W521 package:
   `internal/preview/v2-roadmap-integration/w521-private-d1-agent-action-gate-sdk-derived-proof-refresh`
-- Examples W521 meaning:
-  SDK-derived private D1 proof refresh, using
-  `sdk_w517_semantic_derivation_from_typed_facts` and keeping expected
+- Examples W521 meaning after W535:
+  SDK RC Core-derived private D1 proof refresh, using
+  `sdk_w535_rc_core_action_gate_from_typed_facts` and keeping expected
   decisions as validation assertions only.
 - Examples W524 marker:
   `READY_EXAMPLES_W524_PRIVATE_D1_AGENT_ACTION_GATE_CLEAN_CHECKOUT_DX_SMOKE`
-- Examples W524 checkpoint:
-  `1b3bf5dd01f92e642b570f1c25d33372470f8f3c`
-- Examples W524 branch:
-  `codex/v2-private-d1-agent-action-gate-clean-checkout-dx-smoke-w524-20260713`
 - Examples W524 package:
   `internal/preview/v2-roadmap-integration/w524-private-d1-agent-action-gate-clean-checkout-dx-smoke`
 - Docs W522 prior journey:
@@ -53,13 +56,14 @@ Private proof lineage:
 Lineage statement:
 
 ```text
-SDK W517 -> Examples W521 -> Examples W524 -> DevOps W525 -> Docs W526
+SDK W535 -> Examples W535 W521/W524 refresh -> DevOps W525 prior posture -> Docs W535 update
 ```
 
-W524 is the current private clean-checkout/source-visible developer experience
-smoke over W521. W525 is the private release-integration review over W524. W526
-is the Docs buyer/developer journey refresh that makes that path usable for
-private evaluator and design-partner conversations.
+Examples W535 is the current private clean-checkout/source-visible developer
+experience proof truth for the W521/W524 package set. W525 remains prior private
+release-integration review posture. This W535 Docs update keeps the W526
+buyer/developer journey usable for private evaluator and design-partner
+conversations while aligning it to the normalized SDK RC Core checkpoint.
 
 ## No Public Authority Opened
 
@@ -90,7 +94,7 @@ The evaluator path should answer:
 - What action is the agent trying to take?
 - Which typed facts drive the gate decision?
 - Can a clean checkout run a source-visible proof without a dependency install?
-- Do the same three decisions still derive from SDK W517 through W521?
+- Do the same three decisions still derive from SDK W535 through W521?
 - Where are the private evidence refs, receipt refs, compact summary output,
   and human-review handoff?
 - What does private release-integration readiness mean, and what gates remain
@@ -100,36 +104,36 @@ The evaluator path should answer:
 
 The proof chain is intentionally narrow:
 
-1. SDK W517 provides the private semantic derivation primitive.
-2. Examples W521 uses SDK W517 as semantic truth and derives decisions from
-   typed facts.
-3. Examples W524 wraps W521 in a one-command clean-checkout developer
-   experience smoke.
+1. SDK W535 provides the normalized private RC Core action-gate primitive.
+2. Examples W535 refreshes W521 to use SDK W535 as semantic truth and derive
+   decisions from typed facts.
+3. Examples W535 refreshes W524 as a one-command clean-checkout developer
+   experience smoke over that W521 proof.
 4. DevOps W525 reviews W524 as current private release-integration evidence
    while keeping release, public, and production gates closed.
-5. Docs W526 explains the buyer/developer journey without turning it into
-   public Docs copy.
+5. Docs W535 updates the W526 journey without turning it into public Docs copy.
 
 This preserves the W522 distinction: expected decisions are validation
 assertions, not decision authority. The current evaluator proof is W524 over
-W521 over SDK W517.
+W521 over SDK W535 RC Core.
 
 ### 3. Run/Review The Clean-Checkout Smoke
 
 Preferred private evaluator path:
 
 1. Open a clean local checkout or source-visible Codespaces/devcontainer from
-   the official org repo at the W524 checkpoint.
-2. Inspect W524 source/provenance, then inspect the W521 package and SDK W517
-   checkpoint references.
+   the official org repo at the Examples W535 checkpoint.
+2. Inspect the W535-updated W524 source/provenance, then inspect the W521
+   package and SDK W535 checkpoint references.
 3. Run the W524 one-command smoke using the W524 README instructions.
-4. Provide a local SDK worktree at SDK W517 when running the smoke.
+4. Provide a local SDK worktree at SDK W535 when running the smoke.
 5. Keep all output in a caller-provided temporary scratch location outside the
    repository.
 6. Inspect the compact summary output:
    `w524-clean-checkout-dx-smoke-summary.json`.
 7. Inspect the wrapped W521 proof output, including `summary.json`,
-   `sdk_w517_verification.json`, `evidence`, `receipts`, and `negative_cases`.
+   `sdk_rc_core_verification.json`, `evidence`, `receipts`, and
+   `negative_cases`.
 8. Run the W524 validator against the local output.
 
 Clean-checkout DX meaning:
@@ -163,11 +167,11 @@ The compact outcome statement is: allow, deny, and review_required.
 W524 emits `w524-clean-checkout-dx-smoke-summary.json`, then points back to the
 wrapped W521 proof output. The evaluator should inspect:
 
-- compact summary output for W524 marker, W521 checkpoint, SDK W517 checkpoint,
+- compact summary output for W524 marker, W521 checkpoint, SDK W535 checkpoint,
   decision source, case decisions, duration target, and closed gates;
 - `summary.json` from the wrapped W521 proof for typed-fact decision source and
   case outcomes;
-- `sdk_w517_verification.json` from the wrapped W521 proof for SDK W517
+- `sdk_rc_core_verification.json` from the wrapped W521 proof for SDK W535
   verification;
 - inspectable private evidence JSON files in `evidence`;
 - private receipt JSON files in `receipts`;
@@ -175,7 +179,7 @@ wrapped W521 proof output. The evaluator should inspect:
 - evidence refs and receipt refs for each case.
 
 The key fields to keep visible in private review are
-`sdk_w517_semantic_derivation_from_typed_facts`,
+`sdk_w535_rc_core_action_gate_from_typed_facts`,
 `negative_cases_fail_closed=true`, and the W524 summary pointer to W521
 evidence and receipts.
 
@@ -261,7 +265,7 @@ design-partner conversation. Keep this in internal commercial context only:
 - use the W524 clean-checkout smoke as the source-visible anchor for the
   conversation;
 - show that the W524 wrapper invokes the W521 runner, runs the W521 validator,
-  and verifies SDK W517 evidence through W521 output;
+  and verifies SDK W535 RC Core evidence through W521 output;
 - ask the buyer to identify one consequential agent action they want gated
   before side effects;
 - map the action to typed facts, evidence refs, receipt refs, human-review
@@ -280,7 +284,7 @@ release-note, package metadata, or request-access surface may use this journey
 externally, Manager/Operator should require:
 
 1. exact upstream checkpoints for W524-or-later clean-checkout smoke,
-   W521-or-later proof, SDK W517-or-later derivation evidence, DevOps
+   W521-or-later proof, SDK W535-or-later RC Core derivation evidence, DevOps
    W525-or-later release-integration review, Licensing W522-or-later
    claim-boundary review, and Docs W526-or-later journey;
 2. confirmation that public/private SDK surface classification has stabilized;
@@ -289,7 +293,7 @@ externally, Manager/Operator should require:
    evidence/receipt refs, human-review path, release-review posture, and paid
    next step;
 4. source and built-output scans proving no private wave refs, W524/W521/SDK
-   W517 checkpoint refs, W524/W521 package paths, private case ids, public
+   W535 checkpoint refs, W524/W521 package paths, private case ids, public
    API/schema/CLI/wrapper promises, hosted execution claims,
    release/package/publication claims, Product Catalog/Odoo production claims,
    support/compliance/security claims, customer data claims, or binary-first
@@ -301,8 +305,9 @@ externally, Manager/Operator should require:
 
 ## Options And Recommendation
 
-Option A: use W526 privately as the current D1 Agent Action Gate
-buyer/developer journey over W524/W525.
+Option A: use this W535-updated W526 packet privately as the current D1 Agent
+Action Gate buyer/developer journey over the W535-normalized W521/W524 proof and
+the W525 prior release-integration posture.
 
 - Recommended now.
 - Gives evaluators a clean-checkout path over current SDK-derived proof truth.
@@ -325,9 +330,9 @@ Option C: request public publication.
   surface scans, release/provenance decisions, and rollback plan.
 
 Recommendation: choose Option A. Treat this as the private buyer/developer
-journey that connects W524 clean-checkout proof and W525 private
-release-integration posture to an Agent Action Gate Sprint or design-partner
-conversation.
+journey that connects the W535-normalized W524 clean-checkout proof and W525
+prior private release-integration posture to an Agent Action Gate Sprint or
+design-partner conversation.
 
 ## Validation
 
@@ -346,8 +351,9 @@ git diff --cached --check
 ```
 
 The validator checks this private journey, routed docs source, and optional
-built output for W524 provenance, W525 release-integration posture, W522 prior
-journey link, W521 and SDK W517 provenance, clean-checkout one-command DX
+built output for W535-normalized W524 provenance, W525 release-integration
+posture, W522 prior journey link, W521 and SDK W535 provenance,
+clean-checkout one-command DX
 wording, deterministic outcomes, inspectable evidence and receipt refs,
 human-review path, expected-outcome substitution rejection, limitations,
 paid-next-step wording, placeholder tokens, local path evidence, private repo
