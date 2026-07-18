@@ -58,7 +58,7 @@ All editions provide wrappers for all three languages:
 | Language | Module | Setup |
 |----------|--------|-------|
 | Rust | `nxuskit` | Path dependency from SDK bundle |
-| Go | `nxuskit` | `go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go` |
+| Go | bundled `nxuskit-go` source | Configure the bundled module source after an authorized release |
 | Python | `nxuskit` | SDK bundle `python/src` on `PYTHONPATH` |
 
 ## Example Tier Assignments

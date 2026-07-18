@@ -110,7 +110,7 @@ RUN_LIVE_SMOKE=1 ./strict_live_smoke.sh
 
 ## Local Model Starting Points
 
-These are dated smoke-test starting points from the DevOps Ollama model-testing notes, not model rankings or product guarantees.
+These are dated smoke-test starting points from the dated local model-testing notes, not model rankings or product guarantees.
 
 | Model | Why try it |
 |-------|------------|
@@ -119,7 +119,7 @@ These are dated smoke-test starting points from the DevOps Ollama model-testing 
 | `gemma3:1b` or `erukude/omni-json:1b` | 2026-05-09/12 small-model smokes found both useful for very small guardrail demos because they reproduce the naive failure and recover under the enhanced prompt. |
 | `nemotron-3-nano:4b` | 2026-05-12 smokes show the car-wash fail/recover target plus a native strict tool-call pass, making it a useful local comparison point. |
 
-Avoid using passing or unparsed baseline behavior as a demo failure source. For example, the same DevOps notes show `phi4-mini-reasoning:3.8b` answering `drive` on the naive prompt and `granite4:350m-h` failing to recover under the enhanced prompt, so neither is a good default for this specific guardrail walkthrough.
+Avoid using passing or unparsed baseline behavior as a demo failure source. For example, the same local test notes show `phi4-mini-reasoning:3.8b` answering `drive` on the naive prompt and `granite4:350m-h` failing to recover under the enhanced prompt, so neither is a good default for this specific guardrail walkthrough.
 
 ## Scenario Data Contract
 

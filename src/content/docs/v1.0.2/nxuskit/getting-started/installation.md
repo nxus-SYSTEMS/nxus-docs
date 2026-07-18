@@ -339,7 +339,7 @@ access:
 
 1. Create a fine-grained PAT at https://github.com/settings/personal-access-tokens
    - **Repository access**: Select `nxus-SYSTEMS/nxusKit` for OSS assets, or
-     your entitlement-provided internal/pro-authenticated repository for Pro
+     your entitlement-provided authorized repository for Pro
      assets.
    - **Permissions**: Contents → Read-only
 2. Use the token:

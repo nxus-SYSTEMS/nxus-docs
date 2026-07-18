@@ -95,7 +95,7 @@ C ABI / direct JSON:
 
 ## v0.9.4 update
 
-- **Streaming logprobs shipped in v0.9.4** (sprint S1 / branch 098).
+- **Streaming logprobs shipped in v0.9.4** (sprint S1 / prior checkpoint).
   `StreamChunk` now carries `logprobs: Option<StreamLogprobsDelta>` (Rust),
   `Logprobs *StreamLogprobsDelta` (Go), `logprobs: Optional[StreamLogprobsDelta]`
   (Python) - additive, defaults to `None`/`nil` for non-supporting providers.
@@ -105,6 +105,6 @@ C ABI / direct JSON:
   all others are `false` per the evidence-first rule. See the v0.9.4 CHANGELOG
   entry for the cross-language parity harness.
 - **`CapabilityManifest` v2** - a public preview subset for provider/model
-  capability discovery was introduced in v0.9.4 (sprint S2/S3 / branch 099);
-  the full internal manifest is unchanged. The publication decision is recorded
-  in the 099 artifacts.
+  capability discovery was introduced in v0.9.4 (sprint S2/S3 / prior checkpoint);
+  the complete manifest remains outside this public documentation. The publication decision is recorded
+  in the associated public documentation.

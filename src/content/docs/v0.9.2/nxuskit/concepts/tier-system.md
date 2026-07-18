@@ -55,9 +55,9 @@ All editions provide wrappers for all three languages:
 
 | Language | Package | Install |
 |----------|---------|---------|
-| Rust | `nxuskit` | `cargo add nxuskit` |
-| Go | `nxuskit` | `go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go` |
-| Python | `nxuskit-py` | `pip install nxuskit-py` |
+| Rust | bundled `nxuskit` source | Use a Cargo path dependency from an authorized SDK bundle |
+| Go | bundled `nxuskit-go` source | Configure the bundled module source after an authorized release |
+| Python | bundled `nxuskit` source | Configure `PYTHONPATH` from an authorized SDK bundle |
 
 ## Example Tier Assignments
 

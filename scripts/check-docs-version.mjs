@@ -11,6 +11,7 @@ import {
   DOCS_VERSIONS_URL,
   NXUSKIT_CHANGELOG_URL,
   releasedVersionsFromChangelog,
+  retainedHistoricalVersions,
   skippedDocsVersions,
 } from './docs-version.mjs';
 
@@ -39,6 +40,7 @@ async function checkArchivePolicy() {
   const archived = archivedDocsVersions();
   const skipped = skippedDocsVersions();
   const releaseSet = new Set(releases);
+  const historicalSet = new Set(retainedHistoricalVersions());
   const archivedSet = new Set(archived);
   const skippedSet = new Set(skipped.map((record) => record.version));
 
@@ -47,8 +49,8 @@ async function checkArchivePolicy() {
   }
 
   for (const version of archived) {
-    if (!releaseSet.has(version)) {
-      throw new Error(`Archived docs version ${version} is not present in the current nxusKit changelog.`);
+    if (!releaseSet.has(version) && !historicalSet.has(version)) {
+      throw new Error(`Archived docs version ${version} is not present in the current changelog or retained historical version policy.`);
     }
 
     if (compareDocsVersions(version, current) >= 0) {
@@ -59,12 +61,16 @@ async function checkArchivePolicy() {
   }
 
   for (const { version } of skipped) {
-    if (!releaseSet.has(version)) {
-      throw new Error(`Skipped archive version ${version} is not present in the current nxusKit changelog.`);
+    if (!releaseSet.has(version) && !historicalSet.has(version)) {
+      throw new Error(`Skipped archive version ${version} is not present in the current changelog or retained historical version policy.`);
     }
 
     if (archivedSet.has(version)) {
       throw new Error(`Skipped archive version ${version} also has an archive directory. Remove the skip record.`);
+    }
+
+    if (compareDocsVersions(version, current) >= 0) {
+      throw new Error(`Skipped archive version ${version} must be older than current ${current}.`);
     }
   }
 

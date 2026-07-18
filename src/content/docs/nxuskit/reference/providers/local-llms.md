@@ -44,7 +44,7 @@ Any model published in GGUF format that is compatible with llama.cpp should work
 | **Llama 3.2** | 1B, 3B | `Llama-3.2-1B-Instruct-Q4_K_M.gguf` | Meta's latest small models. Great for CPU. |
 | **Llama 3.1** | 8B, 70B, 405B | `Meta-Llama-3.1-8B-Instruct-Q4_K_M.gguf` | Excellent general-purpose. 8B runs well on 16GB RAM. |
 | **Llama 3** | 8B, 70B | `Meta-Llama-3-8B-Instruct-Q4_K_M.gguf` | Predecessor to 3.1, widely available. |
-| **Llama 2** | 7B, 13B, 70B | `llama-2-7b-chat.Q4_K_M.gguf` | Older and widely available. |
+| **Llama 2** | 7B, 13B, 70B | `llama-2-7b-chat.Q4_K_M.gguf` | Older but battle-tested. |
 | **Mistral** | 7B | `mistral-7b-instruct-v0.3.Q4_K_M.gguf` | Strong performance relative to size. |
 | **Mixtral** | 8x7B, 8x22B | `mixtral-8x7b-instruct-v0.1.Q4_K_M.gguf` | Mixture-of-experts. Needs more RAM. |
 | **Phi-3 / Phi-3.5** | 3.8B, 14B | `Phi-3.5-mini-instruct-Q4_K_M.gguf` | Microsoft. Strong reasoning for size. |

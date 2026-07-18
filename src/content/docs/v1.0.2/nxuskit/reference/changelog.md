@@ -27,7 +27,7 @@ historical version resets.
   to `1.0.2`.
 - Clarified release-channel posture: the public `sdk-v1.0.2` release contains
   OSS assets only, while Pro bundles are distributed through the
-  internal/pro-authenticated Pro release channel.
+  separate Pro release channel.
 - Aligned internal engine workspace package metadata to `1.0.2` so
   `nxuskit_version()` matches the Go and Python FFI wrappers.
 - Replaced PyPI-style Python installation copy with SDK-bundle setup guidance
@@ -98,18 +98,18 @@ historical version resets.
 - At v1.0.0, Pro installation packages were published on the public release
   page; Pro capabilities still required a valid license key. In the current
   v1.0.2 release posture, the public release is OSS-only and Pro bundles use the
-  internal/pro-authenticated release channel.
+  authorized release channel.
 
 ## [0.9.4] - 2026-05-11
 
 > v0.9.4 release candidate. Provider-capability modernization and release
-> hardening, consolidating sprints S1 (streaming logprobs, branch 098),
+> hardening, consolidating sprints S1 (streaming logprobs),
 > S2/S3 (provider capability modernization + Capability Manifest v2 decision,
-> branch 099), and S4-S6 (CLI Level 2 completion, examples & bundle alignment,
-> docs & release candidate, branch 100). Lockstep version bump `0.9.3 -> 0.9.4`
+> prior checkpoint), and S4-S6 (CLI Level 2 completion, examples & bundle alignment,
+> docs & release candidate). Lockstep version bump `0.9.3 -> 0.9.4`
 > across all components. **No C ABI signature changes** in this release.
 
-### Added - S1: Streaming Logprobs + Capability Metadata (branch 098)
+### Added - S1: Streaming Logprobs + Capability Metadata
 
 - `StreamLogprobsDelta` type (Rust engine + wrapper, Go, Python) carrying
   per-chunk `TokenLogprob` entries on streaming responses.
@@ -124,11 +124,11 @@ historical version resets.
   passed through.
 - CLI `provider info` exposes the `streaming_logprobs` row (human + JSON).
 - Cross-language parity harness at
-  `internal/tests/parity/stream_logprobs/run_parity.sh`.
+  the cross-language parity harness.
 - OpenAI: `supports_streaming_logprobs = true` (only supporting provider per
   fixture evidence); all other providers `false` per the evidence-first rule.
 
-### Added - S2/S3: Provider Capability Modernization + Manifest v2 (branch 099)
+### Added - S2/S3: Provider Capability Modernization + Manifest v2
 
 - Provider capability surface modernized; `CapabilityProvider` / "capability
   provider" vocabulary introduced (no breaking `LLMProvider` rename).
@@ -136,11 +136,11 @@ historical version resets.
   (`XAI_API_KEY`, default base URL `https://api.x.ai/v1`); `groq` remains
   Groq, Inc. and no confusing `grok` alias is registered.
 - `CapabilityManifest` v2 concept with a public preview subset for
-  provider/model capability discovery (full internal manifest unchanged); the
-  publication decision is recorded in the 099 artifacts.
+  provider/model capability discovery (the complete manifest remains outside this public documentation); the
+  publication decision is recorded in the associated public documentation.
 - OpenAI remains Chat-Completions-first (no full Responses API migration).
 
-### Added - S4: CLI Level 2 completion & stabilization (branch 100)
+### Added - S4: CLI Level 2 completion & stabilization
 
 - **`nxuskit-cli zen validate`** (Pro) - structural validation of a ZEN JSON
   Decision Model (JDM): rejects `functionNode` (JavaScript), checks decision
@@ -168,7 +168,7 @@ historical version resets.
 - Shell support policy documented (`completions`: bash, zsh, fish supported;
   PowerShell not generated in v0.9.4; helper snippets + schema bundle locations).
 
-### Added - S5: Examples repo & bundle alignment (branch 100)
+### Added - S5: Examples repo & bundle alignment
 
 - Examples portfolio bundle-instruction refs bumped to v0.9.4;
   `PYTHON_EXAMPLES_STATUS.md` records the v0.9.4 Python-parity scope (minimal
@@ -907,7 +907,7 @@ For runnable examples, see the [nxusKit-examples](https://github.com/nxus-SYSTEM
   - Pre-1.0 versioning (0.x.y) signals API is not yet stable per semantic versioning
   - Allows breaking changes in minor versions during development
   - Functionality from the earlier 2.x line carried forward unchanged
-  - Historical 2.x changelog preserved in the internal archive
+  - Historical 2.x changelog preserved in a separate historical archive
   - Previous 2.x release artifacts archived outside the public SDK release line
 
 ### Notes

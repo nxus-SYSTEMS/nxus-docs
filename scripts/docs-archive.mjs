@@ -2,6 +2,7 @@ import { copyFile, mkdir, readdir, readFile, rm, writeFile } from 'node:fs/promi
 import { existsSync } from 'node:fs';
 import path from 'node:path';
 import { DOCS_CONTENT_URL, DOCS_VERSIONS_URL, normalizeDocsVersion } from './docs-version.mjs';
+import { sanitizePublicDocsTree } from './public-docs-sanitizer.mjs';
 
 const CURRENT_DOCS_ENTRIES = ['index.mdx', 'github', 'nxuskit'];
 const ARCHIVED_VERSION_CONFIG = {
@@ -38,6 +39,7 @@ export async function archiveCurrentDocs(version, options = {}) {
   }
 
   await ensureVersionConfig(normalizedVersion, { overwrite: options.overwrite });
+  await sanitizePublicDocsTree(archiveRoot);
 
   return { version: normalizedVersion, archived: true, path: archiveRoot };
 }

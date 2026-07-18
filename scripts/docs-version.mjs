@@ -1,5 +1,5 @@
 import { existsSync, readdirSync, readFileSync } from 'node:fs';
-import { skippedArchivedDocsVersions } from './docs-version-policy.mjs';
+import { retainedHistoricalDocsVersions, skippedArchivedDocsVersions } from './docs-version-policy.mjs';
 
 export const NXUSKIT_CHANGELOG_URL = new URL(
   '../src/content/docs/nxuskit/reference/changelog.md',
@@ -52,6 +52,10 @@ export function skippedDocsVersions() {
     ...record,
     version: normalizeDocsVersion(record.version),
   }));
+}
+
+export function retainedHistoricalVersions() {
+  return retainedHistoricalDocsVersions.map(normalizeDocsVersion);
 }
 
 export function isDocsVersion(version) {

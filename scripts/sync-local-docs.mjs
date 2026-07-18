@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { archiveCurrentDocs } from './docs-archive.mjs';
 import { compareDocsVersions, latestReleasedVersionFromChangelog } from './docs-version.mjs';
 import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
+import { sanitizePublicDocsTree } from './public-docs-sanitizer.mjs';
 
 const DOCS_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXAMPLES_REPO = process.env.NXUSKIT_EXAMPLES_REPO;
@@ -48,7 +49,7 @@ const SDK_PACKAGING_DOCS_MAP = [
 const SDK_DOC_METADATA = new Map([
   ['getting-started.md', {
     title: 'Installation',
-    description: 'Install nxusKit SDK v1.x, choose Community or Pro assets, configure nxuskit-py, and attach native CLIPS, BN, FFI, Solver, or ZEN features.',
+    description: 'Install the nxusKit SDK bundle, choose Community or Pro features when an authorized release is available, and attach native CLIPS, BN, FFI, Solver, or ZEN features.',
   }],
   ['auth-modes-by-provider.md', {
     title: 'Authentication',
@@ -108,7 +109,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['CHANGELOG.md', {
     title: 'Changelog',
-    description: 'Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes.',
+    description: 'Release notes for nxusKit SDK versions, including packaging, docs, CLI, and compatibility changes.',
   }],
 ]);
 const SDK_DOC_LINKS = new Map([
@@ -130,7 +131,9 @@ const SDK_DOC_LINKS = new Map([
   ['CHANGELOG.md', '/nxuskit/reference/changelog/'],
 ]);
 const SDK_PUBLIC_SCRUBBERS = new Map([
+  ['getting-started.md', scrubInstallationGuide],
   ['license-activation-guide.md', scrubLicenseGuide],
+  ['providers/local-llms.md', scrubLocalLlmsGuide],
   ['logprobs-migration.md', scrubLogprobsMigrationGuide],
   ['CHANGELOG.md', scrubChangelog],
 ]);
@@ -183,6 +186,11 @@ async function main() {
   if (shouldSyncCodexPlugins) {
     await syncCodexPlugins();
     synced.push('nxus Codex Plugins');
+  }
+
+  const sanitized = await sanitizePublicDocsTree(path.join(DOCS_ROOT, 'src/content/docs'));
+  if (sanitized > 0) {
+    console.log(`Sanitized ${sanitized} public docs file(s).`);
   }
 
   console.log(`Synced ${synced.join(' and ')} docs into nxus-docs.`);
@@ -531,6 +539,22 @@ function scrubSdkDocForPublicSite(markdown, sourceRel) {
   return scrubber ? scrubber(markdown) : markdown;
 }
 
+function scrubInstallationGuide(markdown) {
+  return markdown
+    .replace(
+      /The examples below download Community Edition from the public\n`nxus-SYSTEMS\/nxusKit` release\. Current release asset names use `oss` for the\nCommunity Edition archive segment\. Pro users can replace `oss` with `pro` in the\nasset patterns and extracted directory names after activating or receiving a Pro\nentitlement\./,
+      'These commands illustrate the post-release bundle installation flow. This staged v2.0.0 Docs source does not assert that a package, release tag, asset, or platform build is currently available. Run them only after an authorized release publishes matching assets. Community archives use `oss`; Pro assets, when authorized, use `pro`.',
+    )
+    .replaceAll('nxuskit-sdk-1.1.0-pro-macos-arm64', 'nxuskit-sdk-{version}-{edition}-macos-arm64')
+    .replace('### v1.1 Contract DTOs for Downstream Consumers', '### Contract DTOs for Downstream Consumers')
+    .replace('SDK v1.1 exposes the public contract authority at', 'The SDK contract authority is')
+    .replace('feature-105 / v1.1 APIs', 'feature-105 APIs')
+    .replace(
+      /## 6\. First Example — Python\n\n```bash\npip install nxuskit-py\nexport OPENAI_API_KEY="sk-\.\.\."\n\npython examples\/python\/basic_chat\.py\n```/,
+      '## 6. First Example — Python\n\nUse the Python SDK source bundled with an authorized SDK bundle. This staged v2.0.0 Docs source does not assert a package-index installation is currently available.\n\n```bash\nexport PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"\nexport OPENAI_API_KEY="sk-..."\n\npython examples/python/basic_chat.py\n```',
+    );
+}
+
 function scrubLicenseGuide(markdown) {
   return markdown
     .replace(
@@ -549,6 +573,10 @@ function scrubLicenseGuide(markdown) {
       /Internally issued `leased` tokens are designed for CI\/automation where\nrevocation control matters/,
       '`leased` tokens are designed for CI/automation where revocation control matters',
     );
+}
+
+function scrubLocalLlmsGuide(markdown) {
+  return markdown.replaceAll('Production-ready', 'Mature upstream backend');
 }
 
 function scrubLogprobsMigrationGuide(markdown) {

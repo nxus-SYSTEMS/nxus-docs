@@ -91,7 +91,7 @@ make build
 ### Python
 ```bash
 cd python
-pip install -e ../../../../packages/nxuskit-py   # if not already installed
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
 python main.py --scenario theme-park
 python main.py --scenario fantasy-draft --step
 ```

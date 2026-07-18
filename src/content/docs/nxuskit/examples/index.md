@@ -10,16 +10,9 @@ description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solve
 
 **[Examples Docs](https://docs.nxus.systems/nxuskit/examples/)** · **[SDK Docs](https://docs.nxus.systems/nxuskit/)** · **[nxusKit SDK](https://github.com/nxus-SYSTEMS/nxusKit)** · **[Examples Portfolio](https://nxus.systems/examples)** · **[Field Notes](https://nxus.systems/field-notes)** · **[Website](https://nxus.systems)**
 
-34 approved public examples for the nxusKit SDK: runnable implementation examples in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration.
+Official nxusKit examples are published under the `nxus-SYSTEMS` GitHub organization, with the canonical examples repository at <https://github.com/nxus-SYSTEMS/nxusKit-examples> and docs at <https://docs.nxus.systems/nxuskit/examples/>.
 
-## Start With These Examples
-
-- [basic-chat](/nxuskit/examples/patterns/basic-chat/) - minimal LLM provider call across supported languages.
-- [structured-output](/nxuskit/examples/patterns/structured-output/) - JSON mode and structured output patterns.
-- [clips-basics](/nxuskit/examples/integrations/clips-basics/) - Community CLIPS rule-engine integration.
-- [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) - CLIPS and selected BN guardrails with optional Pro Solver/ZEN repair feedback.
-- [ollama](/nxuskit/examples/integrations/ollama/) and [lmstudio](/nxuskit/examples/integrations/lmstudio/) - local provider examples.
-- [CLI reference](/nxuskit/reference/cli-reference/) - command input schemas for shell-first workflows.
+35 approved public examples, including 34 validated runnable examples and 1 extension-authoring example for the nxusKit SDK in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration — covering LLM patterns, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables.
 
 ## A Word About CLIPS
 
@@ -60,6 +53,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | [capability-detection](/nxuskit/examples/patterns/capability-detection/) | Community | Detecting provider capabilities at runtime | Rust, Go, CLI/Bash |
 | [cost-routing](/nxuskit/examples/patterns/cost-routing/) | Community | Cost-aware provider routing and selection | Rust, Go, Python, CLI/Bash |
 | [polymorphic](/nxuskit/examples/patterns/polymorphic/) | Community | Polymorphic provider patterns with trait objects | Rust, Go |
+| [hello-provider](/nxuskit/examples/patterns/hello-provider/) | Community | Community extension manifest tutorial for a deterministic local provider | Python |
 | [retry-fallback](/nxuskit/examples/patterns/retry-fallback/) | Community | Retry and fallback strategies across providers | Rust, Go, Python, CLI/Bash |
 | [structured-output](/nxuskit/examples/patterns/structured-output/) | Community | JSON mode and structured output generation | Rust, Go, Python, CLI/Bash |
 | [timeout-config](/nxuskit/examples/patterns/timeout-config/) | Community | Timeout configuration and connection management | Rust, Go, Python |

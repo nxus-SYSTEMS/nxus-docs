@@ -19,7 +19,7 @@ Install the SDK, configure credentials, and run your first request:
 - [CLI input format reference](/nxuskit/reference/cli-reference/) - JSON schemas and local loopback examples for `nxuskit-cli`.
 - [Local LLM providers](/nxuskit/reference/providers/local-llms/) - Ollama, LM Studio, llama.cpp, and mistral.rs setup.
 - [Licensing](/nxuskit/concepts/licensing/) - Pro activation, entitlement checks, and offline-first license validation.
-- [Changelog](/nxuskit/reference/changelog/) - current v1.x packaging, docs, Python, and CLI release notes.
+- [Changelog](/nxuskit/reference/changelog/) - packaging, docs, Python, and CLI release notes.
 - [Examples catalog](/nxuskit/examples/) - runnable patterns and integrations across supported languages and CLI/Bash.
 
 ## Browse by Task

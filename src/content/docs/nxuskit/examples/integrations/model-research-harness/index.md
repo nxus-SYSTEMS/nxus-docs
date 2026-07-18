@@ -101,7 +101,6 @@ The second command is intentionally fail-closed: it writes a compatibility repor
 | `nxuskit-harness-native-ollama-template.yaml` | Native Ollama schema, image, thinking, and tool-call knobs behind harness scoring |
 | `nxuskit-harness-software-dev.yaml` | Code analysis, bug finding, bugfixing, code generation, refactoring, and review scenarios |
 | `nxuskit-harness-external-command-fixture.yaml` | Public-safe fixture contract for wrapping operational runners |
-| `nxuskit-harness-devops-ollama-parity.yaml` | Opt-in local adapter shape for a private Ollama research harness checkout |
 | `promptfoo-basic.yaml` | Promptfoo-compatible config that imports and runs |
 | `promptfoo-requires-code.yaml` | Promptfoo config that requires explicit trust or native-reference mode |
 
@@ -133,21 +132,9 @@ python3 main.py \
   --json
 ```
 
-The fixture config runs only checked-in deterministic fixture commands. The DevOps parity config is a template for private/local use and expects `OLLAMA_MODEL_TESTING_ROOT` to point at an existing `ollama-model-testing` checkout:
+External command fixtures run only checked-in deterministic commands. Use `--only-test` or `--exclude-test` to select public-safe fixture coverage.
 
-```bash
-export OLLAMA_MODEL_TESTING_ROOT=/path/to/ollama-model-testing
-cd python
-python3 main.py \
-  --config ../configs/nxuskit-harness-devops-ollama-parity.yaml \
-  --allow-external \
-  --only-test common-sense-carwash \
-  --output-dir ../.tmp/devops-parity
-```
-
-Use `--exclude-test` to skip expensive tests from a larger config. Both `--only-test` and `--exclude-test` accept comma-separated ids and may be repeated.
-
-The public adapter normalizes DevOps-style report shapes for common-sense curation, prompted/native tool intent, direct structured extraction, two-stage OCR or VLM pipelines, safe-labs row-level scoring, and CSV/TSV comparison helpers. The DevOps parity template also includes non-mutating `ollama-cache status`, `list`, and `plan-evict` checks.
+The public adapter normalizes report shapes for common-sense curation, prompted/native tool intent, direct structured extraction, two-stage OCR or VLM pipelines, safe-labs row-level scoring, and CSV/TSV comparison helpers.
 
 External lifecycle mutation such as pulling, removing, pinning, or evicting models requires a test with `external_command.mutation: true` and both flags:
 

@@ -59,11 +59,10 @@ fn main() -> Result<(), nxuskit::NxuskitError> {
 
 ## Go
 
-Add the Go wrapper and alias the package as `nxuskit` in your import block:
-
-```bash
-go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go
-```
+Use the Go wrapper source from an authorized SDK bundle and configure its module
+path in your local `go.mod` before building. This staged v2.0.0 Docs source does
+not assert that a Go module download is currently available. Alias the package
+as `nxuskit` in your import block:
 
 ```go
 package main
@@ -102,10 +101,10 @@ func main() {
 
 ## Python
 
-Install the Python package from PyPI, then create a provider and call it:
+Use the Python SDK source bundled with the SDK, then create a provider and call it. This staged v2.0.0 Docs source does not assert a package-index installation is currently available.
 
 ```bash
-python -m pip install "nxuskit-py==1.0.5"
+export PYTHONPATH="$NXUSKIT_SDK_DIR/python/src:${PYTHONPATH:-}"
 export OPENAI_API_KEY="sk-..."
 ```
 

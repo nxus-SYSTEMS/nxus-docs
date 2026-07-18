@@ -7,7 +7,7 @@ sidebar:
 
 A command-line tool for generating CLIPS rules from natural language descriptions using LLM, with validation and automatic retry logic.
 
-> Turn plain English into validated CLIPS rules — describe your business logic, get validated CLIPS rule code with automatic error correction.
+> Turn plain English into validated CLIPS rules — describe your business logic, get validated expert-system example code with automatic error correction.
 
 **Scenarios**: `generate` · `validate` · `save` · `load` · `examples`
 

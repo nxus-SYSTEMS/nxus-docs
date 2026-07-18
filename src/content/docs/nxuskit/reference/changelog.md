@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-description: "Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes."
+description: "Release notes for nxusKit SDK versions, including packaging, docs, CLI, and compatibility changes."
 ---
 
 All notable changes to this project will be documented in this file.
@@ -12,135 +12,34 @@ Public SDK release tags begin at `sdk-v0.9.0`. Earlier entries preserve
 pre-public development history with normalized pre-public version numbers after
 historical version resets.
 
+## [2.0.0] - 2026-07-15
+
+### Changed
+
+- Prepared lockstep v2.0.0 package metadata across the Rust SDK and C ABI,
+  Go SDK, and Python SDK. This entry does not claim publication, availability,
+  or a public release.
+
+- `nxuskit-cli doctor --json` now emits `captured_at` as the actual UTC command
+  capture time instead of the pre-RC deterministic epoch placeholder.
+- SDK v1.1 downstream-consumer documentation now identifies
+  `nxuskit::contract::v1_1` as the authority for ActionEnvelope, ActionResult,
+  reference DTOs, readiness, artifact/history envelopes, regulated workflow
+  packets, pipeline definitions, and tool semantics. Pre-RC feature-105/WIP
+  gating language is superseded by `contract_version = "1.1"`.
+
 ## [Unreleased]
-
-## [1.0.5] - 2026-06-16
-
-> Package, release-channel, and downstream documentation alignment for the
-> v1.0 SDK line.
-
-### Changed
-
-- Updated current-release posture across public docs to `1.0.5`.
-- Documented the published PyPI package `nxuskit-py==1.0.5` as the Python
-  install path for pure-Python APIs.
-- Clarified that native CLIPS, Bayesian network, and FFI-backed features require
-  a compatible SDK bundle in addition to the Python package.
-- Clarified the public v1.0.5 release-channel policy: the public
-  [`sdk-v1.0.5` release](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
-  contains 17 assets total: `install.sh`, four Community/OSS archives with
-  checksums, and four Pro archives with checksums, while public source archives
-  remain Community-safe.
-- Recorded that checksums were verified for all eight public v1.0.5 SDK
-  archives.
-- Noted that `nxuskit-py==1.0.5` links to the public SDK v1.0.5 tag and
-  release.
-- Documented that Solver and ZEN workflows require a Pro SDK package and a valid
-  Pro entitlement.
-- Clarified Python provider naming: `Provider` is the factory and `LLMProvider`
-  is the protocol/type contract; they are not aliases.
-
-### Compatibility
-
-- This patch stays within the v1.0 release line and does not announce a later
-  release.
-
-## [1.0.2] - 2026-06-12
-
-> Public-trust and packaging hardening patch for the v1.0 SDK line. This
-> patch preserves the v1.0.0 API and C ABI contracts; no API or
-> C ABI signature change is introduced.
-
-### Changed
-
-- Updated current-release posture across the SDK README and shipped bundle docs
-  to `1.0.2`.
-- Clarified release-channel posture: the public `sdk-v1.0.2` release contains
-  OSS assets only, while Pro bundles are distributed through the
-  internal/pro-authenticated Pro release channel.
-- Aligned internal engine workspace package metadata to `1.0.2` so
-  `nxuskit_version()` matches the Go and Python FFI wrappers.
-- Replaced PyPI-style Python installation copy with SDK-bundle setup guidance
-  using `NXUSKIT_SDK_DIR` and the bundle's `python/src` path.
-- Framed the validated Examples portfolio snapshot as release QA/provenance,
-  not an SDK runtime dependency on the Examples companion portfolio.
-
-### Fixed
-
-- Corrected invalid Python snippets that imported from `nxuskit-py`; bundled
-  examples now use the `nxuskit` module path.
-- Corrected GitHub release metadata and source archive posture after release
-  cleanup so release tags and generated archives point at the intended SDK
-  source commits.
-- Qualified unsupported production-readiness wording in SDK-local Examples
-  catalog metadata.
-- Extended release inventory checks to guard stale Python install, invalid
-  Python import, production-claim, and current-version posture regressions.
-
-### Compatibility
-
-- No API or C ABI signature changes from v1.0.0 are introduced.
-- The v1.0.1 Pro CLI packaging fix remains included: Pro SDK bundles compile
-  solver and ZEN command modules with `pro-engines`.
-
-## [1.0.1] - 2026-06-08
-
-### Fixed
-
-- Rebuilt Pro SDK CLI packaging so `nxuskit-cli solver` and `nxuskit-cli zen`
-  compile the real Pro engine command modules instead of CE-safe stubs.
-- Extended the CLI `pro-engines` feature to enable solver/ZEN capability flags
-  in both `nxuskit-engine` and `nxuskit-core`.
-- Added Pro CLI wiring verification to SDK bundle validation.
-
-### Compatibility
-
-- No API or C ABI signature changes from v1.0.0 were introduced.
-
-## [1.0.0] - 2026-05-28
-
-> General Availability release for the v0.9.4-stabilized SDK API surface.
-> This release is intentionally narrow: version metadata moves to `1.0.0`,
-> public documentation now reflects GA posture, and SDK bundle packaging guards
-> include the Rust benchmark targets required by the wrapper manifest.
-
-### Changed
-
-- Promoted nxusKit SDK to GA in public README/support copy.
-- Updated Rust workspace, C ABI, Go SDK, Python SDK, and package metadata to
-  lockstep version `1.0.0`.
-- Promoted Python package classifier to `Development Status :: 5 -
-  Production/Stable`.
-- Refreshed public architecture and README links to the hosted docs site.
-- Clarified loopback CLI examples so local copy-paste commands use explicit
-  loopback model names.
-
-### Fixed
-
-- SDK release workflows now copy `packages/nxuskit/benches` into the bundled
-  Rust wrapper so the declared benchmark target is present in release archives.
-- Packaging verification now fails if the bundled Rust wrapper omits the
-  declared `logprobs_serialization` benchmark target.
-
-### Compatibility
-
-- No API or C ABI signature changes from v0.9.4 are introduced in this GA cut.
-- At v1.0.0, Pro installation packages were published on the public release
-  page; Pro capabilities still required a valid license key. The v1.0.2 release
-  posture was OSS-only on the public release page. v1.0.5 release-channel
-  guidance restores public CE and Pro binary package guidance while keeping
-  public source archives Community-safe.
 
 ## [0.9.4] - 2026-05-11
 
 > v0.9.4 release candidate. Provider-capability modernization and release
-> hardening, consolidating sprints S1 (streaming logprobs, branch 098),
+> hardening, consolidating sprints S1 (streaming logprobs, prior checkpoint),
 > S2/S3 (provider capability modernization + Capability Manifest v2 decision,
-> branch 099), and S4-S6 (CLI Level 2 completion, examples & bundle alignment,
-> docs & release candidate, branch 100). Lockstep version bump `0.9.3 -> 0.9.4`
+> prior checkpoint), and S4-S6 (CLI Level 2 completion, examples & bundle alignment,
+> docs & release candidate, prior checkpoint). Lockstep version bump `0.9.3 -> 0.9.4`
 > across all components. **No C ABI signature changes** in this release.
 
-### Added - S1: Streaming Logprobs + Capability Metadata (branch 098)
+### Added - S1: Streaming Logprobs + Capability Metadata (prior checkpoint)
 
 - `StreamLogprobsDelta` type (Rust engine + wrapper, Go, Python) carrying
   per-chunk `TokenLogprob` entries on streaming responses.
@@ -155,11 +54,11 @@ historical version resets.
   passed through.
 - CLI `provider info` exposes the `streaming_logprobs` row (human + JSON).
 - Cross-language parity harness at
-  `internal/tests/parity/stream_logprobs/run_parity.sh`.
+  the cross-language parity harness.
 - OpenAI: `supports_streaming_logprobs = true` (only supporting provider per
   fixture evidence); all other providers `false` per the evidence-first rule.
 
-### Added - S2/S3: Provider Capability Modernization + Manifest v2 (branch 099)
+### Added - S2/S3: Provider Capability Modernization + Manifest v2 (prior checkpoint)
 
 - Provider capability surface modernized; `CapabilityProvider` / "capability
   provider" vocabulary introduced (no breaking `LLMProvider` rename).
@@ -167,11 +66,11 @@ historical version resets.
   (`XAI_API_KEY`, default base URL `https://api.x.ai/v1`); `groq` remains
   Groq, Inc. and no confusing `grok` alias is registered.
 - `CapabilityManifest` v2 concept with a public preview subset for
-  provider/model capability discovery (full internal manifest unchanged); the
-  publication decision is recorded in the 099 artifacts.
+  provider/model capability discovery (the complete manifest remains outside this public documentation); the
+  publication decision is recorded in the associated public documentation.
 - OpenAI remains Chat-Completions-first (no full Responses API migration).
 
-### Added - S4: CLI Level 2 completion & stabilization (branch 100)
+### Added - S4: CLI Level 2 completion & stabilization (prior checkpoint)
 
 - **`nxuskit-cli zen validate`** (Pro) - structural validation of a ZEN JSON
   Decision Model (JDM): rejects `functionNode` (JavaScript), checks decision
@@ -199,7 +98,7 @@ historical version resets.
 - Shell support policy documented (`completions`: bash, zsh, fish supported;
   PowerShell not generated in v0.9.4; helper snippets + schema bundle locations).
 
-### Added - S5: Examples repo & bundle alignment (branch 100)
+### Added - S5: Examples repo & bundle alignment (prior checkpoint)
 
 - Examples portfolio bundle-instruction refs bumped to v0.9.4;
   `PYTHON_EXAMPLES_STATUS.md` records the v0.9.4 Python-parity scope (minimal
@@ -938,7 +837,7 @@ For runnable examples, see the [nxusKit-examples](https://github.com/nxus-SYSTEM
   - Pre-1.0 versioning (0.x.y) signals API is not yet stable per semantic versioning
   - Allows breaking changes in minor versions during development
   - Functionality from the earlier 2.x line carried forward unchanged
-  - Historical 2.x changelog preserved in the internal archive
+  - Historical 2.x changelog preserved in a separate historical archive
   - Previous 2.x release artifacts archived outside the public SDK release line
 
 ### Notes

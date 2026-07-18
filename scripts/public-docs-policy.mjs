@@ -18,3 +18,17 @@ export const FORBIDDEN_PUBLIC_DOCS_TERMS = [
   'deferred beyond v',
   'Deferred indefinitely',
 ];
+
+export const FORBIDDEN_PUBLIC_DOCS_PATTERNS = [
+  ['internal path', /\binternal\/[A-Za-z0-9_.\-/]+/],
+  ['internal manifest reference', /\b(?:full|complete) internal manifest\b/i],
+  ['internal archive reference', /\binternal archive\b/i],
+  ['DevOps operational reference', /\bDevOps(?:\b|[-/])/],
+  ['private wave reference', /\bW\d{3}\b/],
+  ['private numeric branch reference', /\bbranch \d{3}\b/i],
+  ['private Ollama checkout reference', /\b(?:OLLAMA_MODEL_TESTING_ROOT|ollama-model-testing|devops-parity)\b/],
+  ['private local path', /\/Users\/(?!you(?:\/|$))/],
+  ['private key material', /BEGIN (?:RSA |OPENSSH )?PRIVATE KEY/],
+  ['access token literal', /(?:gh[pousr]_[A-Za-z0-9]{20,}|github_pat_[A-Za-z0-9_]{20,}|AKIA[0-9A-Z]{16})/],
+  ['unfinished marker', /\b(?:TODO|TBD|FIXME|CHANGEME|REPLACE_ME|PLACEHOLDER|XXX)\b/],
+];

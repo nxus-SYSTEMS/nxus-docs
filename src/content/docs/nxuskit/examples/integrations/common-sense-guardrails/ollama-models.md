@@ -23,7 +23,7 @@ References:
 - <https://docs.ollama.com/capabilities/structured-outputs>
 - <https://ollama.com/library/llama3.2>
 - <https://ollama.com/library/gemma3>
-- DevOps Ollama model-testing notes from 2026-05-09 through 2026-05-12
+- dated local model-testing notes from 2026-05-09 through 2026-05-12
 
 ## Recommended Walkthrough Models
 
