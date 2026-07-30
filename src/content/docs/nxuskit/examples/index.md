@@ -12,15 +12,6 @@ description: Runnable nxusKit examples for LLMs, CLIPS, Bayesian networks, Solve
 
 34 runnable examples for the nxusKit SDK in Rust, Go, and Python, plus selected CLI/Bash implementations for shell-first orchestration — covering LLM patterns, CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables.
 
-## Start With These Examples
-
-- [basic-chat](/nxuskit/examples/patterns/basic-chat/) - minimal LLM provider call across supported languages.
-- [structured-output](/nxuskit/examples/patterns/structured-output/) - JSON mode and structured output patterns.
-- [clips-basics](/nxuskit/examples/integrations/clips-basics/) - Community CLIPS rule-engine integration.
-- [common-sense-guardrails](/nxuskit/examples/integrations/common-sense-guardrails/) - CLIPS and selected BN guardrails with optional Pro Solver/ZEN repair feedback.
-- [ollama](/nxuskit/examples/integrations/ollama/) and [lmstudio](/nxuskit/examples/integrations/lmstudio/) - local provider examples.
-- [CLI reference](/nxuskit/reference/cli-reference/) - command input schemas for shell-first workflows.
-
 ## A Word About CLIPS
 
 During its development at NASA from 1985 to 1996, the primary CLIPS
@@ -107,6 +98,7 @@ python examples/patterns/basic-chat/python/main.py                        # Pyth
 | &nbsp;&nbsp;↳ `coupon-stack` |  | Reject promotion stacking that violates eligibility and margin policy, with optional ZEN validation and BN risk scoring |  |
 | &nbsp;&nbsp;↳ `pallet-door` |  | Block unsafe warehouse advice that ignores dimensional clearance, with optional Solver/Z3 feasibility |  |
 | &nbsp;&nbsp;↳ `cold-chain` |  | Prevent cheaper logistics recommendations that violate handling requirements, with optional ZEN validation and BN review-risk scoring |  |
+| &nbsp;&nbsp;↳ `synthetic-claims-audit` |  | Inspect synthetic administrative data-quality and evidence-completeness findings as a review record |  |
 | &nbsp;&nbsp;↳ real-world: **LLM answer validation** |  | Catch plausible recommendations that fail physical, operational, or policy preconditions before they reach users |  |
 | &nbsp;&nbsp;↳ real-world: **Policy enforcement** |  | Turn free-form answers into facts, apply deterministic rules, and produce auditable repair context |  |
 | &nbsp;&nbsp;↳ real-world: **Operational decision support** |  | Preserve fast LLM drafting while requiring concrete feasibility evidence for workflow-critical recommendations |  |

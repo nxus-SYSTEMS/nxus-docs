@@ -92,8 +92,7 @@ make build
 ### Python
 ```bash
 cd python
-python -m pip install "nxuskit-py==1.0.5"   # pure-Python APIs
-# Native BN execution also requires a compatible SDK bundle and NXUSKIT_SDK_DIR.
+pip install -e ../../../../packages/nxuskit-py   # if not already installed
 python main.py --scenario haunted-house
 python main.py --scenario coffee-shop --step
 ```
