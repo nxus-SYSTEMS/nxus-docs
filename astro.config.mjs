@@ -34,7 +34,7 @@ export default defineConfig({
 	},
 	integrations: [
 		sitemap({
-			filter: (page) => !isArchivedVersionUrl(page),
+			filter: (page) => !isArchivedVersionUrl(page) && !new URL(page).pathname.startsWith('/preview/'),
 		}),
 		starlight({
 			title: 'nxus.SYSTEMS Docs',

@@ -76,6 +76,8 @@ async function main() {
 
     const raw = await readFile(filePath, 'utf-8');
     const url = fileToUrl(filePath);
+    // Preview drafts are deliberately absent from the current discovery indexes.
+    if (new URL(url).pathname.startsWith('/preview/')) continue;
     const title = extractTitle(raw);
     const description = extractDescription(raw);
     const body = stripFrontmatter(raw);
