@@ -9,10 +9,12 @@ Spec: [spec.md](spec.md). Source/dependency map: [plan.md](plan.md).
 - [x] T004 [US1] Map SDK sources, export precedence and durable first-call proposal.
 - [x] T005 [US1] Record GA-S04, GA-L01, GA-W02 and G0 accepted-input requirements.
 - [x] T006 [US1] Analyze packet coverage and review planning-only diff.
-- [ ] T007 [US1] Receive accepted final source/commands, activation/portal contracts
-  and G0 copy; select Docs integration base. HELD: external acceptance absent.
+- [ ] T007 [US1] Receive accepted final source/commands and activation/portal
+  contracts; select Docs integration base. G0 accepted 2026-09-28; consume frozen
+  copy. HELD: final S04/L01/W02 handoffs absent.
 - [ ] T008 [US1] Implement upstream mapping/metadata corrections and archive/sync
-  accepted current source. HELD: no product execution authority in this slice.
+  accepted current source. Ready local correctness slices authorized; final
+  archive/sync/default switch remain held by inputs and current assignment.
 - [ ] T009 [US1] Run source, version, leak, Astro, build, built-output and applicable
   journey checks, then exact-package CE/Pro walkthrough. HELD: depends on T008.
 - [ ] T010 [US1] Return unpublished Docs A preview and source identities for G5
@@ -57,6 +59,14 @@ not general distribution support. Public export omits private commit/run IDs.
 Real grant/activation, secure recipient parameter delivery, support/renewal
 owner, prerelease download destination and effective future-tag guards remain
 pending; deployment and PRE-D01 acceptance remain unresolved.
+
+## GA-first refocus
+
+- [x] R001 Reconcile G5/GA-D01 with retained preview work and accepted G0.
+- [x] R002 Record reusable changes and exact remaining S04/L01/W02 handoffs in
+  plan.md; identify first-call mapping/metadata contract as the next code slice.
+- [x] R003 Review planning-only delta for scope, authoritative-source ownership
+  and retained version/publication/activation boundaries; run diff checks.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

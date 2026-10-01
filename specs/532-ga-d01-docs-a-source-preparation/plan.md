@@ -1,7 +1,8 @@
 # GA-D01 Docs A preparation plan and source map
 
-> Execution is held by the Operator's source/dependency-only assignment.
-> Future implementation must read this packet and the then-accepted owner inputs.
+> GA-first refocus authorized 2026-10-01. Independently ready local correctness
+> work may proceed; final GA export and walkthrough await accepted owner inputs.
+> Preserve preview revision `0e4e697` and v1.0.5 current/default content.
 
 **Goal:** Prepare a precise map for a later unpublished v2.0.0 Docs A preview.
 **Architecture:** SDK owns product truth; Docs projects accepted source into
@@ -91,8 +92,9 @@ refresh into a new GA dependency.
 Assisted-token prose must also cite the accepted GA-L03/GA-W03 secure support
 procedure when supplied through S04/G0; do not invent an issuance endpoint,
 promise online revocation of offline tokens, or expose raw-token delivery data.
-The missing final SDK/source, tested activation/portal instructions and remaining
-G0 copy are the precise release-source blockers for this assignment.
+The missing final SDK/source and tested activation/portal instructions are the
+remaining release-source blockers. G0 was accepted on 2026-09-28; use the frozen
+copy contract rather than requesting a new decision.
 
 ## Held future validation sequence
 
@@ -126,3 +128,63 @@ found in the current tree, source precedence and persistent first-call gap,
 archive ownership, validation gaps and four external handoffs. No test/build or
 preview result is claimed. No product page or sync script is changed by this
 preparation; G5 remains OPEN.
+
+## GA-first reconciliation — 2026-10-01
+
+This section supersedes historical preparation-only holds above. The tested
+preview revision is `0e4e697220e08114cb48ad28fea6311d5c900545`; it is retained
+as preparation, with separate preview deployment/publication deferred.
+
+| Reusable improvement | GA use and limit |
+| --- | --- |
+| Exact Git SHA + source SHA-256 export binding | Reuse input binding/fail-closed pattern for the final S04 export; preview exporter is not the GA sync path |
+| Preview banner, self-canonical/noindex, Pagefind/sitemap/LLM exclusions | Reuse for unpublished isolated draft inspection; final current GA routes need normal discovery after separately authorized cutover |
+| Current-tree/version invariance regression | Preserve v1.0.5 until authorized final integration; replace the fixed preview baseline assertion only in the future version-switch slice |
+| Candidate versus later annotation distinction | Reuse package/source provenance reporting; never relabel preview archive as final GA package |
+| Secret-free licensing recovery wording | Reuse only semantics confirmed by GA-L01; no-fee cohort entitlement and explicit cohort GA access do not describe paid GA conversion |
+| Solver-only claim boundary | Apply accepted G0 to S04 source, metadata, current-route landing/tier/reference content |
+
+### Remaining repository-qualified handoffs
+
+- **SDK / GA-S04:** final full SDK commit, authoritative Docs A tree/export mode,
+  durable first-call source, version/changelog and approved public package links;
+  exact CE and Pro artifacts/hashes plus affected qualification receipts. Copied
+  install/first-call commands must succeed against those packages, including CE
+  no-license operation and denial plus Pro real Solver operation. Preview SDK
+  annotation `53be7866533b84bd3420490614f21a4f59904f12` and archive source
+  `5e142106f47281f413f2417f8d7461086de3e4dc` are not final GA identities. The
+  Linux-only preview proof cannot replace the final GA qualification matrix.
+- **Licensing / GA-L01:** final versioned developer contract/source and tested
+  purchaser-bound login, purchase-ID activation/EULA, status, sync/refresh,
+  expiry, seats/deactivation and safe failure/recovery. Need SDK-valid token
+  behavior against the installed final package, not fixtures or a health check.
+  `85620733f52cba77e93aca8402e4aad63179a501` is internal-cohort preparation,
+  not real activation proof. Assisted-token support text additionally needs
+  GA-L03/GA-W03 approved secure request/delivery/replacement/rotation procedure.
+- **Website / GA-W02:** final source and exercised Annual/Perpetual Dev
+  purchase-to-owned `/my/products` activation handoff, exact public Pro package
+  links, CE discovery, processing/failure/wrong-account/stale states and safe
+  confirmation/email recovery. Public package visibility and protected
+  purchaser/activation information must be distinguished under accepted G0.
+- **G0:** decision accepted; consume its frozen contract: Solver-only initial
+  Pro claims, public Pro package pages after release authority, self-service
+  developer activation, secure operator-assisted durable tokens, v2 major-line
+  runtime validity distinct from commercial maintenance/support rights, and no
+  general automatic beta conversion. Final approved link targets and owner
+  source wording still belong in S04/W02 handoffs.
+
+### Ready local slice and next dependency
+
+The independently ready slice here is correction of the stale dependency/hold
+map and task ledger; no demonstrated product defect requires a source rewrite.
+First-call mapping and version-aware metadata are the next bounded code slice
+once SDK supplies the durable source path/version contract. Adding a mapping to
+an absent or unaccepted page would not resolve the current gap. Then test a
+second export for byte preservation and link rewriting before final archive/
+sync. No current-version switch, ordinary sync, new activation claim or extra
+package walkthrough is appropriate before those inputs.
+
+Final G5 exit still requires the versioned unpublished GA draft and fresh CE/Pro
+walkthrough using exact final packages and real tested L01/W02 contracts. Preview
+success does not accept G5; publication/deployment and gate acceptance remain
+separate.
