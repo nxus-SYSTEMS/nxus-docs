@@ -11,6 +11,12 @@ assert.match(html, /rel="canonical" href="https:\/\/docs.nxus.systems\/preview\/
 assert.ok(!html.includes('data-pagefind-body'));
 assert.match(html, /href="\/nxuskit\/getting-started\/installation\/"/);
 await stat('dist/nxuskit/getting-started/installation/index.html');
+const installation = await readFile('dist/preview/nxuskit-v2/installation/index.html', 'utf8');
+assert.match(installation, /glibc 2.39/);
+assert.match(installation, /live activation pending/);
+assert.ok(!installation.includes('data-pagefind-body'));
+assert.match(installation, /noindex, follow/);
+assert.ok(!/[a-f0-9]{40}|36928672954|nxusKit-internal|\/Users\//.test(installation));
 for (const file of ['dist/llms.txt', 'dist/llms-full.txt', ...(await readdir('dist')).filter(f => /^sitemap.*\.xml$/.test(f)).map(f => `dist/${f}`)]) {
   assert.ok(!(await readFile(file, 'utf8')).includes('/preview/'), file);
 }

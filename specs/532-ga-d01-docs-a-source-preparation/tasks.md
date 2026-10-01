@@ -36,6 +36,28 @@ This lane does not satisfy GA G5. Installation source must come from
 currently inspected SDK HEAD `732b99599eb3b94ffdb58ca004f6041c36084ed5` has stale
 ordinary installation instructions and is not an accepted preview candidate.
 
+PRE-L01 preparation adapted from nxus-licensing commit
+`85620733f52cba77e93aca8402e4aad63179a501`,
+`internal/runbooks/internal-pro-linux-preview.md`. Public draft covers no-fee
+recipient-bound developer login/activate/status/sync, finite expiry, seat and
+recovery behavior and explicit GA grant continuity. Grant values, support owner,
+real positive activation and installed verifier proof remain pending. No leased
+CI/QA path or internal administrative fields were exported.
+
+Qualified draft integration: SDK annotation source
+`53be7866533b84bd3420490614f21a4f59904f12`, preview source SHA-256
+`9a2b0b840d3d435cb5c562d899b4ea82717127ec192217299191d29ab45bfe08`;
+archive source `5e142106f47281f413f2417f8d7461086de3e4dc`, run `36928672954`,
+artifact `11194753051`, tar SHA-256
+`d21601277aba5c28219c3bcee89a420273e33173ef8bfd8aafc7635b80d28bb6`.
+The archive does not contain the later annotation. Export hash verification,
+production build, preview isolation checks and diff review passed. Measured
+Linux Mint 22.3/Ubuntu Noble x86_64 glibc 2.39 is a qualification baseline,
+not general distribution support. Public export omits private commit/run IDs.
+Real grant/activation, secure recipient parameter delivery, support/renewal
+owner, prerelease download destination and effective future-tag guards remain
+pending; deployment and PRE-D01 acceptance remain unresolved.
+
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
 The build reports `v1.0.5 (latest)` and the regression check verifies current
