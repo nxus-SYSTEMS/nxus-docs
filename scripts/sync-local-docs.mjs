@@ -471,7 +471,7 @@ function codexPluginLinkTarget(rawLink, sourceRel, hash = '') {
   return `${PUBLIC_CODEX_PLUGINS_URL}/blob/main/${withoutTrailingSlash}${hash}`;
 }
 
-async function exportSdkPackagingDocs(sourceRoot, exportRoot, sdkChangelog) {
+export async function exportSdkPackagingDocs(sourceRoot, exportRoot, sdkChangelog) {
   for (const [sourceRel, targetRel] of SDK_PACKAGING_DOCS_MAP) {
     const sourcePath = path.join(sourceRoot, sourceRel);
     const targetPath = path.join(exportRoot, targetRel);
@@ -487,7 +487,7 @@ async function exportSdkPackagingDocs(sourceRoot, exportRoot, sdkChangelog) {
   }
 }
 
-function toSdkStarlightPage(markdown, sourceRel, sdkChangelog) {
+export function toSdkStarlightPage(markdown, sourceRel, sdkChangelog) {
   let body = markdown.replace(/^\uFEFF/, '').trimStart();
   if (body.startsWith('---\n')) {
     body = body.replace(/^---\n[\s\S]*?\n---\s*/, '').trimStart();
@@ -1331,7 +1331,9 @@ Environment:
 `);
 }
 
-main().catch((error) => {
-  console.error(error.message);
-  process.exit(1);
-});
+if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
+  main().catch((error) => {
+    console.error(error.message);
+    process.exit(1);
+  });
+}

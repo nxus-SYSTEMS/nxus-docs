@@ -73,6 +73,11 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
 - [ ] R005 SDK supplies authoritative first-call and final source/package
   contract; then test actual repeated export and copied CE commands. No SDK sync
   or current-version switch ran in R004.
+- [x] R006 Inspect exact SDK `b6aa86d3` committed source in isolated temporary
+  export; verify repeatability, durable mapping/metadata/link rewrites and CE
+  envelope. Record strict scan finding without editing generated truth.
+- [ ] R007 SDK resolves remaining installation path examples and activation/
+  CLI input source gaps; final source/catalog and L01/W02 walkthrough still held.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

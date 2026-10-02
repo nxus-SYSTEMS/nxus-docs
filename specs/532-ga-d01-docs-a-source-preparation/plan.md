@@ -229,3 +229,29 @@ repeatability awaits supplied source. Current source pages were untouched.
 4. Hand off tested L01/W02 activation/portal instructions and exact GA package
    catalog, then run Docs export repeatability and fresh CE/Pro walkthrough.
    No fixture-only token or command acknowledgment substitutes for entitlement.
+
+## Exact first-call export inspection — b6aa86d3
+
+SDK source `b6aa86d3b55bd94850eb202b31f1e866693a0306` now supplies
+`sdk-packaging/docs/first-call.md` and installation corrections. The isolated
+check reads `git show` blobs, avoiding a concurrent SDK-owned modified
+`tests/sdk_docs_first_call_test.py` in its worktree. It performs no SDK sync or
+archive/default change and does not download or repackage artifacts.
+
+`check-sdk-draft-export.mjs` verified repeated packaging export byte equality,
+v2 metadata, installation/first-call/authentication/CLI route mapping and the
+explicit credential-free loopback/echo response-envelope contract. Public
+denylist scan was clean. Strict scan returned exit 1 for installation's two
+illustrative `/Users/you/...` examples (source remains owner-controlled); these
+are generic placeholders, not a secret/private user path. SDK should replace
+them with platform-neutral `/absolute/path/to/...` wording at authoritative
+`sdk-packaging/docs/getting-started.md` Rust dependency and SDK-dir examples.
+The preserved projected failure is `tmp/ga-d01-draft-cFiXvC` (ignored draft).
+
+Three metadata contract tests, site production build, preview/current
+invariance and diff check passed. This site build covers unchanged current and
+preview content, not the isolated full GA export as a new published route.
+Exact export repeatability is source proof only, not fresh package or CE/Pro
+runtime qualification. SDK's activation-guide/input-reference corrections,
+final public source/package catalog, exercised L01/W02 contracts and full
+walkthrough remain pending. G5 remains open.
