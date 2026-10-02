@@ -267,3 +267,22 @@ corrected fences; whole-guide copied-command reliability remains owner work.
 No new package qualification, live Pro walkthrough, current sync/default switch
 or publication is inferred. This status-only checkpoint does not require
 rebuilding unchanged site content; the prior site/isolation proof is retained.
+
+Final independent source checkpoint: SDK
+`8e91309aa0e5ed5994a2e7d00d88abcf3a1df7cb` (parent `54c52f27`) resolves the
+activation-guide source-only audit, including quoted purchase-ID variables and
+corrected status/key-resolution/expiry/deactivation/logout claims. Docs exact
+committed-blob export at `tmp/ga-d01-draft-QK1NnV` passed repeat equality,
+first-call mapping/metadata/links/envelope and strict/public leak checks; three
+metadata-contract tests passed. Git diff confirms all current/PRE content,
+version data and isolation configuration equal retained `0e4e697`; no redundant
+site rebuild ran. SDK's reported seven focused checks and fourteen Bash-fence
+syntax checks are source evidence, not live activation or new package proof.
+
+The independent source/export slice is complete. Final GA package/public source
+catalog and exact qualification binding, exercised L01 purchaser activation/
+verifier/seat/expiry/recovery, exercised W02 Annual/Perpetual owned portal journey
+and fresh final-package CE/Pro walkthrough remain genuine dependencies. No
+whole-guide runtime or gate acceptance is inferred; G5 stays open. Current v1.0.5
+and PRE route remain preserved; final archive/sync/default switch, credential
+operations and publication/deployment remain outside this checkpoint.

@@ -81,6 +81,10 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
 - [x] R008 Recheck corrected SDK `54c52f27`: repeat-export equality, first-call
   metadata/links/envelope and full-export strict path/public denylist scans pass.
   Whole-guide copied commands and live Pro walkthrough are not claimed.
+- [x] R009 Final independent source checkpoint `8e91309a`: repeated committed
+  export, strict/public leak checks and metadata tests pass; current/PRE bytes
+  equal retained `0e4e697`. SDK source-only slice complete; final packages and
+  exercised L01/W02 purchaser/portal/full walkthrough still pending.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
