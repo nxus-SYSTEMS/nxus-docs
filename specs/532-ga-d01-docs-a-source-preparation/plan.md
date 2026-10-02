@@ -255,3 +255,15 @@ Exact export repeatability is source proof only, not fresh package or CE/Pro
 runtime qualification. SDK's activation-guide/input-reference corrections,
 final public source/package catalog, exercised L01/W02 contracts and full
 walkthrough remain pending. G5 remains open.
+
+Correction checkpoint: exact SDK source
+`54c52f2733a285886dedfc2956152440ebd05056` (parent `b6aa86d3`) passed the same
+isolated committed-blob export check on 2026-10-01, output
+`tmp/ga-d01-draft-MmOr1G`. Repeated export bytes, first-call metadata/routes/
+envelope, strict path/identity/placeholder scan and full-export public denylist
+all pass (exit 0). The upstream generic path finding is resolved. SDK reports
+an outstanding pre-existing unquoted `<purchase_id>` shell example outside its
+corrected fences; whole-guide copied-command reliability remains owner work.
+No new package qualification, live Pro walkthrough, current sync/default switch
+or publication is inferred. This status-only checkpoint does not require
+rebuilding unchanged site content; the prior site/isolation proof is retained.

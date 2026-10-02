@@ -78,6 +78,9 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
   envelope. Record strict scan finding without editing generated truth.
 - [ ] R007 SDK resolves remaining installation path examples and activation/
   CLI input source gaps; final source/catalog and L01/W02 walkthrough still held.
+- [x] R008 Recheck corrected SDK `54c52f27`: repeat-export equality, first-call
+  metadata/links/envelope and full-export strict path/public denylist scans pass.
+  Whole-guide copied commands and live Pro walkthrough are not claimed.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
