@@ -15,6 +15,7 @@ import { fileURLToPath } from 'node:url';
 import { archiveCurrentDocs } from './docs-archive.mjs';
 import { compareDocsVersions, latestReleasedVersionFromChangelog } from './docs-version.mjs';
 import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
+import { firstCallMapping, firstCallRoute, versionedSdkMetadata } from './sdk-doc-contract.mjs';
 
 const DOCS_ROOT = path.resolve(fileURLToPath(new URL('..', import.meta.url)));
 const EXAMPLES_REPO = process.env.NXUSKIT_EXAMPLES_REPO;
@@ -29,6 +30,7 @@ const EXAMPLES_PUBLIC_SELECTION_TYPE = 'nxuskit-examples-approved-public-selecti
 const EXAMPLES_DOCS_PUBLIC_CHANNEL = 'docs';
 const EXAMPLES_LEGACY_RAW_MANIFEST_ENV = 'NXUSKIT_DOCS_ALLOW_LEGACY_RAW_EXAMPLES_MANIFEST';
 const SDK_PACKAGING_DOCS_MAP = [
+  firstCallMapping,
   ['getting-started.md', 'getting-started/installation.md'],
   ['auth-modes-by-provider.md', 'getting-started/authentication.md'],
   ['api-reference.md', 'reference/api-reference.md'],
@@ -46,9 +48,9 @@ const SDK_PACKAGING_DOCS_MAP = [
   ['upgrade-path.md', 'migration/upgrade-path.md'],
 ];
 const SDK_DOC_METADATA = new Map([
+  ['first-call.md', { title: 'First Call' }],
   ['getting-started.md', {
     title: 'Installation',
-    description: 'Install nxusKit SDK v1.x, choose Community or Pro assets, configure nxuskit-py, and attach native CLIPS, BN, FFI, Solver, or ZEN features.',
   }],
   ['auth-modes-by-provider.md', {
     title: 'Authentication',
@@ -108,10 +110,10 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['CHANGELOG.md', {
     title: 'Changelog',
-    description: 'Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes.',
   }],
 ]);
 const SDK_DOC_LINKS = new Map([
+  ['first-call.md', firstCallRoute],
   ['getting-started.md', '/nxuskit/getting-started/installation/'],
   ['auth-modes-by-provider.md', '/nxuskit/getting-started/authentication/'],
   ['api-reference.md', '/nxuskit/reference/api-reference/'],
@@ -222,6 +224,7 @@ async function syncExamples() {
 async function syncSdk() {
   assertEnv('NXUSKIT_REPO', SDK_REPO);
   assertDirectory(SDK_REPO, 'nxusKit SDK repo');
+  const sdkChangelog = await readFile(path.join(SDK_REPO, 'CHANGELOG.md'), 'utf8');
 
   const tmpRoot = await mkdtemp(path.join(os.tmpdir(), 'nxuskit-docs-export-'));
   const exportRoot = path.join(tmpRoot, 'nxuskit');
@@ -235,7 +238,7 @@ async function syncSdk() {
     await copyDir(docsUserRoot, exportRoot);
     console.log(`Exported SDK docs/user -> ${path.relative(tmpRoot, exportRoot)}`);
   } else if (existsSync(packagingDocsRoot)) {
-    await exportSdkPackagingDocs(packagingDocsRoot, exportRoot);
+    await exportSdkPackagingDocs(packagingDocsRoot, exportRoot, sdkChangelog);
     exportMode = 'packaging';
     console.log(`Exported SDK sdk-packaging/docs -> ${path.relative(tmpRoot, exportRoot)}`);
   } else {
@@ -247,7 +250,7 @@ async function syncSdk() {
     const target = path.join(exportRoot, 'reference/changelog.md');
     mkdirSync(path.dirname(target), { recursive: true });
     const raw = await readFile(changelog, 'utf8');
-    await writeFile(target, toSdkStarlightPage(raw, 'CHANGELOG.md'), 'utf8');
+    await writeFile(target, toSdkStarlightPage(raw, 'CHANGELOG.md', sdkChangelog), 'utf8');
   }
 
   await leakGateFiles(exportRoot);
@@ -468,7 +471,7 @@ function codexPluginLinkTarget(rawLink, sourceRel, hash = '') {
   return `${PUBLIC_CODEX_PLUGINS_URL}/blob/main/${withoutTrailingSlash}${hash}`;
 }
 
-async function exportSdkPackagingDocs(sourceRoot, exportRoot) {
+async function exportSdkPackagingDocs(sourceRoot, exportRoot, sdkChangelog) {
   for (const [sourceRel, targetRel] of SDK_PACKAGING_DOCS_MAP) {
     const sourcePath = path.join(sourceRoot, sourceRel);
     const targetPath = path.join(exportRoot, targetRel);
@@ -480,11 +483,11 @@ async function exportSdkPackagingDocs(sourceRoot, exportRoot) {
 
     mkdirSync(path.dirname(targetPath), { recursive: true });
     const raw = await readFile(sourcePath, 'utf8');
-    await writeFile(targetPath, toSdkStarlightPage(raw, sourceRel), 'utf8');
+    await writeFile(targetPath, toSdkStarlightPage(raw, sourceRel, sdkChangelog), 'utf8');
   }
 }
 
-function toSdkStarlightPage(markdown, sourceRel) {
+function toSdkStarlightPage(markdown, sourceRel, sdkChangelog) {
   let body = markdown.replace(/^\uFEFF/, '').trimStart();
   if (body.startsWith('---\n')) {
     body = body.replace(/^---\n[\s\S]*?\n---\s*/, '').trimStart();
@@ -494,6 +497,7 @@ function toSdkStarlightPage(markdown, sourceRel) {
     title: extractMarkdownTitle(body),
     description: '',
   };
+  const description = versionedSdkMetadata(sourceRel, sdkChangelog) ?? metadata.description;
 
   body = body.replace(/^#\s+.+\n+/, '');
   body = scrubSdkDocForPublicSite(body, sourceRel);
@@ -502,7 +506,7 @@ function toSdkStarlightPage(markdown, sourceRel) {
   return [
     '---',
     `title: ${JSON.stringify(metadata.title)}`,
-    ...(metadata.description ? [`description: ${JSON.stringify(metadata.description)}`] : []),
+    ...(description ? [`description: ${JSON.stringify(description)}`] : []),
     '---',
     '',
     body,

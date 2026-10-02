@@ -188,3 +188,44 @@ Final G5 exit still requires the versioned unpublished GA draft and fresh CE/Pro
 walkthrough using exact final packages and real tested L01/W02 contracts. Preview
 success does not accept G5; publication/deployment and gate acceptance remain
 separate.
+
+## Source/export contract delta — 2026-10-01
+
+Read SDK ledger `a5bb90e5d541f7e197b06bbe9fffa20ab804712d`, Spec108 evidence
+section “Shipped CLI and embedded verifier contract”, at
+`/Users/ken/.codex/worktrees/preview-publication-isolation/nxusKit-internal`.
+Recommended source remains `53be7866533b84bd3420490614f21a4f59904f12` (unmerged
+PR78), exact GA five-cell proof remains `cb7c55b35696fe31900a79fc4ddd2b049ea222d0`,
+and preview archive remains `5e142106`; none is relabeled as final GA authority.
+
+Docs tooling now maps `sdk-packaging/docs/first-call.md` to
+`getting-started/first-call.md`, rewrites its Markdown links, and derives the
+three affected metadata descriptions from the released SDK changelog heading.
+The source page is absent at recommended source, so this prepares export without
+claiming a completed CE first-call. Other authoritative docs/user exports still
+must include their own first-call page. Three pure contract tests, sync-script
+syntax, site build and retained preview/current invariance passed; actual sync
+repeatability awaits supplied source. Current source pages were untouched.
+
+### Exact SDK source patch requirements
+
+1. Supply `sdk-packaging/docs/first-call.md` (or authoritative
+   `docs/user/getting-started/first-call.md`) with copied CE no-license CLI and
+   supported-language first-call commands from exact final artifacts. Include
+   executable expected-result/denial checks and package-native library paths;
+   no public latest wildcard or stale v1 package identity. Final catalog is
+   unfrozen, so do not invent download links in this patch.
+2. Reconcile getting-started, licensing, tier, upgrade, CLI/API and changelog
+   source with the shipped contract: activation 2xx is acknowledgment, status
+   exit 0 can describe absent/invalid tokens, inspect effective license state
+   and guarded Solver operation, `license sync` is refresh (no refresh command),
+   and licensing JSON/error handling is command-specific. Do not print token,
+   account or token-path values in public/shared examples.
+3. Describe immutable embedded release verifier keys accurately: strict-v2
+   deployment tokens require exact kid, while legacy non-deployment missing/
+   blank-kid tokens have the documented immutable-bundle fallback. No ambient
+   signing-key injection claim for release builds. Live issuer/key compatibility
+   and positive activation still require L01/final-package proof.
+4. Hand off tested L01/W02 activation/portal instructions and exact GA package
+   catalog, then run Docs export repeatability and fresh CE/Pro walkthrough.
+   No fixture-only token or command acknowledgment substitutes for entitlement.

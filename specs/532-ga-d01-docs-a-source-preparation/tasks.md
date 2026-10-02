@@ -67,6 +67,12 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
   plan.md; identify first-call mapping/metadata contract as the next code slice.
 - [x] R003 Review planning-only delta for scope, authoritative-source ownership
   and retained version/publication/activation boundaries; run diff checks.
+- [x] R004 Add durable packaging first-call target/link and changelog-derived
+  installation/first-call/changelog metadata; verify three contract tests,
+  script syntax, production build, preview/current invariance and diff checks.
+- [ ] R005 SDK supplies authoritative first-call and final source/package
+  contract; then test actual repeated export and copied CE commands. No SDK sync
+  or current-version switch ran in R004.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
