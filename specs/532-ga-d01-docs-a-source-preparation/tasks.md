@@ -95,6 +95,10 @@ purchaser instructions and bound installed-Pro walkthrough target. CE source
 guidance stays accurate; CE build assurance is non-gating under plan87d11707.
 No default switch or archive of a future release is authorized here.
 
+- [x] R011 Changed SDK Docs A source `9ed25a80` exact committed-blob export:
+  repeat equality, mapping/metadata/links/envelope, strict/public leak scans and
+  metadata tests 4/4 pass. Current/PRE bytes untouched; package/live proofs held.
+
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
 The build reports `v1.0.5 (latest)` and the regression check verifies current

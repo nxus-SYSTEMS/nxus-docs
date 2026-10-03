@@ -305,3 +305,20 @@ non-gating. macOS x86_64 is unsupported from v2, not on-demand. Final versioned
 render remains independent of the separately authorized default switch; preserve
 v1.0.5 and do not archive v2 as an older version. G5 remains open pending actual
 final rendered source and installed-Pro journey, not preparation gate acceptance.
+
+Changed SDK handoff checkpoint, 2026-10-03:
+`9ed25a80aa12026f9ed0500127f6731c69e43e87` (parent `e17f49f0`), exact Git-blob
+export `tmp/ga-d01-draft-Hzms2R`, passed repeated byte equality, first-call
+mapping/metadata/link/envelope, strict path/identity/placeholder and public
+denylist scans. Metadata tests 4/4 passed. SDK owns the six changed API/CLI/
+installation/licensing/tier/upgrade source files; no concurrent source editing
+or current-tree sync occurred. Reuse prior unchanged site/isolation evidence.
+
+Original package proof remains separate (`cb7` source, run `36769726127`,
+artifact `11123034084`, inner SHA-256
+`f8e7dc4250b6ccaae9ec3607ed854187cbc9831c38eea62d56fa30518d91b0b6`);
+it is not an archive of this Docs revision. SDK reports installed negative
+receipt `11962af1`, but original compiled-catalog input binding remains missing.
+Final download identity, exercised activation/expiry/wrong-subject/signature
+and L01/W02 purchaser/portal walkthrough remain pending. No runtime/package
+qualification or G5 acceptance is inferred from this successful source export.
