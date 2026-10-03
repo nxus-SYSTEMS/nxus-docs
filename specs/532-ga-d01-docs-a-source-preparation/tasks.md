@@ -98,6 +98,10 @@ No default switch or archive of a future release is authorized here.
 - [x] R011 Changed SDK Docs A source `9ed25a80` exact committed-blob export:
   repeat equality, mapping/metadata/links/envelope, strict/public leak scans and
   metadata tests 4/4 pass. Current/PRE bytes untouched; package/live proofs held.
+- [x] R012 Exact changed `9ed25a80` export rendered in isolated temporary site:
+  Astro/build, 17 pages, 760 local route-link checks, strict rendered leaks,
+  discovery exclusion and canonical current/default invariance pass. Installed
+  Pro purchaser/package walkthrough remains WAITING on bound live inputs.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

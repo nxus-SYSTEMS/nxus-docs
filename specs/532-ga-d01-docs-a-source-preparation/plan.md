@@ -322,3 +322,29 @@ receipt `11962af1`, but original compiled-catalog input binding remains missing.
 Final download identity, exercised activation/expiry/wrong-subject/signature
 and L01/W02 purchaser/portal walkthrough remain pending. No runtime/package
 qualification or G5 acceptance is inferred from this successful source export.
+
+## Exact changed-source static render — 2026-10-03
+
+No pre-existing exact `9ed25a80` output render was found in Spec532/evidence;
+R011 explicitly covered export only. Retained `tmp/ga-d01-draft-Hzms2R` was
+rendered once in `tmp/ga-d01-render-q0Xjm8` at isolated route
+`/preview/nxuskit-v2-ga/`, with banners/search exclusion and route rewriting for
+mapped draft pages. The canonical repository content and dist were untouched.
+
+Export tree SHA-256 (sorted relative paths, NUL, then file bytes):
+`01c3fa4c82982f6924e7cdd90640b4192c83dde3f905b83e4625225289838ef6`.
+Rendered preview tree SHA-256 using the same algorithm:
+`fff318633c888b2d810a543caae3feaafc3b5fd5ef2e0467a5722b8d09e99869`.
+Astro check and production build passed; 17 rendered source pages and 760 local
+route-link occurrences passed file-existence checks (not fragment-anchor or
+external URL validation). All draft pages have banner/noindex, no Pagefind body,
+strict rendered path/identity and public-denylist scans pass, sitemap and both
+hosted LLM indexes exclude the draft. Canonical content digest was unchanged and
+staged current installation retained `v1.0.5 (latest)`.
+
+Logs remain in the staging directory (`astro-check.log`, `build.log`). This is
+unpublished static changed-output proof only: SDK evidence-only child `245d7bb8`
+does not change guide bytes; original package/catalog lineage is not relabeled.
+Final bound package/verifier/download and exercised L01/W02 purchaser/installed
+Pro walkthrough remain required. No publication, default switch, credential
+operation or G5 acceptance occurred.
