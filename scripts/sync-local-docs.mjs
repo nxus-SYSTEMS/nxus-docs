@@ -62,7 +62,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['cli-input-reference.md', {
     title: 'CLI Input Format Reference',
-    description: 'JSON input schemas, loopback examples, and Pro-gated Solver/ZEN command contracts for every Level 1 nxuskit-cli command.',
+    description: 'JSON input schemas, local first-call examples, and command contracts for nxuskit-cli.',
   }],
   ['providers/cloud-llms.md', {
     title: 'Cloud LLM Providers',
@@ -90,7 +90,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['license-activation-guide.md', {
     title: 'Licensing',
-    description: 'Activate, validate, renew, and troubleshoot nxusKit Pro licenses for Solver, ZEN, runtime plugins, and entitlement-gated SDK features.',
+    description: 'Developer activation, license status, explicit sync, and recovery for nxusKit Pro.',
   }],
   ['tier-comparison.md', {
     title: 'Tier System',

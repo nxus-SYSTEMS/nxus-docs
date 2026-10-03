@@ -286,3 +286,22 @@ and fresh final-package CE/Pro walkthrough remain genuine dependencies. No
 whole-guide runtime or gate acceptance is inferred; G5 stays open. Current v1.0.5
 and PRE route remain preserved; final archive/sync/default switch, credential
 operations and publication/deployment remain outside this checkpoint.
+
+## Consolidated plan checkpoint — 2026-10-03
+
+Single GA plan at DevOps `87d11707` supersedes former packet/preview mandates.
+Preparation is DONE; final exact-input integration is WAITING. Static mapping
+inspection found only stale local CLI/licensing capability metadata; descriptions
+were made neutral without modifying authoritative bodies. Focused projection
+test covers this changed slice; retained Oct1 source/export/build/isolation
+checks are reused, not rerun for activity.
+
+Reactivate on changed/final S04 full source SHA/export mode and file set, exact
+Linux x86_64/macOS ARM64/Windows x86_64 Pro package/catalog/verifier identities
+and approved links, plus exercised L01/W02 purchaser commands/portal contract
+and bound installed-Pro walkthrough target. SDK owns authoritative copy changes.
+CE is public source-only with accurate source guidance; CE build success is
+non-gating. macOS x86_64 is unsupported from v2, not on-demand. Final versioned
+render remains independent of the separately authorized default switch; preserve
+v1.0.5 and do not archive v2 as an older version. G5 remains open pending actual
+final rendered source and installed-Pro journey, not preparation gate acceptance.

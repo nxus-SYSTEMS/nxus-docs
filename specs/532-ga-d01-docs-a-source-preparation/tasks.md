@@ -70,14 +70,13 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
 - [x] R004 Add durable packaging first-call target/link and changelog-derived
   installation/first-call/changelog metadata; verify three contract tests,
   script syntax, production build, preview/current invariance and diff checks.
-- [ ] R005 SDK supplies authoritative first-call and final source/package
-  contract; then test actual repeated export and copied CE commands. No SDK sync
-  or current-version switch ran in R004.
+- [x] R005 Authoritative first-call supplied and repeated export checked at
+  `8e91309a`; final package catalog and runtime walkthrough remain separate.
 - [x] R006 Inspect exact SDK `b6aa86d3` committed source in isolated temporary
   export; verify repeatability, durable mapping/metadata/link rewrites and CE
   envelope. Record strict scan finding without editing generated truth.
-- [ ] R007 SDK resolves remaining installation path examples and activation/
-  CLI input source gaps; final source/catalog and L01/W02 walkthrough still held.
+- [x] R007 Independent SDK path and activation/input-reference source gaps
+  resolved at `8e91309a`; final source/catalog and L01/W02 walkthrough still held.
 - [x] R008 Recheck corrected SDK `54c52f27`: repeat-export equality, first-call
   metadata/links/envelope and full-export strict path/public denylist scans pass.
   Whole-guide copied commands and live Pro walkthrough are not claimed.
@@ -85,6 +84,16 @@ pending; deployment and PRE-D01 acceptance remain unresolved.
   export, strict/public leak checks and metadata tests pass; current/PRE bytes
   equal retained `0e4e697`. SDK source-only slice complete; final packages and
   exercised L01/W02 purchaser/portal/full walkthrough still pending.
+- [x] R010 Oct3 static metadata inspection: remove unsupported licensing/CLI
+  capability descriptions; focused projection test preserves authoritative body.
+
+**Preparation: DONE. Final exact-input integration: WAITING.** Reuse Oct1
+export/leak/metadata and Astro/build/isolation evidence for unchanged bytes.
+Reactivation handoff: changed/final GA-S04 source SHA and export mode, exact
+three supported Pro artifact/catalog/verifier bindings, exercised L01/W02
+purchaser instructions and bound installed-Pro walkthrough target. CE source
+guidance stays accurate; CE build assurance is non-gating under plan87d11707.
+No default switch or archive of a future release is authorized here.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.
