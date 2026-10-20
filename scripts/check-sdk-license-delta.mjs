@@ -18,7 +18,13 @@ const page = toSdkStarlightPage(raw, 'license-activation-guide.md', changelog);
 const old = await readFile('tmp/ga-d01-draft-Hzms2R/concepts/licensing.md', 'utf8');
 const split = text => text.split('#### Real-purchase activation (production)');
 assert.equal(split(page)[0], split(old)[0]);
-assert.equal(split(page)[1].split('```bash')[1], split(old)[1].split('```bash')[1]);
+const commandSuffix = text => {
+  const section = split(text)[1];
+  const start = section.indexOf('```bash');
+  assert.ok(start >= 0, 'Real-purchase section must contain the activation Bash fence');
+  return section.slice(start);
+};
+assert.equal(commandSuffix(page), commandSuffix(old));
 assert.match(page, /Actual availability[\s\S]*verified[\s\S]*Website W02 \/ Licensing L01 service/);
 assert.doesNotMatch(page, /Each card shows the/);
 assert.match(page, /https:\/\/nxus.systems\/shop/);
