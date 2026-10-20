@@ -102,6 +102,11 @@ No default switch or archive of a future release is authorized here.
   Astro/build, 17 pages, 760 local route-link checks, strict rendered leaks,
   discovery exclusion and canonical current/default invariance pass. Installed
   Pro purchaser/package walkthrough remains WAITING on bound live inputs.
+- [ ] R013 Oct20 one-time claims comparison found unexercised portal/card
+  behavior stated unconditionally in SDK license-activation-guide.md192-194
+  at245d7bb (export concepts/licensing.md195-197). SM notified for SDK-owned
+  conditional wording/tested W02 contract correction; no generated-body patch.
+  Other inspected capability/platform/rights/command scope reused as accurate.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

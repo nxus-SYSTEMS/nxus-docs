@@ -348,3 +348,29 @@ does not change guide bytes; original package/catalog lineage is not relabeled.
 Final bound package/verifier/download and exercised L01/W02 purchaser/installed
 Pro walkthrough remain required. No publication, default switch, credential
 operation or G5 acceptance occurred.
+
+## Oct20 readiness claims delta
+
+One-time authoritative245d7bb/unchanged9ed-to-retained-export comparison found
+a genuine remaining conditionality defect: SDK
+`sdk-packaging/docs/license-activation-guide.md:192-194` states purchases appear
+in `/my/products` and each card shows the exact CLI, while its own200-202 and
+the current GA state require Website/Licensing verification. Retained export
+`concepts/licensing.md:195-197` reproduces the claim. Reported immediately to SM
+for SDK-owned correction: make this conditional on bound W02/L01 or substitute
+actually tested final instructions. No generated guide was patched to diverge.
+
+Tier/platform/rights scope is otherwise explicit: Solver-only initial Pro,
+compiled domains not launch promises, CE source-only, three supported Pro
+targets/macOSx86_64 unsupported, major-line deployment validity distinct from
+developer expiry/commercial maintenance. CLI source16-18 explicitly excludes
+other compiled domains from launch support; detailed ZEN reference alone is
+not treated as a false launch claim. No uppercase MODEL capability advertisement
+was found in the inspected API/CLI references. Command shapes already covered
+by SDK source proof are reused; no parser/build/export rerun occurred.
+
+No Docs-only navigation/export metadata defect was reproduced. R013 waits on
+SM-coordinated authoritative correction, then only its changed output merits
+affected checks. Final package/issuer/purchaser/portal walkthrough inputs remain
+separate; v1.0.5/default, preview, source exclusivity and all reserved boundaries
+remain intact.
