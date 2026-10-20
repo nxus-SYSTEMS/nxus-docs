@@ -38,7 +38,9 @@ for (const file of sourceFiles) {
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, markdown);
 }
-for (const args of [['run', 'astro', 'check'], ['run', 'build']]) {
+const affected = process.env.SDK_DRAFT_AFFECTED_PAGE;
+if (affected) assert.ok(sourceFiles.includes(affected), 'Affected page must exist in exact export');
+for (const args of (affected ? [['run', 'build']] : [['run', 'astro', 'check'], ['run', 'build']])) {
   const log = join(stage, args.includes('build') ? 'build.log' : 'astro-check.log');
   const fd = openSync(log, 'w');
   const result = spawnSync('npm', args, { cwd: stage, stdio: ['ignore', fd, fd] });
@@ -46,7 +48,7 @@ for (const args of [['run', 'astro', 'check'], ['run', 'build']]) {
   assert.equal(result.status, 0, `Failed ${args.join(' ')}; inspect ${log}`);
 }
 let links = 0;
-for (const file of sourceFiles) {
+for (const file of (affected ? [affected] : sourceFiles)) {
   const htmlPath = join(stage, 'dist', route, file.replace(/\.mdx?$/, '/index.html'));
   const html = await readFile(htmlPath, 'utf8');
   assert.match(html, /noindex, follow/);
@@ -54,6 +56,18 @@ for (const file of sourceFiles) {
   assert.ok(!html.includes('data-pagefind-body'));
   for (const term of FORBIDDEN_PUBLIC_DOCS_TERMS) assert.ok(!html.includes(term), `${file}: ${term}`);
   assert.ok(!/\/Users\/|\/home\/|[a-f0-9]{40}|codex\//.test(html), `${file}: private path/identity`);
+  if (affected === 'concepts/licensing.md') {
+    const text = html.replace(/<[^>]*>/g, '').replace(/&quot;|&#x22;/g, '"').replace(/&amp;/g, '&');
+    assert.match(text, /Actual availability[\s\S]*verified[\s\S]*Website W02 \/ Licensing L01 service/);
+    assert.ok(!text.includes('Each card shows the'));
+    assert.match(text, /https:\/\/nxus.systems\/shop/);
+    assert.match(text, /https:\/\/nxus.systems\/my\/products/);
+    assert.match(text, /nxuskit-cli license activate --key "\$NXUSKIT_PURCHASE_ID" --accept-eula --json/);
+    assert.match(html, /Developer activation, license status, explicit sync, and recovery for nxusKit Pro\./);
+    const old = await readFile('tmp/ga-d01-render-q0Xjm8/dist/preview/nxuskit-v2-ga/concepts/licensing/index.html', 'utf8');
+    const localLinks = value => [...value.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)].map(m => m[1]);
+    assert.deepEqual(localLinks(html), localLinks(old), 'Affected rendered local link targets changed');
+  }
   for (const match of html.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)) {
     const path = match[1];
     if (!path.endsWith('/')) continue;
@@ -67,4 +81,4 @@ for (const file of ['llms.txt', 'llms-full.txt', ...(await readdir(join(stage, '
 assert.equal(await digest('src/content/docs'), currentBefore);
 const current = await readFile(join(stage, 'dist/nxuskit/getting-started/installation/index.html'), 'utf8');
 assert.match(current, /v1\.0\.5 \(latest\)/);
-console.log(JSON.stringify({ stage, exportSha256: await digest(source), outputSha256: await digest(join(stage, 'dist', route)), renderedPages: sourceFiles.length, checkedLinks: links, result: 'PASS Astro/build/render/links/leaks/search/sitemap/LLM/current invariance' }));
+console.log(JSON.stringify({ stage, exportSha256: await digest(source), outputSha256: await digest(join(stage, 'dist', route)), checkedPages: affected ? [affected] : sourceFiles, checkedLinks: links, result: 'PASS build/affected render/links/leaks/search/sitemap/LLM/current invariance' }));

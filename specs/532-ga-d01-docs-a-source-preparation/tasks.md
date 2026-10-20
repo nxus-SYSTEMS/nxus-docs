@@ -109,6 +109,9 @@ No default switch or archive of a future release is authorized here.
   Other inspected capability/platform/rights/command scope reused as accurate.
   Closed by SDK6c041266 exact licensing-only projection: conditionality,
   metadata/links/command preservation and strict leaks pass; no new HTML render.
+- [x] R014 Subsequent exact6c041266 affected licensing HTML render: one isolated
+  build exit0, corrected paragraph/URLs/CLI/metadata,43local link targets,
+  leaks/discovery/current-default guards pass. Old R012 retained separately.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

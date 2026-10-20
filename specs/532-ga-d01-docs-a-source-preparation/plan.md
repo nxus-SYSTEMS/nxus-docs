@@ -388,3 +388,35 @@ No HTML render ran for this prose-only delta. R012's rendered identity remains
 the old9ed output, not a render of6c041266. Final assembled changed-source render
 can consume this projection when actually needed; no new all-route proof is
 claimed. Installed purchaser/issuer/package walkthrough and G5 remain held.
+
+## R014 affected licensing render — 2026-10-20
+
+Subsequently rendered exact SDK `6c0412668b063c0d8da4110389cb31aa6b98dc58`.
+Git diff9ed→6c for packaging docs plus CHANGELOG names only licensing; all
+other retained export inputs are identity-qualified unchanged. Reused the
+verified licensing projection5c6756b (sourceeaec60ef) and copied retained17-page
+export to `tmp/ga-d01-6c-export-ZGEU27`, overwriting only its licensing page.
+Coherent new export tree SHA-256:
+`f3eaa8e5025e84aed6875a767b2a7f5d67de2f57772c47860b313336975eb90f`.
+
+Existing isolated renderer with `SDK_DRAFT_AFFECTED_PAGE=concepts/licensing.md`
+built once (`npm run build`, exit0; no Astro-check repeat), staging
+`tmp/ga-d01-render-JdkQRK`. Built canonical Docs input HEAD was
+`0fe3e4a66997d72d1799ebebda29a0de3e2721a1` plus the scoped affected-page checker
+delta preserved in this commit; current page/template bytes were unchanged.
+Actual HTML: `dist/preview/nxuskit-v2-ga/concepts/licensing/index.html` under
+that staging directory, SHA-256
+`7bccb7c6582f347d24b69f954361e582f939a11bf2677c05f0b6733de0b7a3dc`.
+New built preview tree identity:
+`9c4720038df3cc7b01d8b66c6639e8c46c5804f0b56ecd367866b1e365d501f2`.
+
+Affected assertions pass for conditional W02/L01 paragraph, intendedURLs,
+literal activationCLI, metadata,43local route link occurrences/unchanged targets,
+strict rendered/public leaks, banner/noindex/Pagefind-body exclusion. Setup
+guards pass for draft exclusion from sitemap/LLM indexes, canonical content
+digest unchanged and staged v1.0.5 latest. No all17/760 campaign was repeated;
+fragment/external endpoints/live service behavior were not verified. R012old
+export/render/logs/hashes retained, not relabeled. This closes changed-source
+static render only; final installed purchaser/issuer/package walkthrough and
+G5 acceptance remain held. No canonical guide/default/publication/deployment
+or credential change occurred.
