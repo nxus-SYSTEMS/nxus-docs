@@ -68,6 +68,11 @@ for (const file of (affected ? [affected] : sourceFiles)) {
     const localLinks = value => [...value.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)].map(m => m[1]);
     assert.deepEqual(localLinks(html), localLinks(old), 'Affected rendered local link targets changed');
   }
+  if (affected === 'reference/api-reference.md') {
+    assert.match(html, /href="\/preview\/nxuskit-v2-ga\/reference\/providers\/cloud-llms\/"[^>]*>Provider Reference<\/a>/);
+    assert.ok(!html.includes('href="providers/cloud-llms.md"'));
+    assert.ok(!html.includes('href="../providers/cloud-llms/"'));
+  }
   for (const match of html.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)) {
     const path = match[1];
     if (!path.endsWith('/')) continue;

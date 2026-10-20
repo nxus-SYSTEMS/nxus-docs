@@ -112,6 +112,9 @@ No default switch or archive of a future release is authorized here.
 - [x] R014 Subsequent exact6c041266 affected licensing HTML render: one isolated
   build exit0, corrected paragraph/URLs/CLI/metadata,43local link targets,
   leaks/discovery/current-default guards pass. Old R012 retained separately.
+- [x] R015 Exactfbd4b3bf API package-link correction projects to correct
+  Starlight provider route without converter repair. One isolated build/API-only
+  HTML+44links/leaks/isolation guards pass; unchanged R014 licensing proof reused.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

@@ -420,3 +420,32 @@ export/render/logs/hashes retained, not relabeled. This closes changed-source
 static render only; final installed purchaser/issuer/package walkthrough and
 G5 acceptance remain held. No canonical guide/default/publication/deployment
 or credential change occurred.
+
+## R015 affected API link render — 2026-10-20
+
+Exact SDK `fbd4b3bf0c63a0b0672246a6b85ec9f5bb61e874` differs from6c only in
+API guide among packaging docs/CHANGELOG. Verified source API SHA-256
+`c13f06a467cd0258aae818cb30a2372d7b4d3df702210c0a973549aa11d6b7aa` and source
+provider target existence. Existing converter correctly normalizes
+`providers/cloud-llms.md` to `/nxuskit/reference/providers/cloud-llms/`; no
+converter repair. Projected API page SHA-256
+`a042f12f8c501813fff52a4b70d56683ca4602f0dd057036344c70a12e08daaa`.
+
+Coherent export `tmp/ga-d01-fbd-export-ofwQxQ` reuses6c-qualified unchanged
+inputs, overwrites only API page; tree SHA-256
+`7505bf345696568590468988d74d4bea438780f99e46648b20bbf0d3a621d1b1`.
+One existing isolated build exit0 via `node scripts/check-sdk-api-delta.mjs`,
+staging `tmp/ga-d01-render-B5u9OS`, Docs baseline2912c07 plus scoped API-checker
+delta committed here; templates/current guides unchanged. Affected HTML
+`dist/preview/nxuskit-v2-ga/reference/api-reference/index.html`, SHA-256
+`9d1c8e4074e82f3e67624ba511a854e87e1c2397819d7ce21774387928405a84`.
+Built preview tree SHA-256
+`32e43b3cbad519d73f7fcf2d854f07f5e27e731021db3c7264da84ccc29b1981`.
+
+API anchor points to isolated Starlight provider route, not raw.md/old broken
+path;44local route occurrences/file existence, metadata via rendered title/body,
+strict/public leaks and setup noindex/banner/search/sitemap/LLM/default guards
+pass. No all17/760/Astro campaign; external/fragment checks not claimed. Retain
+old R012 and R014 identities/logs. Licensing source/projection/template unchanged,
+so reuse R014 rather than replay its assertions. Final installed purchaser/
+issuer/package walkthrough and G5 remain held; no default/publication/SDK edit.
