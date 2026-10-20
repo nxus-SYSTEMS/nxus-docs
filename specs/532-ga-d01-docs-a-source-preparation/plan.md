@@ -374,3 +374,17 @@ SM-coordinated authoritative correction, then only its changed output merits
 affected checks. Final package/issuer/purchaser/portal walkthrough inputs remain
 separate; v1.0.5/default, preview, source exclusivity and all reserved boundaries
 remain intact.
+
+R013 closed source-first at SDK `6c0412668b063c0d8da4110389cb31aa6b98dc58`.
+Only changed guide is licensing; exact source SHA-256
+`eaec60ef4f670939a37ef4940358e967f144dbac2dadeb010e57d6f9dc853b9b` verified.
+Focused projection `tmp/ga-d01-license-delta-Q7o9mR/licensing.md` SHA-256
+`5c6756b08aa865e17c59196dfda4c153391f3f6c543ff18646fd48271bc15b90`
+retains intended URLs, exact activation command, metadata and link targets,
+conditionalizes actual availability on verified W02/L01 and passes strict/public
+leak checks. `check-sdk-license-delta.mjs` checks the sole-guide committed delta
+and retained export comparison; no SDK or canonical generated-body edit.
+No HTML render ran for this prose-only delta. R012's rendered identity remains
+the old9ed output, not a render of6c041266. Final assembled changed-source render
+can consume this projection when actually needed; no new all-route proof is
+claimed. Installed purchaser/issuer/package walkthrough and G5 remain held.
