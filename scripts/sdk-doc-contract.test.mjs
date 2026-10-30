@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { firstCallMapping, firstCallRoute, versionedSdkMetadata } from './sdk-doc-contract.mjs';
+import { firstCallMapping, firstCallRoute, versionedSdkMetadata, selectAffectedDraftPages } from './sdk-doc-contract.mjs';
 import { toSdkStarlightPage } from './sync-local-docs.mjs';
 
 test('first-call has a durable packaging target and public route', () => {
@@ -25,4 +25,13 @@ test('local licensing and CLI metadata do not invent Pro capability availability
     assert.doesNotMatch(page, /ZEN|runtime plugins|Pro-gated/);
     assert.match(page, /Authoritative body\./);
   }
+});
+test('affected draft selection validates two routes without broadening to every page', () => {
+  const files = ['getting-started/installation.md', 'reference/changelog.md', 'concepts/licensing.md'];
+  assert.deepEqual(selectAffectedDraftPages('getting-started/installation.md,reference/changelog.md', files), files.slice(0, 2));
+  assert.deepEqual(selectAffectedDraftPages('concepts/licensing.md', files), [files[2]]);
+  assert.throws(() => selectAffectedDraftPages('missing.md', files), /Affected page/);
+  assert.throws(() => selectAffectedDraftPages('reference/changelog.md,reference/changelog.md', files), /duplicate/);
+  assert.throws(() => selectAffectedDraftPages('', files), /Affected page/);
+  assert.deepEqual(selectAffectedDraftPages(undefined, files), files);
 });

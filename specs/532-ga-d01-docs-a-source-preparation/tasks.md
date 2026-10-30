@@ -115,6 +115,72 @@ No default switch or archive of a future release is authorized here.
 - [x] R015 Exactfbd4b3bf API package-link correction projects to correct
   Starlight provider route without converter repair. One isolated build/API-only
   HTML+44links/leaks/isolation guards pass; unchanged R014 licensing proof reused.
+- [x] R016 Oct30 exact pre-overlay S573dd96 committed-source export and ONE
+  isolated draft build: installation/changelog assertions,101local route checks,
+  strict leaks/discovery/default guards and setup2.0 syntax/parity pass. S stays
+  labeled S; R014/R015 reused by identical guide/template inputs.
+- [x] R017 Independent affected review PASS0Critical/0Important/0Minor by
+  Root's separate c9_status_snapshot_check reviewer, confirmed by MLX. Reviewed
+  five-file hashes verified before evidence update. Actual committed S/H input
+  equality19files PASS; scoped local commit authorized. Branch push triggers CI,
+  so no push pending reviewed trigger/authority. Original render remains S.
+
+R016 identities (2026-10-30): source S
+`573dd96ef86b9c62a993b36d440dbfa8d99f5247`, Docs baseline
+`96880652cac0772a410a91409c4f4530f96e4ff6` plus scoped checker delta. Export
+`tmp/ga-d01-draft-BvVOBQ`, raw committed staging `tmp/ga-d01-source-wfoLNm`;
+export tree SHA-256 `3ab0cf96fcfff0f82746a620a375b2cec17922d7573d69c46258f8627944da92`.
+Build stage `tmp/ga-d01-render-GinQ7C`, log `build.log`, `npm run build` exit0.
+Built preview tree SHA-256
+`eca0dc845d80d722acb54c3e908d29edde89caacc823d8f152c714e52e4734b1`.
+Affected HTML under `dist/preview/nxuskit-v2-ga/`:
+`getting-started/installation/index.html` SHA-256
+`4ad2a20c2f33425916da4bc229b8fc3033eedb3b5242204ea83562d9d6cb3e75`;
+`reference/changelog/index.html` SHA-256
+`d4386f563818e16ad9cb93315b722794a64931e000afd0db024d5352d2690314`.
+
+Exact source SHA-256: installation
+`48d7ead3181840feb0230e819895173fb782881fa6da7c1c190f0f0dc1c62c0a`,
+CHANGELOG `2b90c57a2988b75b67bc1fb7ac96ed964a0455c0493f0dd9f34d613129805287`,
+setup script `0ebe81f00ae6448332510c39f8410cee30791253f84a3a57dcb4ef94b2eb6c8b`.
+API/licensing Git blobs remain `d1c4150c645a22568e71ec2bdeb621548adac067` /
+`c543b140c3ff5c4297deeeb66b29e7399f68a74e`; prior R014/R015 proof retained.
+
+Minimal existing renderer supports a validated comma-separated affected-page
+selection. Focused selection regression initially failed for missing export,
+then passed (two selected routes, single-route compatibility, absent/duplicate/
+empty rejection and unchanged no-filter behavior). Only affected installation/
+changelog HTML checked; no17/760 campaign or Astro typecheck repeat. Assertions
+cover Rust1.94+, historical-vs-current qualification, Pro2.0 path, SDK2.0 vs
+contract1.1, unchanged v1.0.5 latest, noindex/banner/search/sitemap/LLM exclusion,
+strict rendered leaks and local route file existence. External/fragment/live
+behavior not claimed. Committed setup blob passed Bash-n and2.0 diagnostic
+parity; never sourced/executed, no package/build runtime qualification.
+
+Canonical current/PRE/public/archive/default files untouched, three untracked
+handoffs preserved. Existing275MB dependencies reused; fresh free-space103GiB,
+actual stage43MB. One missing canonical task capsule bootstrapped/validated at
+`tmp/rb008-continuity/019f630e-6513-7e43-aec3-f254e3983d0a.yaml` before source
+mutations. Root MLX sole coordinator; SM routine coordination parked. No SDK
+writes, model/network/CI/live/credential/signing/publication/deployment action.
+Final H equivalence and installed Annual/Perpetual purchaser/issuer/portal/
+Solver walkthrough remain held; no G5 or release acceptance.
+
+R017 binding checkpoint: H `19984c5b27f8b70a0bdaa620d368d228441eaa41`, tree
+`5b50526a86dc6d6da69e5c3e4b0edc71cb5c5ce4`, direct parent S. Actual Git blob
+IDs compared equal for all17 `sdk-packaging/docs/` files plus CHANGELOG and
+`sdk-packaging/scripts/setup-sdk.sh` (19files total). H's only delta is
+`internal/public-repo-overlays/ce-projection-manifest-v1.json` and
+`internal/public-repo-overlays/packages/nxuskit-engine/Cargo.lock`; no source/
+export/render/setup check replay. Mapped installation blob
+`28d103d5e0b863c42ac4b73173b4d7f764594ba8`, CHANGELOG
+`1546865590a8f20ab6e70f7da1a619bf29d9358e`, setup
+`1067ffacc9638e25305094216c4d646f51091523` are identical S/H. R016's original
+S export/render identities therefore supply identical-Docs-input static proof
+for H without claiming an H-executed render, package or platform qualification.
+The101checked links are57installation+44changelog local route occurrences,
+not unique links or all routes. Final installed Annual/Perpetual purchaser/
+issuer/portal/Solver walkthrough remains HELD; no G5/GA acceptance.
 
 Validation: `npm run astro check`, `npm run build`,
 `node scripts/check-preview-docs.mjs` and `git diff --check` passed on 2026-10-01.

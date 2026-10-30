@@ -5,6 +5,7 @@ import { resolve, join, dirname } from 'node:path';
 import { spawnSync } from 'node:child_process';
 import { createHash } from 'node:crypto';
 import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
+import { selectAffectedDraftPages } from './sdk-doc-contract.mjs';
 const source = resolve(process.env.SDK_DRAFT_EXPORT ?? 'tmp/ga-d01-draft-Hzms2R');
 const route = '/preview/nxuskit-v2-ga/';
 async function files(root, prefix = '') {
@@ -28,6 +29,8 @@ for (const path of ['src', 'public', 'scripts', 'astro.config.mjs', 'tsconfig.js
 }
 await symlink(resolve('node_modules'), join(stage, 'node_modules'), 'dir');
 const sourceFiles = await files(source);
+const affected = process.env.SDK_DRAFT_AFFECTED_PAGE;
+const checkedPages = selectAffectedDraftPages(affected, sourceFiles);
 const routes = new Set(sourceFiles.map(file => file.replace(/\.mdx?$/, '/') ));
 for (const file of sourceFiles) {
   let markdown = await readFile(join(source, file), 'utf8');
@@ -38,8 +41,6 @@ for (const file of sourceFiles) {
   await mkdir(dirname(target), { recursive: true });
   await writeFile(target, markdown);
 }
-const affected = process.env.SDK_DRAFT_AFFECTED_PAGE;
-if (affected) assert.ok(sourceFiles.includes(affected), 'Affected page must exist in exact export');
 for (const args of (affected ? [['run', 'build']] : [['run', 'astro', 'check'], ['run', 'build']])) {
   const log = join(stage, args.includes('build') ? 'build.log' : 'astro-check.log');
   const fd = openSync(log, 'w');
@@ -48,7 +49,7 @@ for (const args of (affected ? [['run', 'build']] : [['run', 'astro', 'check'], 
   assert.equal(result.status, 0, `Failed ${args.join(' ')}; inspect ${log}`);
 }
 let links = 0;
-for (const file of (affected ? [affected] : sourceFiles)) {
+for (const file of checkedPages) {
   const htmlPath = join(stage, 'dist', route, file.replace(/\.mdx?$/, '/index.html'));
   const html = await readFile(htmlPath, 'utf8');
   assert.match(html, /noindex, follow/);
@@ -56,7 +57,7 @@ for (const file of (affected ? [affected] : sourceFiles)) {
   assert.ok(!html.includes('data-pagefind-body'));
   for (const term of FORBIDDEN_PUBLIC_DOCS_TERMS) assert.ok(!html.includes(term), `${file}: ${term}`);
   assert.ok(!/\/Users\/|\/home\/|[a-f0-9]{40}|codex\//.test(html), `${file}: private path/identity`);
-  if (affected === 'concepts/licensing.md') {
+  if (file === 'concepts/licensing.md' && affected) {
     const text = html.replace(/<[^>]*>/g, '').replace(/&quot;|&#x22;/g, '"').replace(/&amp;/g, '&');
     assert.match(text, /Actual availability[\s\S]*verified[\s\S]*Website W02 \/ Licensing L01 service/);
     assert.ok(!text.includes('Each card shows the'));
@@ -68,10 +69,27 @@ for (const file of (affected ? [affected] : sourceFiles)) {
     const localLinks = value => [...value.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)].map(m => m[1]);
     assert.deepEqual(localLinks(html), localLinks(old), 'Affected rendered local link targets changed');
   }
-  if (affected === 'reference/api-reference.md') {
+  if (file === 'reference/api-reference.md' && affected) {
     assert.match(html, /href="\/preview\/nxuskit-v2-ga\/reference\/providers\/cloud-llms\/"[^>]*>Provider Reference<\/a>/);
     assert.ok(!html.includes('href="providers/cloud-llms.md"'));
     assert.ok(!html.includes('href="../providers/cloud-llms/"'));
+  }
+  if (process.env.NXUSKIT_DOCS_COMMIT === '573dd96ef86b9c62a993b36d440dbfa8d99f5247') {
+    const text = html.replace(/<[^>]*>/g, '').replace(/&quot;|&#x22;/g, '"').replace(/&amp;/g, '&');
+    if (file === 'getting-started/installation.md') {
+      assert.match(text, /requires Rust 1\.94 or newer/);
+      assert.match(text, /Historical development qualification covers/);
+      assert.match(text, /not fresh current-source or[\s\S]*Rust 1\.94 package qualification/);
+      assert.match(text, /nxuskit-sdk-2\.0\.0-pro-macos-arm64/);
+      assert.match(text, /SDK 2\.0\.0 exposes[\s\S]*nxuskit::contract::v1_1/);
+      assert.ok(!text.includes('workspace declares Rust 1.93 minimum'));
+    }
+    if (file === 'reference/changelog.md') {
+      assert.match(text, /SDK 2\.0\.0 downstream-consumer documentation identifies the v1\.1 contract/);
+      assert.match(text, /Rust source builds require Rust 1\.94 or newer/);
+      assert.match(text, /do[\s\S]*not claim new package availability, platform qualification or publication/);
+      assert.match(text, /candidate-source changes, not a publication/);
+    }
   }
   for (const match of html.matchAll(/href="(\/[^"?#]*)(?:[?#][^"]*)?"/g)) {
     const path = match[1];
@@ -86,4 +104,4 @@ for (const file of ['llms.txt', 'llms-full.txt', ...(await readdir(join(stage, '
 assert.equal(await digest('src/content/docs'), currentBefore);
 const current = await readFile(join(stage, 'dist/nxuskit/getting-started/installation/index.html'), 'utf8');
 assert.match(current, /v1\.0\.5 \(latest\)/);
-console.log(JSON.stringify({ stage, exportSha256: await digest(source), outputSha256: await digest(join(stage, 'dist', route)), checkedPages: affected ? [affected] : sourceFiles, checkedLinks: links, result: 'PASS build/affected render/links/leaks/search/sitemap/LLM/current invariance' }));
+console.log(JSON.stringify({ stage, sdkSource: process.env.NXUSKIT_DOCS_COMMIT ?? null, exportSha256: await digest(source), outputSha256: await digest(join(stage, 'dist', route)), checkedPages, checkedLinks: links, result: 'PASS build/affected render/links/leaks/search/sitemap/LLM/current invariance' }));

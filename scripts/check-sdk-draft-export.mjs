@@ -4,6 +4,7 @@ import { mkdtemp, readFile, readdir, writeFile, mkdir } from 'node:fs/promises';
 import { join, dirname } from 'node:path';
 import { exportSdkPackagingDocs, toSdkStarlightPage } from './sync-local-docs.mjs';
 import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
+import { createHash } from 'node:crypto';
 const repo = process.env.NXUSKIT_REPO;
 const commit = process.env.NXUSKIT_DOCS_COMMIT;
 assert.ok(repo && /^[a-f0-9]{40}$/.test(commit ?? ''), 'Set exact repo and NXUSKIT_DOCS_COMMIT');
@@ -54,3 +55,4 @@ if (failures.length) {
   console.error('HELD full-source leak scan:\n' + failures.join('\n'));
   process.exitCode = 1;
 } else console.log('PASS full-source public leak scan');
+console.log(JSON.stringify({ sdkSource: commit, sourceRoot, output: root, changelogSha256: createHash('sha256').update(changelog).digest('hex') }));
