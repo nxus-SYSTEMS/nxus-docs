@@ -1,6 +1,6 @@
 ---
 title: Install nxusKit v2.0.0
-description: Verify and install the v2.0.0 SDK bundle, run a local Community Edition first call, and migrate from v1.0.5.
+description: Verify and install the v2.0.0 SDK bundle, run a local Community Edition first call, activate a purchased Pro license, and migrate from v1.0.5.
 pagefind: false
 ---
 
@@ -85,6 +85,71 @@ and return `response.content` of `Hello from nxusKit CE`, `response.provider`
 of `loopback`, and `response.model` of `echo`. If the executable is missing or
 reports a different version, check the selected bundle path rather than using
 an unrelated global CLI. This checks the local CE call, not Pro activation.
+
+## Activate a purchased Pro license
+
+If you already own an eligible v2 Pro license, open
+[My Products](https://nxus.systems/my/products) with the account that made the
+purchase. Use the Purchase ID / Activation Key shown for that purchase.
+New Pro purchases remain temporarily closed during this rollout.
+
+First sign in from the extracted v2 bundle:
+
+```bash
+"$NXUSKIT_CLI" license login
+```
+
+```powershell
+& $env:NXUSKIT_CLI license login
+```
+
+The CLI displays a device code in the terminal and opens the authorization
+page in your browser. Make sure the browser is signed in with the purchasing
+account, enter that code, and authorize the device. Keep the terminal open
+until sign-in completes.
+
+Read the [EULA](https://nxus.systems/legal/eula). If you accept it, replace
+`<your-purchase-id>` below with your Purchase ID / Activation Key and activate:
+
+```bash
+"$NXUSKIT_CLI" license activate --key "<your-purchase-id>" --accept-eula --json
+"$NXUSKIT_CLI" license status --json
+```
+
+```powershell
+& $env:NXUSKIT_CLI license activate --key '<your-purchase-id>' --accept-eula --json
+& $env:NXUSKIT_CLI license status --json
+```
+
+Activation updates the existing local license cache at
+`~/.nxuskit/license.token`. The activation response should report `success`
+as `true`. Inspect the status output for a valid license and Pro edition;
+a successful status command alone does not establish Pro access.
+
+### Run a Pro Solver check
+
+From the same bundle, solve this small constraint problem:
+
+```bash
+"$NXUSKIT_CLI" solver solve --input - --format json <<'SMT'
+(declare-const x Int)
+(assert (= x 7))
+(check-sat)
+(get-model)
+SMT
+```
+
+```powershell
+@'
+(declare-const x Int)
+(assert (= x 7))
+(check-sat)
+(get-model)
+'@ | & $env:NXUSKIT_CLI solver solve --input - --format json
+```
+
+The result should be satisfiable with `x` equal to `7`. This checks the
+licensed Solver capability using the installed bundle.
 
 ## Migrate from v1.0.5
 
