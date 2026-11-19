@@ -151,6 +151,41 @@ SMT
 The result should be satisfiable with `x` equal to `7`. This checks the
 licensed Solver capability using the installed bundle.
 
+### Recover sign-in or activation
+
+Use the same extracted v2 executable for these recovery commands.
+
+- **Sign-in expired:** repeat `license login` above, authorizing the browser
+  with the purchasing account.
+- **Wrong account:** run `license logout`, switch the browser to the purchasing
+  account, then repeat `license login`. Logging out of authentication does not
+  free an activated machine seat.
+- **Cached developer token expired or needs refreshing:** run the explicit sync
+  below, then inspect status again. If no cached token exists, use the activation
+  command above with the same owned Purchase ID / Activation Key.
+
+```bash
+"$NXUSKIT_CLI" license sync --json
+"$NXUSKIT_CLI" license status --json
+```
+
+```powershell
+& $env:NXUSKIT_CLI license sync --json
+& $env:NXUSKIT_CLI license status --json
+```
+
+If the service reports that no seats remain, free a seat only when you intend
+to stop using an existing machine: run `deactivate` with that machine's v2 CLI
+and confirm it succeeds, then activate the new machine. Deleting a local token
+file does not release the server-side seat. If that machine is unavailable,
+contact nxus.SYSTEMS support.
+
+For a network or service error, retry activation with the same purchase after
+the connection or service recovers. For an ownership or inactive-purchase error,
+check the purchasing account and active purchase in My Products; contact support
+if the problem remains. A perpetual purchase's maintenance/support date is
+separate from the cached developer token's expiry.
+
 ## Migrate from v1.0.5
 
 1. Keep your working [v1.0.5 bundle](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
