@@ -1,10 +1,13 @@
 ---
 title: nxusKit SDK
-description: Install and build with nxusKit across LLM providers, CLIPS, Bayesian networks, Solver/Z3, ZEN, Python, C ABI, and CLI/Bash workflows.
+description: Install nxusKit v2.0.0, run a Community Edition first call, and activate Pro Solver across the supported developer surfaces.
 ---
 
 nxusKit is a unified, type-safe SDK for calling LLM providers (Claude, OpenAI, Ollama, and more),
-CLIPS rule engines, Z3 constraint solvers, Bayesian networks, and ZEN decision tables — from Rust, Go, Python, and the C ABI.
+CLIPS rule engines, Z3 constraint solvers, and Bayesian networks — from Rust, Go, Python, and the C ABI.
+
+This is the v2.0.0 documentation. The initial Pro launch capability is Solver;
+new Pro purchases remain paused.
 
 ## Start Here
 
@@ -13,13 +16,14 @@ Install the SDK, configure credentials, and run your first request:
 - [Installation](/nxuskit/getting-started/installation/)
 - [First Call](/nxuskit/getting-started/first-call/)
 - [Authentication](/nxuskit/getting-started/authentication/)
+- [Pro activation and recovery](/sdk/v2-0-0/#activate-a-purchased-pro-license)
 
 ## High-Value References
 
 - [CLI input format reference](/nxuskit/reference/cli-reference/) - JSON schemas and local loopback examples for `nxuskit-cli`.
 - [Local LLM providers](/nxuskit/reference/providers/local-llms/) - Ollama, LM Studio, llama.cpp, and mistral.rs setup.
 - [Licensing](/nxuskit/concepts/licensing/) - Pro activation, entitlement checks, and offline-first license validation.
-- [Changelog](/nxuskit/reference/changelog/) - current v1.x packaging, docs, Python, and CLI release notes.
+- [Changelog](/nxuskit/reference/changelog/) - v2.0.0 and retained historical release notes.
 - [Examples catalog](/nxuskit/examples/) - runnable patterns and integrations across supported languages and CLI/Bash.
 
 ## Browse by Task

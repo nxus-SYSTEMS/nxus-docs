@@ -1,6 +1,6 @@
 ---
 title: "Changelog"
-description: "Release notes for nxusKit SDK versions, including current v1.x packaging, docs, CLI, and compatibility changes."
+description: "Release notes for nxusKit SDK v2.0.0 and earlier versions."
 ---
 
 All notable changes to this project will be documented in this file.
@@ -12,7 +12,116 @@ Public SDK release tags begin at `sdk-v0.9.0`. Earlier entries preserve
 pre-public development history with normalized pre-public version numbers after
 historical version resets.
 
+## [2.0.0] - 2026-07-15
+
+### Changed
+
+- Prepared lockstep v2.0.0 package metadata across the Rust SDK and C ABI,
+  Go SDK, and Python SDK. This entry does not claim publication, availability,
+  or a public release.
+
+- `nxuskit-cli doctor --json` now emits `captured_at` as the actual UTC command
+  capture time instead of the pre-RC deterministic epoch placeholder.
+- SDK 2.0.0 downstream-consumer documentation identifies the v1.1 contract
+  `nxuskit::contract::v1_1` as the authority for ActionEnvelope, ActionResult,
+  reference DTOs, readiness, artifact/history envelopes, regulated workflow
+  packets, pipeline definitions, and tool semantics. Pre-RC feature-105/WIP
+  gating language is superseded by `contract_version = "1.1"`.
+
 ## [Unreleased]
+
+### Package qualification controls
+
+- Pro package workflows bind one exact source/driver revision, immutable
+  catalog/verifier inputs, producer tools and the inner archive checksum to
+  extracted-consumer results. Windows qualification requires the two supported
+  Pro prerequisites, not CE build success. Installation examples distinguish
+  historical qualification from current-source proof. These source changes do
+  not claim new package availability, platform qualification or publication.
+
+### Dependency and compiler compatibility repairs
+
+- Rust source builds require Rust 1.94 or newer. The Rust wrapper pins the
+  official async-trait 0.1.92 repair, preserving object-safe async traits and
+  genuine unused Future/Result diagnostics without SDK lint suppressions.
+- Updated the affected LRU, MCP, XML, Rustls, signing, and async-runtime
+  dependency families. The SDK and shared licensing client use the coordinated
+  JWT AWS-LC backend; token claims, key-ID enforcement, and denial behavior are
+  not relaxed. The C ABI is unchanged.
+- Source distributions retain attributed Candle ZIP-reader and ZEN parent
+  repairs under the engine workspace's `third-party/` directory. Build the
+  shipped workspace with its lock and patch tables intact; copying an internal
+  engine crate alone is not the supported Rust SDK delivery shape.
+- ZEN still rejects every JavaScript Function node before evaluation. Unused
+  private Function HTTP IAM authentication now fails explicitly without
+  credential discovery or unsigned fallback. Supported in-memory decision
+  tables, expressions, switches, and ordinary LLM providers are not removed.
+- Removed an unused development-only pprof declaration and its inferno/XML
+  dependency path; existing Criterion benchmark code is unchanged. This does
+  not remove an implemented profiling feature or announce new profiling tools.
+- Moved catalog/CLI YAML parsing to maintained serde_yaml_bw 2.5.8. The internal
+  dependency alias remains `serde_yaml_ng`; the resolved package identity is
+  explicit. Catalog values and aliases, unsigned limits, CLI structured output,
+  and malformed/duplicate/tagged-input rejection have focused compatibility
+  coverage. This is not a C ABI or licensing-policy change.
+- These are candidate-source changes, not a publication, platform qualification,
+  or release-acceptance claim. Exact package/native and CI qualification remains
+  required; retained maintenance warnings are reported separately.
+- Residual maintenance risk remains in the optional model graph: `fxhash` is
+  selected by `bm25`; `number_prefix` by the Mistral 0.7 `indicatif` path; and
+  `paste` by the Candle/Mistral GEMM, SIMD, tokenizer, and image families. Current
+  upstream parent releases do not jointly eliminate those paths. A Mistral
+  upgrade would remove only one warning while changing model dependencies and
+  qualification scope. Follow up on coordinated maintained-parent migrations;
+  no advisory ignore, security waiver, provider removal, or GA risk acceptance
+  is implied by retaining these explicitly reported maintenance warnings.
+
+### Prerelease source migration — optional sampling controls
+
+- Rust wrapper and engine `ChatRequest` now include optional `top_k: Option<i64>`
+  and `min_p: Option<f64>`. Explicit Rust struct literals must add both fields
+  (normally `None`) or use the existing constructor/default pattern. Omitted
+  fields remain absent from serialized JSON; no C ABI layout or signature changes.
+- Ollama accepts `top_k` from 1 through 2147483647 and finite `min_p` from 0
+  through 1 in unary and streaming requests. Unqualified legacy providers reject
+  supplied values explicitly rather than silently dropping them. Python native
+  and FFI sync/async request bindings preserve the same controls.
+
+### Prerelease source migration — signed request seeds
+
+- Rust `ChatRequest.seed` in the user-facing wrapper and engine is now
+  `Option<i64>`, matching the canonical signed 64-bit request contract. Rust
+  callers with `u64` variables must use a checked `i64::try_from` conversion;
+  values above `i64::MAX` are no longer representable. JSON outside the signed
+  range is rejected, never wrapped or truncated. Omitted seeds remain omitted.
+- OpenAI/Ollama transport bindings preserve signed values. This is not a claim
+  that every provider supports every seed: the local llama.cpp sampler retains
+  its unsigned 32-bit domain and explicitly rejects values outside it.
+- C ABI entry points and binary layouts are unchanged; the existing JSON
+  request field carries the signed value. No release or publication is implied.
+
+### Prerelease source migration — terminal result DTOs
+
+- Legacy finish reasons retain their existing five variants. Chat responses and
+  stream chunks carry optional `raw_finish_reason` (`RawFinishReason` in Go);
+  stream chunks also carry explicit `terminal` (`Terminal` in Go). An unknown
+  or absent canonical reason stays absent rather than becoming `Stop`.
+- Rust callers constructing public response/chunk struct literals must provide
+  the new fields or use the existing constructors. Go callers using unkeyed
+  literals must migrate to keyed literals. Python's new stream `terminal`
+  argument is defaulted and keyword-only, preserving positional construction.
+- Existing JSON without the new fields remains readable. `is_final`/`IsFinal`
+  accepts explicit terminality or a legacy finish reason; consumers must not
+  infer completion solely from a known reason. Errors remain errors, not a
+  successful terminal chunk.
+- These are prerelease source/JSON changes, not C ABI layout or entry-point
+  changes. They do not announce publication or release acceptance.
+- Selected OpenRouter/Perplexity response fields use optional `provider_metadata`
+  (`ProviderMetadata` in Go) on unary and successful terminal results. Rust
+  struct-literal callers must initialize this optional field; Python additions
+  are defaulted/keyword-only. The fixed initial metadata envelope limit is
+  65,536 compact UTF-8 bytes and depth 16; exceeding it errors without truncation
+  or successful terminal output. This is not a whole-body/frame allocation bound.
 
 ## [1.0.5] - 2026-06-16
 

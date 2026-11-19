@@ -1,23 +1,24 @@
 ---
 title: "CLI Input Format Reference"
-description: "JSON input schemas, loopback examples, and Pro-gated Solver/ZEN command contracts for every Level 1 nxuskit-cli command."
+description: "JSON input schemas, local first-call examples, and command contracts for nxuskit-cli."
 ---
 
 Single source of truth for every Level 1 `nxuskit-cli` command's input schema,
-with local loopback examples where the command can succeed without a semantic
-LLM response.
+with copy-paste runnable examples using the loopback provider.
 
-All commands accept `--input -` for stdin and `--format json` (default).
-Output is wrapped in a `ResponseEnvelope` with `trace_id`, `request_metadata`,
-and timing fields.
+Input-taking commands generally accept `--input -` for stdin; `solver what-if`
+uses `--problem -` plus `--assume`. Inspect the
+specific command's `--help` for its options and output formats. There is no
+universal response envelope for every CLI command. Current `call` JSON uses
+`response`, descriptor, finish, usage and trace fields; other engine commands
+may use `result`. Licensing commands use their own JSON shapes and diagnostic
+semantics, described in the [activation guide](/nxuskit/concepts/licensing/).
+Use the exact executable selected in [Installation](/nxuskit/getting-started/installation/), not
+an ambient SDK from another version.
 
-Loopback examples that are intended to execute locally use explicit loopback
-model names. In nxusKit CLI v1.0.x, do not rely on an omitted model resolving
-to `"default"` for the `loopback` provider; use `"echo"` for plain echo tests
-or `"echo-json-native"` when you need a loopback model that advertises native
-JSON support. Commands that require a semantic structured answer, such as
-`judge select`, should use a configured non-loopback LLM provider because
-loopback models echo the prompt.
+This is a compiled command reference, not an initial GA support matrix. The
+initial supported Pro launch capability is Solver; other compiled Pro domains
+remain outside that launch promise. See [Tier Comparison](/nxuskit/concepts/tier-system/).
 
 ---
 
@@ -64,7 +65,7 @@ LLM invocation. Accepts either `prompt` (single-turn) or `messages` (multi-turn)
 | `messages` | array of `{role, content}` | no | Multi-turn conversation messages |
 | `system` | string | no | System message prepended to the conversation |
 | `provider` | string | no | Provider name (default: `loopback`, or `$NXUSKIT_PROVIDER`) |
-| `model` | string | no | Model identifier. For `loopback`, use a valid loopback model such as `"echo"` or `"echo-json-native"`; do not rely on the implicit `"default"` model in v1.0.x. |
+| `model` | string | no | Model identifier (default: `"default"`) |
 | `tool_definitions` | array of JSON objects | no | Tool/function schemas passed to the LLM |
 | `tool_choice` | JSON value | no | Provider-compatible tool choice policy passed with `tool_definitions` |
 | `response_format` | object | no | Response format constraint: `{"type":"text"}`, `{"type":"json_object"}`, or `{"type":"json_schema","schema":{...}}` |
@@ -78,9 +79,25 @@ At least one of `prompt` or `messages` should be provided.
 **Example:**
 
 ```bash
+: "${NXUSKIT_CLI:?Set the absolute selected nxuskit-cli path}"
 echo '{"prompt": "Hello", "provider": "loopback", "model": "echo"}' \
-  | nxuskit-cli call --input - --format json
+  | "$NXUSKIT_CLI" call --input - --format json
 ```
+
+This is a credential-free local fixture, not a live-provider call. The literal
+stable output subset is:
+
+```json
+{
+  "response": {"content": "Hello", "model": "echo", "provider": "loopback"},
+  "canonical_finish": "stop"
+}
+```
+
+The complete envelope also includes `descriptor`, `raw_finish`, `usage`,
+`trace_id`, `timestamp`, `request_hash` and `request_metadata`. Generated trace
+and timing values vary. Read content from `response.content`, not `result.content`.
+Streaming uses its own incremental JSONL events, not this single JSON object.
 
 **Common errors:**
 
@@ -621,7 +638,7 @@ echo '{
 - `Failed to load dataset '...': ...` -- Fix: CSV column headers must match the network's variable names; cell values must match declared states (empty / `?` cells are treated as missing).
 - `Unknown learner '...'. Valid: mle, bayesian` -- Fix: use one of the two supported learners.
 
-**Excluded from v1.0.x:** structure *search* (`hill_climb` / `k2`) is engine-only, not a CLI surface; streaming; team-runtime lineage.
+**Excluded from v0.9.4:** structure *search* (`hill_climb` / `k2`) is engine-only, not a CLI surface; streaming; team-runtime lineage.
 
 ---
 
@@ -697,13 +714,13 @@ echo '{
     {
       "name": "generate",
       "type": "llm",
-      "config": {"prompt": "Say hello", "provider": "loopback", "model": "echo"},
+      "config": {"prompt": "Say hello", "provider": "loopback"},
       "output_key": "llm_result"
     },
     {
       "name": "evaluate",
       "type": "llm",
-      "config": {"prompt": "Summarize: {{llm_result}}", "provider": "loopback", "model": "echo"}
+      "config": {"prompt": "Summarize: {{llm_result}}", "provider": "loopback"}
     }
   ]
 }' | nxuskit-cli pipeline run --input - --format json
@@ -832,7 +849,7 @@ converges (stops requesting tool calls) or hits `max_iterations`.
 |-------|------|----------|-------------|
 | `prompt` | string | **yes** | Initial user prompt |
 | `provider` | string | no | Provider name (default: `loopback` or `$NXUSKIT_PROVIDER`) |
-| `model` | string | no | Model identifier. For `loopback`, use a valid loopback model such as `"echo"`; do not rely on the implicit `"default"` model in v1.0.x. |
+| `model` | string | no | Model identifier (default: `"default"`) |
 | `max_iterations` | u32 | no | Maximum loop iterations (default: `10`) |
 | `tools` | array of strings | no | Tool adapter names: `"file_reader"`, `"calculator"`, `"web_search"` |
 | `tool_configs` | JSON object | no | Per-tool configuration |
@@ -850,7 +867,6 @@ Built-in tool adapters:
 echo '{
   "prompt": "What is 2 + 2?",
   "provider": "loopback",
-  "model": "echo",
   "tools": ["calculator"],
   "max_iterations": 5
 }' | nxuskit-cli tool-loop run --input - --format json
@@ -876,7 +892,7 @@ parses a structured JSON response with scores and reasoning.
 | `candidates` | array of `Candidate` | **yes** | Candidates to evaluate |
 | `criteria` | string | no | Evaluation criteria description |
 | `provider` | string | no | Provider name (default: `"loopback"`) |
-| `model` | string | no | Model identifier. Use a configured LLM model; `loopback` echoes the judge prompt and can fail structured parsing. |
+| `model` | string | no | Model identifier (default: `"default"`) |
 
 **`Candidate` fields:**
 
@@ -894,8 +910,7 @@ echo '{
     {"id": "b", "content": "The answer is approximately 42.0."}
   ],
   "criteria": "accuracy and conciseness",
-  "provider": "your-provider",
-  "model": "your-json-capable-model"
+  "provider": "loopback"
 }' | nxuskit-cli judge select --input - --format json
 ```
 
@@ -927,7 +942,7 @@ comma-separated list, which overrides the `models` field in the JSON input.
 ```bash
 echo '{
   "prompt": "Explain recursion in one sentence.",
-  "models": ["echo", "echo-json-native"],
+  "models": ["model-a", "model-b"],
   "provider": "loopback"
 }' | nxuskit-cli branch fork --input - --format json
 ```
@@ -935,8 +950,8 @@ echo '{
 **Using `--models` flag:**
 
 ```bash
-echo '{"prompt": "Explain recursion.", "provider": "loopback"}' \
-  | nxuskit-cli branch fork --input - --models echo,echo-json-native --format json
+echo '{"prompt": "Explain recursion."}' \
+  | nxuskit-cli branch fork --input - --models model-a,model-b --format json
 ```
 
 **Common errors:**
@@ -976,7 +991,7 @@ output of `branch fork` (the `BranchForkResult` object).
 ```bash
 echo '{
   "prompt": "Explain recursion.",
-  "models": ["echo", "echo-json-native"],
+  "models": ["model-a", "model-b"],
   "provider": "loopback"
 }' | nxuskit-cli branch fork --input - --format json \
    | jq '.result' \
@@ -999,13 +1014,14 @@ variant, then outputs a diff of the results.
 
 | Argument | Type | Required | Description |
 |----------|------|----------|-------------|
-| `--input` | string | **yes** | Base problem file or `-` for stdin (any solver format) |
-| `--compare` | string | no | Assumed variant file (same format as `--input`). Enables diff output. |
+| `--problem` | string | **yes** | Base problem file or `-` for stdin (any solver format) |
+| `--assume` | string | **yes** | Additional constraint expression, e.g. `headcount == 12` |
+| `--compare` | flag | no | Include the base-versus-assumed diff |
 | `--format` | string | no | Output format: `json` (default), `yaml`, `text` |
 
 **Single what-if (no comparison):**
 
-Returns the solution to the assumed scenario, identical in shape to `solver solve` output.
+Returns `base_result`, `assumed_result` and `assumption`; `diff` is omitted without `--compare`.
 
 ```bash
 echo '{
@@ -1013,32 +1029,36 @@ echo '{
     {"name": "budget", "type": "integer", "bounds": [{"min": 0}, {"max": 100000}]},
     {"name": "headcount", "type": "integer", "bounds": [{"min": 1}, {"max": 20}]}
   ],
-  "constraints": ["budget == headcount * 5000"],
-  "assumptions": [{"name": "assume_headcount", "constraint_type": "eq", "params": {"left": "headcount", "right": 12}}]
-}' | nxuskit-cli solver what-if --input - --format json
+  "constraints": ["budget == headcount * 5000"]
+}' | nxuskit-cli solver what-if --problem - --assume "headcount == 12" --format json
 ```
 
 **Comparison (`--compare`):**
 
-Solves both the base (from `--input`) and the assumed variant (from `--compare`),
-then emits a `diff` block showing changed variables and the objective delta.
+Solves the base from `--problem` and the variant formed by adding `--assume`,
+then includes a `diff` block showing satisfiability and variable changes.
 
 ```bash
-nxuskit-cli solver what-if --input base.json --compare assumed.json --format json
+nxuskit-cli solver what-if --problem base.json --assume "headcount == 15" --compare --format json
 ```
 
-**Output shape (comparison):**
+**Illustrative `result` member of the output envelope (comparison):**
+
+The command wraps this object under `result` with trace fields. Assignments
+depend on the problem and the solver's selected solution; these
+values are not a guaranteed result of the example command.
 
 ```json
 {
-  "base": { "status": "sat", "values": {"budget": 60000, "headcount": 12} },
-  "assumed": { "status": "sat", "values": {"budget": 75000, "headcount": 15} },
+  "base_result": { "satisfiable": true, "assignments": {"budget": 60000, "headcount": 12} },
+  "assumed_result": { "satisfiable": true, "assignments": {"budget": 75000, "headcount": 15} },
+  "assumption": "headcount == 15",
   "diff": {
-    "changed": [
-      {"variable": "budget", "base": 60000, "assumed": 75000, "delta": 15000},
-      {"variable": "headcount", "base": 12, "assumed": 15, "delta": 3}
-    ],
-    "objective_delta": 15000
+    "satisfiability_changed": false,
+    "variables_changed": [
+      {"name": "budget", "base_value": 60000, "assumed_value": 75000},
+      {"name": "headcount", "base_value": 12, "assumed_value": 15}
+    ]
   }
 }
 ```
@@ -1046,8 +1066,8 @@ nxuskit-cli solver what-if --input base.json --compare assumed.json --format jso
 **Common errors:**
 
 - `Entitlement check failed: solver_what_if` -- Fix: requires Pro edition.
-- `Cannot parse base input` -- Fix: ensure `--input` is a valid solver format.
-- `Cannot parse assumed input` -- Fix: ensure `--compare` file uses the same solver format as `--input`.
+- Invalid problem input -- Check the file supplied to `--problem`.
+- Invalid constraint syntax -- Supply a supported comparison expression to `--assume`.
 
 ---
 
@@ -1227,8 +1247,12 @@ nxuskit-cli provider info openai --format json
 
 ### Error responses
 
-All non-zero exits write a JSON `ErrorEnvelope` to **stderr**. Stdout may be
-empty or contain partial output.
+Runtime command handlers using the shared `CliError` formatter write a JSON
+`ErrorEnvelope` to **stderr**. Stdout may be empty or contain partial output.
+This is not universal: argument-parser errors/help have parser output, and
+licensing commands use command-specific JSON/error handling. In particular,
+`license status --json` can exit 0 while reporting an absent/invalid license.
+Never infer licensed runtime success from that diagnostic exit alone.
 
 ```json
 {
@@ -1249,10 +1273,10 @@ empty or contain partial output.
 | `code` | string | Machine-readable error code |
 | `message` | string | Human-readable description |
 | `details` | object | Optional structured context (tier info, field names, session IDs, etc.) |
-| `trace_id` | string | 8-character hex trace ID |
+| `trace_id` | string | Generated trace identifier; do not assume a fixed length |
 | `timestamp` | string | ISO 8601 UTC timestamp |
 
-**Exit code -> `code` mapping (Level 1 and Level 2):**
+**Shared runtime-handler exit code -> `code` mapping (Level 1 and Level 2):**
 
 | Exit | `code` values |
 |------|--------------|
@@ -1264,6 +1288,7 @@ empty or contain partial output.
 | 5 | `validation`, `validation_error`, `parse_error`, `unknown_provider`, `unknown_session`, `zen_validate_error`, `zen_test_mismatch`, `zen_test_eval_error` |
 | 130 | `cancelled` (SIGINT) |
 
-The exit-code set itself is frozen (FR-001 / Article IV): Level 2 commands like
+This shared-handler exit-code set is frozen (FR-001 / Article IV), not a
+universal parser/licensing taxonomy. Level 2 commands like
 `zen validate` / `zen test` introduce new `code` strings within exit 5, not new
 exit codes.

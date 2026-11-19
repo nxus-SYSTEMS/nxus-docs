@@ -1,175 +1,78 @@
 ---
-title: First Call
-description: Make your first LLM call with nxusKit in Rust, Go, Python, or the C ABI.
+title: "First Call"
+description: "Run a first call with nxusKit SDK v2.0.0 using the authoritative package instructions."
 ---
 
-This guide assumes you have installed the SDK and configured at least one
-provider credential. If you have not done that yet, start with
-[Installation](/nxuskit/getting-started/installation/) and
-[Authentication](/nxuskit/getting-started/authentication/).
+This first call uses the local `loopback` fixture provider. It makes no live
+LLM/provider request, requires no API key or license token, and proves only the
+local CLI/request/response path. It is not a live-provider qualification or a
+Pro activation proof.
 
-## Fastest Path: CLI
+## Select the exact local executable
 
-Set a provider API key, then send a single chat request:
+For a CE source build, follow [Installation](/nxuskit/getting-started/installation/) and set
+`NXUSKIT_CLI` to the absolute path of that build's `nxuskit-cli`. On Windows,
+the executable is `nxuskit-cli.exe`.
 
-```bash
-export OPENAI_API_KEY="sk-..."
-
-nxuskit-cli chat \
-  --provider openai \
-  --model gpt-4o \
-  "Say hello from nxusKit in one sentence."
-```
-
-For structured shell workflows, use the Level 1 `call` command:
+For a checksum-verified v2.0.0 SDK bundle, select its exact extracted
+executable. This CE call needs no license, even in the Pro-capable bundle:
 
 ```bash
-echo '{"provider":"openai","model":"gpt-4o","prompt":"Say hello from nxusKit."}' \
-  | nxuskit-cli call --input - --format json
+: "${NXUSKIT_SDK_DIR:?Set the absolute verified SDK bundle directory}"
+export NXUSKIT_CLI="$NXUSKIT_SDK_DIR/bin/nxuskit-cli"
+"$NXUSKIT_CLI" --version
 ```
 
-## Rust
+Expected version output: `nxuskit-cli 2.0.0`. Do not substitute an ambient
+`nxuskit-cli` from another installation. On Windows select
+`bin/nxuskit-cli.exe` in the verified bundle.
 
-Use the Rust wrapper bundled with the SDK as a path dependency:
+## Run the credential-free local fixture
 
-```toml
-# Cargo.toml
-[dependencies]
-nxuskit = { path = "/absolute/path/to/nxuskit-sdk-{version}-{platform}/rust" }
-```
+The example explicitly selects the fixture provider and `echo` model, so an
+ambient provider default cannot redirect it to a live service. The local CE
+call requires neither developer activation nor an EULA acceptance flag.
+`--accept-eula` belongs to activation commands, not this call.
 
-```rust
-use nxuskit::{ChatRequest, Message, NxuskitProvider, ProviderConfig};
-
-fn main() -> Result<(), nxuskit::NxuskitError> {
-    let provider = NxuskitProvider::new(ProviderConfig {
-        provider_type: "openai".into(),
-        ..Default::default()
-    })?;
-
-    let request = ChatRequest::new("gpt-4o")
-        .with_message(Message::user("Say hello from Rust."))
-        .with_max_tokens(100);
-
-    let response = provider.chat(request)?;
-    println!("{}", response.content);
-    Ok(())
-}
-```
-
-## Go
-
-Add the Go wrapper and alias the package as `nxuskit` in your import block:
-
+<!-- executable: ce-first-call -->
 ```bash
-go get github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go
+: "${NXUSKIT_CLI:?Set the absolute nxuskit-cli path from your selected source build or bundle}"
+"$NXUSKIT_CLI" call --input - --format json <<'JSON'
+{"prompt":"Hello from nxusKit CE","provider":"loopback","model":"echo"}
+JSON
 ```
 
-```go
-package main
+The command exits 0 and returns a JSON envelope. Its literal result fields are:
 
-import (
-    "context"
-    "fmt"
-    "os"
-
-    nxuskit "github.com/nxus-SYSTEMS/nxusKit/packages/nxuskit-go"
-)
-
-func main() {
-    provider, err := nxuskit.NewOpenAIProvider(
-        nxuskit.WithAPIKey(os.Getenv("OPENAI_API_KEY")),
-    )
-    if err != nil {
-        panic(err)
-    }
-
-    req := nxuskit.ChatRequest{
-        Model: "gpt-4o",
-        Messages: []nxuskit.Message{
-            {Role: nxuskit.RoleUser, Content: "Say hello from Go."},
-        },
-    }
-
-    resp, err := provider.Chat(context.Background(), req)
-    if err != nil {
-        panic(err)
-    }
-
-    fmt.Println(resp.Content)
-}
+```json
+{"content":"Hello from nxusKit CE","model":"echo","provider":"loopback"}
 ```
 
-## Python
+These fields occur under `response`, not at the envelope root. The envelope also
+contains `trace_id`, timing/usage information and `request_metadata.command`
+equal to `call`. Generated IDs/timestamps are not fixed expected values.
 
-Install the Python package from PyPI, then create a provider and call it:
+PowerShell users can run the equivalent stdin call:
 
-```bash
-python -m pip install "nxuskit-py==1.0.5"
-export OPENAI_API_KEY="sk-..."
+```powershell
+'{"prompt":"Hello from nxusKit CE","provider":"loopback","model":"echo"}' |
+  & $env:NXUSKIT_CLI call --input - --format json
 ```
 
-```python
-from nxuskit import Provider
+## Next steps and failure boundaries
 
-provider = Provider.create("openai")
-response = provider.chat(
-    model="gpt-4o",
-    messages=[{"role": "user", "content": "Say hello from Python."}],
-    max_tokens=100,
-)
+- For a real cloud provider, configure that provider's credentials explicitly
+  and consult [Authentication](/nxuskit/getting-started/authentication/). Such a call may be
+  billable and is not part of this fixture.
+- For all request fields and error envelopes, see the
+  [CLI input reference](/nxuskit/reference/cli-reference/).
+- A missing executable means the selected source build/package path is wrong;
+  do not fall back to a global installation. A nonzero exit or error envelope
+  is not success, even if some output was printed.
+- This CE call does not demonstrate Pro entitlement. `license status --json`
+  is diagnostic, and a successful activation acknowledgment alone is not
+  proof that a local token and intended Pro operation validate.
 
-print(response.content)
-```
-
-The import module is `nxuskit`. `Provider` is the Python factory used to create
-providers. `LLMProvider` is the protocol/type contract for provider
-implementations; it is not an alias for `Provider`.
-
-Native CLIPS, Bayesian network, and FFI-backed features also require a
-compatible SDK bundle and `NXUSKIT_SDK_DIR`. Solver and ZEN require the Pro SDK
-package plus a valid Pro entitlement.
-
-## C
-
-The SDK bundle includes `include/nxuskit.h` and platform libraries under
-`lib/`. Compile against those files and set the provider API key in the
-environment:
-
-```bash
-export OPENAI_API_KEY="sk-..."
-cc -I "$NXUSKIT_SDK_DIR/include" \
-  -o basic_chat basic_chat.c \
-  -L "$NXUSKIT_SDK_DIR/lib" \
-  -lnxuskit \
-  -Wl,-rpath,"$NXUSKIT_SDK_DIR/lib"
-```
-
-Use the [C ABI Reference](/nxuskit/reference/api-reference/) for function,
-ownership, and error-handling details.
-
-## Local Providers
-
-Local providers do not require API keys:
-
-```bash
-# Ollama default
-export OLLAMA_HOST="http://localhost:11434"
-
-# LM Studio default
-export LMSTUDIO_HOST="http://localhost:1234/v1"
-```
-
-Use [Local LLM Providers](/nxuskit/reference/providers/local-llms/) for model
-setup and provider-specific options.
-
-## Next Steps
-
-| Goal | Read |
-|------|------|
-| Configure credentials | [Authentication](/nxuskit/getting-started/authentication/) |
-| Browse runnable projects | [Examples](/nxuskit/examples/) |
-| Stream responses | [Streaming](/nxuskit/guides/streaming/) |
-| Choose a provider | [Provider Model](/nxuskit/concepts/provider-model/) |
-| Use CLI JSON contracts | [CLI Input Format Reference](/nxuskit/reference/cli-reference/) |
-| Integrate through native boundaries | [C ABI Reference](/nxuskit/reference/api-reference/) |
+Language SDK examples are in [Getting Started](/nxuskit/getting-started/installation/). Package
+bindings must resolve their native library from the selected build/bundle,
+not an unrelated global SDK installation.

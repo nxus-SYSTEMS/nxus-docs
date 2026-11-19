@@ -232,7 +232,7 @@ response, err := provider.Chat(ctx, &nxuskit-go.ChatRequest{
 ### Via C ABI (Python)
 
 ```python
-from nxuskit._ffi_provider import create_ffi_provider
+from nxuskit-py._ffi_provider import create_ffi_provider
 
 provider = create_ffi_provider({
     "provider_type": "z3",

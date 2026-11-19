@@ -4,8 +4,8 @@ description: Verify and install the v2.0.0 SDK bundle, run a local Community Edi
 pagefind: false
 ---
 
-nxusKit v2.0.0 is rolling out. This versioned guide covers the v2 bundles;
-v1.0.5 remains the current/default documentation.
+This versioned guide covers the nxusKit v2.0.0 bundles. For the previous
+release, use the [v1.0.5 documentation](/v1.0.5/nxuskit/getting-started/installation/).
 
 ## Download and verify
 
@@ -189,8 +189,8 @@ separate from the cached developer token's expiry.
 ## Migrate from v1.0.5
 
 1. Keep your working [v1.0.5 bundle](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
-   and configuration intact so you can return to them. While v1.0.5 is the
-   default, its [installation guide](/nxuskit/getting-started/installation/)
+   and configuration intact so you can return to them. Its
+   [archived installation guide](/v1.0.5/nxuskit/getting-started/installation/)
    still applies to that bundle.
 2. Install v2 side by side and run the CE check above. Point your application
    and any native library or wrapper paths at the same extracted v2 bundle.

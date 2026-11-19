@@ -1,0 +1,11 @@
+{
+  "sidebar": [
+    {
+      "label": "nxusKit SDK",
+      "collapsed": false,
+      "autogenerate": {
+        "directory": "nxuskit"
+      }
+    }
+  ]
+}
