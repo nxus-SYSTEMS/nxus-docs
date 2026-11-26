@@ -10,9 +10,9 @@ to call LLM providers from Rust, Go, Python, or the C ABI.
 
 This guide targets SDK **2.0.0**. Run CE from the downloadable SDK bundle or
 build CE from the public source. No SDK license token is required for CE.
-The downloadable bundle contains Pro capabilities; Solver requires a valid
-paid entitlement. New Pro purchases are paused. Launch Party Pricing details
-will follow. This release does not announce new package-index availability.
+The same bundle runs Pro Solver with a valid v2 Pro entitlement. New Pro
+purchases remain paused. This GitHub release contains platform bundles and a
+CE source archive.
 
 For CE source builds, install Rust/Cargo compatible with the selected source
 lock, a C/C++ toolchain and CMake. The current SDK requires Rust 1.94 or newer;
@@ -46,7 +46,9 @@ CLI from that directory, not a global installation. Continue with the
 
 The bundled guides were frozen at build time. Follow the current release
 notes and this guide for download availability, purchase status and pricing.
-macOS x86_64 is not supported for v2.0.0.
+The v2.0.0 bundle for macOS requires Apple Silicon. On an Intel Mac, keep
+your existing working setup or use a supported v2.0.0 platform. See the [migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
+for code and license changes.
 
 ### Alternative: build CE from public source
 

@@ -66,8 +66,14 @@ Streaming APIs generally emit:
 - **Metadata** — Provider, model, token usage, timing, or trace information when available.
 - **Completion** — Final status, finish reason, or terminal error.
 
-The exact fields vary by provider. Code that handles multiple providers should
-append content chunks as they arrive and treat metadata as optional.
+Append deltas as they arrive. Use `chunk.is_final()` in Rust or Python and
+`chunk.IsFinal()` in Go to recognize completion. A v2 stream can finish
+when `terminal` is true even if the canonical `finish_reason` is absent.
+When available, `raw_finish_reason` preserves the original provider value.
+Treat metadata as optional, and handle stream errors separately from
+successful completion. See the
+[v1.0.5 migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
+for the compatibility details.
 
 ## Error Handling
 

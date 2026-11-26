@@ -1,11 +1,42 @@
 ---
 title: "Upgrade Path"
-description: "Error messages and resolutions when Pro features are unavailable or licenses need updating."
+description: "Migrate from nxusKit v1.0.5 to v2.0.0 and troubleshoot Pro license activation."
 ---
 
 The initial supported Pro launch capability is Solver. This guide distinguishes
 local runtime diagnostics from purchase, activation and recovery service
 behavior. It does not promise that an untested portal journey has succeeded.
+
+## Migrate from v1.0.5 to v2.0.0
+
+Keep your v1.0.5 installation, native library, bindings, and license
+configuration available for recovery. Install v2.0.0 in a separate directory
+and select its CLI by absolute path. Use v2.0.0 headers, bindings, and native
+library together. The v2.0.0 bundle for macOS requires Apple Silicon. On an
+Intel Mac, keep your existing working setup or use a supported v2.0.0 platform.
+
+- **Rust.** Source builds and Rust consumers require Rust 1.94 or later.
+  `ChatRequest.seed` changed from `Option<u64>` to `Option<i64>`. Convert
+  existing `u64` values with `i64::try_from` and handle out-of-range values.
+  Prefer SDK constructors or defaults when building chat requests, responses,
+  and stream chunks. Rust struct literals must initialize the new fields.
+- **Go and Python.** Use the matching v2.0.0 binding from the bundle or public
+  source. Update Go unkeyed literals for changed response and stream types to
+  use named fields. In Python, install into a new virtual environment. The
+  GitHub release does not publish a v2.0.0 Go module or Python package to an index.
+- **Streaming.** Use the SDK completion helper where available. In structured
+  output, check terminality independently of a recognized finish reason. An
+  absent or unfamiliar provider reason can still end a stream. Handle errors
+  separately from successful completion.
+- **License.** Start with the credential-free [local first call](/nxuskit/getting-started/first-call/).
+  Pro Solver requires a valid v2 Pro entitlement. New Pro purchases remain
+  paused. Review your existing entitlement before activating v2. After
+  activation, `license status --json` reports local status. Confirm the token
+  is valid and run the Solver check for the operation you need.
+
+Keep v1.0.5 selected until the v2.0.0 install and the operations your project
+uses pass. If you need to return to v1.0.5, select its original toolkit and
+matching native library and bindings together.
 
 ## Inspect before changing state
 
@@ -57,14 +88,9 @@ deferred until after the v2.0.0 GA release, with no announced date.
 Already-issued tokens remain subject to the same offline validation checks. See
 [Tier Comparison](/nxuskit/concepts/tier-system/) for the initial offer and support scope.
 
-## Migration and limits
+## Earlier migration guides
 
-Keep the exact old package/token evidence while moving to a selected v2 package.
-Do not relabel a v1 or qualification archive as v2 final distribution. Check ABI
-and SDK versions, native library discovery and the intended entitled operation.
-Follow the [Migration Guide](/nxuskit/migration/clips-session-migration/) for its explicitly versioned
-API changes; historical migration sections are not new v2 API guarantees.
-
-Community workflows remain available without a Pro token. No live purchase,
-seat, renewal, recovery, key-rotation or positive Solver result is established
-by this local diagnostic guide.
+The [CLIPS session migration](/nxuskit/migration/clips-session-migration/)
+applies to the API transition introduced in v0.9.1.
+The [logprobs migration](/nxuskit/migration/logprobs-migration/) describes the
+earlier move to first-class logprobs fields.

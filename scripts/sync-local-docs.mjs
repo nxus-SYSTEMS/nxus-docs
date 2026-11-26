@@ -94,7 +94,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['tier-comparison.md', {
     title: 'Tier System',
-    description: 'Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit.',
+    description: 'Compare nxusKit Community Edition and the initial Pro Solver offering.',
   }],
   ['migration-guide.md', {
     title: 'CLIPS Session Migration',
@@ -106,7 +106,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['upgrade-path.md', {
     title: 'Upgrade Path',
-    description: 'Error messages and resolutions when Pro features are unavailable or licenses need updating.',
+    description: 'Migrate from nxusKit v1.0.5 to v2.0.0 and troubleshoot Pro license activation.',
   }],
   ['CHANGELOG.md', {
     title: 'Changelog',

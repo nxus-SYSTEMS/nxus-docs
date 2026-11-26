@@ -1,6 +1,6 @@
 ---
 title: API Reference
-description: Complete nxusKit SDK API reference.
+description: Overview of nxusKit SDK request and response contracts, with links to native, CLI, and provider references.
 ---
 
 ## Overview
@@ -14,7 +14,10 @@ nxusKit APIs are organized around a small set of shared contracts:
 - **Specialized providers** such as CLIPS and Z3 use structured JSON payloads
   inside the same request/response pattern.
 
-Use this page as the entry point for API-level reference material.
+See the [v1.0.5 migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
+for request and stream changes. Rust consumers of the v1.1 workflow contract
+can import typed definitions from
+[`nxuskit::contract::v1_1`](https://github.com/nxus-SYSTEMS/nxusKit/blob/sdk-v2.0.0/packages/nxuskit/src/contract/v1_1/mod.rs).
 
 In Python, `Provider` is the factory used to create provider instances.
 `LLMProvider` is the protocol/type contract for provider implementations. They

@@ -679,9 +679,29 @@ echo '{
 
 ### `pipeline run`
 
-Sequential multi-stage pipeline execution. Accepts YAML or JSON.
+The CLI accepts YAML or JSON. Inputs with `"contract_version": "1.1"` use
+the v1.1 workflow contract. Other inputs use the existing pipeline format
+described below.
 
-**Input schema (`PipelineDefinition`):**
+#### v1.1 local loopback example
+
+Save the [tagged pipeline fixture](https://raw.githubusercontent.com/nxus-SYSTEMS/nxusKit/sdk-v2.0.0/packages/nxuskit-engine/crates/nxuskit-cli/tests/fixtures/v11_rc_peeler_cli/v11-llm-only.json)
+as `v11-llm-only.json`. Use the executable from your verified v2.0.0 bundle.
+
+```bash
+"$NXUSKIT_CLI" pipeline validate v11-llm-only.json --json
+"$NXUSKIT_CLI" pipeline run --input v11-llm-only.json --format json
+```
+
+Validation checks the definition. The run uses the deterministic local loopback
+provider and returns a structured report. The v1.1 runner uses loopback for
+LLM stages, including fan-out. For a real provider request, use [`call`](#call)
+or a language binding. Use [the CLIPS API](/nxuskit/reference/api-reference/#clips-session-api)
+to execute rules.
+
+#### Existing pipeline format
+
+**Input schema:**
 
 | Field | Type | Required | Description |
 |-------|------|----------|-------------|
