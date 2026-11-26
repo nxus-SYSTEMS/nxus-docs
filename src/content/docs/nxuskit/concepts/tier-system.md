@@ -1,6 +1,6 @@
 ---
 title: "Tier System"
-description: "Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit."
+description: "Compare nxusKit Community Edition and the initial Pro Solver offering."
 ---
 
 Community Edition is free, open source and useful without a Pro entitlement.
@@ -17,7 +17,7 @@ catalog entries are planning inputs, not an offered v2.0.0 GA tier.
 | Edition | Distribution | Initial scope |
 | --- | --- | --- |
 | Community | Public source or the public SDK bundle | Community workflows without an SDK license token |
-| Pro | The same public SDK bundle with a valid paid entitlement | Entitled Solver workflows |
+| Pro | The same public SDK bundle with a valid v2 Pro entitlement | Entitled Solver workflows |
 
 Pro targets are Linux x86_64, macOS ARM64 and Windows x86_64. macOS x86_64 is
 unsupported starting with v2.0.0. Follow [Getting Started](/nxuskit/getting-started/installation/)
@@ -26,9 +26,8 @@ is not a substitute for the selected native bundle.
 
 ## Commercial terms and runtime validity
 
-New Pro purchases are paused. Details about v2.0.0 Launch Party Pricing will
-follow. The public download does not change any existing paid rights, and
-older prices in the bundled guides are not a current offer.
+New Pro purchases remain paused. Existing licenses retain their agreed
+terms. Check [Pricing](https://nxus.systems/pricing) for current offers.
 
 Runtime validity and maintenance/support are separate. Strict deployment-v2
 tokens carry `sdk_release_line`; line 2 covers the v2 major line. Developer-token

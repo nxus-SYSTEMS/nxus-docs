@@ -1,11 +1,28 @@
 ---
 title: Install nxusKit v2.0.0
-description: Verify and install the v2.0.0 SDK bundle, run a local Community Edition first call, activate a purchased Pro license, and migrate from v1.0.5.
+description: Install nxusKit v2.0.0, try Community Edition locally, verify an eligible Pro Solver license, and migrate from v1.0.5.
 pagefind: false
 ---
 
 This versioned guide covers the nxusKit v2.0.0 bundles. For the previous
 release, use the [v1.0.5 documentation](/v1.0.5/nxuskit/getting-started/installation/).
+
+## What changed in v2.0.0
+
+Run Community Edition from one SDK bundle for your platform. The same
+installation runs Pro Solver with a valid v2 Pro entitlement. Start with a
+local first call that needs no model-provider credentials.
+
+The SDK now provides the versioned v1.1 workflow contract, with typed
+definitions and structured results. You can validate a pipeline before
+running its LLM steps through a deterministic local loopback fixture. Use the
+regular [provider call paths](/nxuskit/concepts/provider-model/) for real model
+requests. Try the [v1.1 local loopback example](/nxuskit/reference/cli-reference/#version-11-workflow-contract).
+
+The major version also marks changes to request types and stream completion.
+Check the [v1.0.5 migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
+and [release notes](/nxuskit/reference/changelog/) before moving an existing
+application.
 
 ## Download and verify
 
@@ -18,24 +35,20 @@ Select the archive for your platform:
 | macOS ARM64 (Apple Silicon) | `nxuskit-sdk-2.0.0-pro-macos-arm64.tar.gz` | `bab483f458abc8eabb6bff5f273fd452b626dd92057ee9f9712dd6b0e069331b` |
 | Windows x86_64 | `nxuskit-sdk-2.0.0-pro-windows-x86_64.zip` | `fbb3509a77598b34478d9291f048f5d129f316a5ff36a15418e917e1e67014de` |
 
-`pro` in the filename means the bundle can run Pro features when licensed.
-Community Edition (CE) works from the same bundle without an SDK license.
-New Pro purchases are temporarily closed during this rollout. When purchases
-reopen, an eligible Pro license activates Pro on the same installation.
-macOS x86_64 is not supported in v2.0.0.
-
-**v2.0.0 Launch Party Pricing:** details to follow. No new price or sales
-reopening date is announced here.
+The `pro` archives run Community Edition (CE) without an SDK license.
+Pro Solver requires a valid v2 Pro entitlement. New Pro purchases remain paused.
+The v2.0.0 bundle for macOS requires Apple Silicon. On an Intel Mac, keep
+your existing working setup or use a supported v2.0.0 platform.
 
 These checksums identify the selected binary bundles, not GitHub's generated
 source archives. The public source release and the binary producer have
 separate lineage; a source update does not change these archive bytes.
 
-The bundles' included guides still contain older issuance or replacement
-instructions. Those instructions are superseded: new assisted deployment-token
-issuance and replacement are deferred until after v2.0.0 GA, with no announced
-date. Existing compatible offline verification and ordinary developer
-activation are unchanged.
+Use these online instructions for availability, pricing and license setup.
+Some guides bundled at build time describe older offers and issuance steps.
+New assisted deployment-token issuance and replacement remain deferred,
+with no announced date. Already-issued compatible tokens can still be
+validated offline.
 
 Calculate the SHA-256 before extracting. Run only the command for your archive:
 
@@ -91,7 +104,6 @@ an unrelated global CLI. This checks the local CE call, not Pro activation.
 If you already own an eligible v2 Pro license, open
 [My Products](https://nxus.systems/my/products) with the account that made the
 purchase. Use the Purchase ID / Activation Key shown for that purchase.
-New Pro purchases remain temporarily closed during this rollout.
 
 First sign in from the extracted v2 bundle:
 
@@ -123,8 +135,8 @@ Read the [EULA](https://nxus.systems/legal/eula). If you accept it, replace
 
 Activation updates the existing local license cache at
 `~/.nxuskit/license.token`. The activation response should report `success`
-as `true`. Inspect the status output for a valid license and Pro edition;
-a successful status command alone does not establish Pro access.
+as `true`. Inspect `license status --json` for a valid local Pro license
+and run the Solver check below to confirm access.
 
 ### Run a Pro Solver check
 
@@ -175,8 +187,8 @@ Use the same extracted v2 executable for these recovery commands.
 ```
 
 If the service reports that no seats remain, free a seat only when you intend
-to stop using an existing machine: run `deactivate` with that machine's v2 CLI
-and confirm it succeeds, then activate the new machine. Deleting a local token
+to stop using an existing machine: run `nxuskit-cli deactivate` with that
+machine's v2 CLI. Wait for success before activating the new machine. Deleting a local token
 file does not release the server-side seat. If that machine is unavailable,
 contact nxus.SYSTEMS support.
 
@@ -188,16 +200,7 @@ separate from the cached developer token's expiry.
 
 ## Migrate from v1.0.5
 
-1. Keep your working [v1.0.5 bundle](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
-   and configuration intact so you can return to them. Its
-   [archived installation guide](/v1.0.5/nxuskit/getting-started/installation/)
-   still applies to that bundle.
-2. Install v2 side by side and run the CE check above. Point your application
-   and any native library or wrapper paths at the same extracted v2 bundle.
-   Do not mix a v1 native library with v2 headers or wrappers.
-3. Check the application before switching it over. A legacy deployment token's
-   version ceiling does not satisfy the strict v2 deployment release-line
-   requirement. An already-issued compatible token is still verified under
-   the existing rules. New assisted deployment-token issuance and replacement
-   are deferred until after v2.0.0 GA, with no announced date. Developer
-   activation and existing commercial rights are unchanged.
+Keep your [v1.0.5 bundle](https://github.com/nxus-SYSTEMS/nxusKit/releases/tag/sdk-v1.0.5)
+and [archived instructions](/v1.0.5/nxuskit/getting-started/installation/) available.
+Follow the [v1.0.5 to v2.0.0 migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
+for code, platform and licensing changes.

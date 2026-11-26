@@ -13,7 +13,13 @@ import os from 'node:os';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { archiveCurrentDocs } from './docs-archive.mjs';
-import { compareDocsVersions, latestReleasedVersionFromChangelog } from './docs-version.mjs';
+import {
+  archivedDocsVersions,
+  compareDocsVersions,
+  latestReleasedVersionFromChangelog,
+  releasedVersionsFromChangelog,
+  skippedDocsVersions,
+} from './docs-version.mjs';
 import { FORBIDDEN_PUBLIC_DOCS_TERMS } from './public-docs-policy.mjs';
 import { firstCallMapping, firstCallRoute, versionedSdkMetadata } from './sdk-doc-contract.mjs';
 
@@ -58,7 +64,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['api-reference.md', {
     title: 'C ABI Reference',
-    description: 'Complete reference for the nxusKit C ABI — all functions, types, and ownership rules.',
+    description: 'Key nxusKit C ABI entry points, types, and ownership rules.',
   }],
   ['cli-input-reference.md', {
     title: 'CLI Input Format Reference',
@@ -94,7 +100,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['tier-comparison.md', {
     title: 'Tier System',
-    description: 'Feature and limit comparison across Community, Pro, and Enterprise editions of nxusKit.',
+    description: 'Compare nxusKit Community Edition and the initial Pro Solver offering.',
   }],
   ['migration-guide.md', {
     title: 'CLIPS Session Migration',
@@ -106,7 +112,7 @@ const SDK_DOC_METADATA = new Map([
   }],
   ['upgrade-path.md', {
     title: 'Upgrade Path',
-    description: 'Error messages and resolutions when Pro features are unavailable or licenses need updating.',
+    description: 'Migrate from nxusKit v1.0.5 to v2.0.0 and troubleshoot Pro license activation.',
   }],
   ['CHANGELOG.md', {
     title: 'Changelog',
@@ -234,7 +240,7 @@ async function syncSdk() {
   const packagingDocsRoot = path.join(SDK_REPO, 'sdk-packaging/docs');
   let exportMode = 'authoritative';
 
-  if (existsSync(docsUserRoot)) {
+  if (await isStarlightSdkTree(docsUserRoot)) {
     await copyDir(docsUserRoot, exportRoot);
     console.log(`Exported SDK docs/user -> ${path.relative(tmpRoot, exportRoot)}`);
   } else if (existsSync(packagingDocsRoot)) {
@@ -242,7 +248,7 @@ async function syncSdk() {
     exportMode = 'packaging';
     console.log(`Exported SDK sdk-packaging/docs -> ${path.relative(tmpRoot, exportRoot)}`);
   } else {
-    throw new Error(`SDK docs source not found: ${docsUserRoot} or ${packagingDocsRoot}`);
+    throw new Error(`SDK docs source not found: expected a routed Starlight tree in ${docsUserRoot} or mapped Markdown in ${packagingDocsRoot}.`);
   }
 
   const changelog = path.join(SDK_REPO, 'CHANGELOG.md');
@@ -270,14 +276,39 @@ async function syncSdk() {
   console.log(`Synced SDK docs -> ${path.relative(DOCS_ROOT, targetRoot)}`);
 }
 
+async function isStarlightSdkTree(root) {
+  if (!existsSync(root)) return false;
+
+  const coreRoutes = new Set([
+    'index',
+    'getting-started/installation',
+    'getting-started/first-call',
+    'concepts/licensing',
+    'migration/upgrade-path',
+    'reference/cli-reference',
+  ]);
+  for await (const filePath of walkMarkdown(root)) {
+    const text = await readFile(filePath, 'utf8');
+    const frontmatter = text.match(/^\uFEFF?---\r?\n([\s\S]*?)\r?\n---(?:\r?\n|$)/);
+    if (!frontmatter || !/^title:[ \t]*\S/m.test(frontmatter[1])) return false;
+    coreRoutes.delete(path.relative(root, filePath).replace(/\.mdx?$/, ''));
+  }
+  return coreRoutes.size === 0;
+}
+
 async function archiveCurrentDocsBeforeSdkSync() {
   assertEnv('NXUSKIT_REPO', SDK_REPO);
   assertDirectory(SDK_REPO, 'nxusKit SDK repo');
 
-  await archiveCurrentDocsForNewSdkVersion(
-    path.join(SDK_REPO, 'CHANGELOG.md'),
-    'SDK source changelog',
-  );
+  const sourceChangelog = path.join(SDK_REPO, 'CHANGELOG.md');
+  const versions = new Set(releasedVersionsFromChangelog(await readFile(sourceChangelog, 'utf8')));
+  const retained = [...archivedDocsVersions(), ...skippedDocsVersions().map(({ version }) => version)];
+  const missing = retained.filter((version) => !versions.has(version));
+  if (missing.length > 0) {
+    throw new Error(`SDK source changelog is missing retained Docs releases: ${missing.join(', ')}. Use an SDK export with the published changelog history before syncing.`);
+  }
+
+  await archiveCurrentDocsForNewSdkVersion(sourceChangelog, 'SDK source changelog');
 }
 
 async function archiveCurrentDocsForNewSdkVersion(newChangelogPath, label) {
