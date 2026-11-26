@@ -1,10 +1,13 @@
 ---
 title: "C ABI Reference"
-description: "Complete reference for the nxusKit C ABI — all functions, types, and ownership rules."
+description: "Key nxusKit C ABI entry points, types, and ownership rules."
 ---
 
-All functions are declared in `nxuskit.h`. The ABI uses opaque handles and JSON
-strings for all data exchange. Every function is thread-safe unless noted.
+This guide covers common functions and ownership rules. For all declarations,
+including `nxuskit_chat_async` and `nxuskit_list_models_async`, see the
+[published v2.0.0 C header](https://github.com/nxus-SYSTEMS/nxusKit/blob/sdk-v2.0.0/packages/nxuskit-engine/crates/nxuskit-core/include/nxuskit.h)
+or the header in your matching SDK bundle. The ABI uses opaque handles and
+structured JSON to pass request and response data.
 
 ## Version
 

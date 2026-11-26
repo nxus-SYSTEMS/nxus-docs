@@ -683,7 +683,7 @@ The CLI accepts YAML or JSON. Inputs with `"contract_version": "1.1"` use
 the v1.1 workflow contract. Other inputs use the existing pipeline format
 described below.
 
-#### v1.1 local loopback example
+#### Version 1.1 workflow contract
 
 Save the [tagged pipeline fixture](https://raw.githubusercontent.com/nxus-SYSTEMS/nxusKit/sdk-v2.0.0/packages/nxuskit-engine/crates/nxuskit-cli/tests/fixtures/v11_rc_peeler_cli/v11-llm-only.json)
 as `v11-llm-only.json`. Use the executable from your verified v2.0.0 bundle.

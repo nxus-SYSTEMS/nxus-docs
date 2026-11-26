@@ -51,9 +51,12 @@ with Starlight frontmatter and public-source links. Set
 `NXUSKIT_EXAMPLES_REPO=/path/to/examples/source` before running it.
 
 `sync:docs:sdk` mirrors the existing publish-to-docs contract from
-the SDK source repo. It prefers `docs/user/` as the authoritative Starlight
-tree and can fall back to mapping `sdk-packaging/docs/` into the public sidebar.
-Set `NXUSKIT_REPO=/path/to/sdk/source` before running it.
+the SDK source repo. It uses `docs/user/` when that directory contains the
+routed Starlight pages with title frontmatter. For a flat SDK Markdown tree,
+it maps `sdk-packaging/docs/` into the public sidebar. Set
+`NXUSKIT_REPO=/path/to/sdk/source` before running it. Use a source export that
+includes the published changelog history. Apply public copy corrections to
+the SDK source before its next export so the sync preserves them.
 
 `npm run build` is the only generator for the public AI index files. It runs
 Astro first, then `scripts/generate-llms-txt.mjs`, producing both `dist/llms.txt`

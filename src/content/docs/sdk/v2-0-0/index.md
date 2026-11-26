@@ -17,7 +17,7 @@ The SDK now provides the versioned v1.1 workflow contract, with typed
 definitions and structured results. You can validate a pipeline before
 running its LLM steps through a deterministic local loopback fixture. Use the
 regular [provider call paths](/nxuskit/concepts/provider-model/) for real model
-requests. Try the [v1.1 local loopback example](/nxuskit/reference/cli-reference/#v11-local-loopback-example).
+requests. Try the [v1.1 local loopback example](/nxuskit/reference/cli-reference/#version-11-workflow-contract).
 
 The major version also marks changes to request types and stream completion.
 Check the [v1.0.5 migration guide](/nxuskit/migration/upgrade-path/#migrate-from-v105-to-v200)
